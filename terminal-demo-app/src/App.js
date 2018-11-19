@@ -9,6 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);    
     this.state = { 
+      initialized: false,
       useSimulator: true,      
       discoveredReaders: null,
       connectionStatus: 'not_connected',
@@ -71,6 +72,7 @@ class App extends Component {
       this.setState({
         connectedReader: connectResult.connection.reader
       })
+      return connectResult.connection;
     }
   }
 
@@ -115,10 +117,10 @@ class App extends Component {
       const confirmResult = await this.terminal.confirmPaymentIntent(result.paymentIntent);
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
-      } else if (confirmResult.paymentIntent) {
-        console.log(confirmResult)
-        await this.backend.capturePaymentIntent(confirmResult.paymentIntent.id);
+      } else if (confirmResult.paymentIntent) {        
+        let captureResult = await this.backend.capturePaymentIntent(confirmResult.paymentIntent.id);
         console.log("Payment Successful!")
+        return captureResult;
       }
     }
   }
@@ -129,7 +131,6 @@ class App extends Component {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
       // Pass to Backend to actually save to a customer
-      console.log(readSourceResult)
       return readSourceResult.source;
     }
   }
