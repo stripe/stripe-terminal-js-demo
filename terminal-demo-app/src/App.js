@@ -4,7 +4,7 @@ import './App.css';
 import Backend from './backend';
 
 class App extends Component {
-  CHARGE_AMOUNT = 5100;
+  static CHARGE_AMOUNT = 5100;
   
   constructor(props) {
     super(props);    
@@ -14,15 +14,25 @@ class App extends Component {
       connectionStatus: 'not_connected',
       connectedReader: null,      
     };
+    let fn = async () => {
+      this.initializeBackendAndTerminal();
+      let results = await this.discoverReaders();
+      await this.connectToReader(results[0])
+  
+      await this.updateLineItems();
+      await this.saveCardForFutureUse();
+      await this.collectCardPayment();
+    }
+
+    fn();
     
-    
-  }
+  }  
 
   // 1. Stripe Terminal Initialization
   initializeBackendAndTerminal(url) {
-    this.backend = new Backend('https://my-example-backend.herokuapp.com/');    
+    this.backend = new Backend('http://localhost:4567');    
     
-    this.terminal = StripeTerminal.create({      
+    this.terminal = window.StripeTerminal.create({      
       onFetchConnectionToken: async () => {
         let connectionTokenResult = await this.backend.createConnectionToken();
         return connectionTokenResult.secret;
@@ -49,6 +59,7 @@ class App extends Component {
       this.setState({
         discoveredReaders: discoverResult.discoveredReaders
       })
+      return discoverResult.discoveredReaders;
     }
   }
 
@@ -71,26 +82,33 @@ class App extends Component {
   }
   
   // 3. Terminal Workflows (Once Connected)
-  updateLineItems() {
-    await this.terminal.setReaderDisplay({
+  async updateLineItems() {
+    this.terminal.setReaderDisplay({
       type: 'cart',
       cart: {
         lineItems: [
           {
             description: "Blue Shirt",
-            amount: CHARGE_AMOUNT,
+            amount: App.CHARGE_AMOUNT,
             quantity: 1,
           },          
         ],
         tax: 0,
-        total: CHARGE_AMOUNT,
+        total: App.CHARGE_AMOUNT,
         currency: 'usd',
       },
     });
   }
 
   async collectCardPayment() {
-    const result = await this.terminal.collectPaymentMethod(clientSecret);
+    // We want to make sure we reuse the same PaymentIntent object in the case of declined charges so we
+    // store the pending PaymentIntent's secret until it has been fulfilled.
+    if (!this.pendingPaymentIntentSecret) {
+      let createIntentResponse = await this.backend.createPaymentIntent(App.CHARGE_AMOUNT, 'usd', "Test Charge");
+      this.pendingPaymentIntentSecret = createIntentResponse.secret;
+    }    
+    
+    const result = await this.terminal.collectPaymentMethod(this.pendingPaymentIntentSecret);
     if (result.error) {
       alert(`Collect payment method failed: ${result.error.message}`);
     } else {            
@@ -98,19 +116,21 @@ class App extends Component {
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
-        // Placeholder for notifying your backend to capture the PaymentIntent
-
-        // Success!
+        console.log(confirmResult)
+        await this.backend.capturePaymentIntent(confirmResult.paymentIntent.id);
+        console.log("Payment Successful!")
       }
     }
   }
 
-  saveCardForFutureUse() {
+  async saveCardForFutureUse() {
     const readSourceResult = await this.terminal.readSource()
     if (readSourceResult.error) {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
       // Pass to Backend to actually save to a customer
+      console.log(readSourceResult)
+      return readSourceResult.source;
     }
   }
 
@@ -118,20 +138,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        
       </div>
     );
   }

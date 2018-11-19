@@ -1,45 +1,48 @@
 class Backend {
-    constructor(url) {
-        this.url = url;
-    }
-    
-    createConnectionToken() {
-      return fetch(this.url + "/connection_token", {method: 'post'})
-    }
-  
-    registerDevice(label, registrationCode) {
-      return fetch(this.url + "/register_reader", 
-        {
-            method: 'post',
-            body: {
-                label,
-                registration_code: registrationCode
-            }
-        })      
-    }
-  
-    createPaymentIntent(amount, currency, description) {
-      return fetch(this.url + "/capture_payment_intent", 
-        {
-            method: 'post',
-            body: {
-                amount,
-                currency,
-                description
-            }
-        })      
-    }
-
-    capturePaymentIntent(paymentIntentId) {
-        return fetch(this.url + "/create_payment_intent", 
-          {
-              method: 'post',
-              body: {
-                payment_intent_id: paymentIntentId
-              }
-          })      
-      }      
+  constructor(url) {
+    this.url = url;
   }
-  
-  export default Backend;
-  
+
+  createConnectionToken() {
+    const formData = new URLSearchParams();
+    return this.doPost(this.url + "/connection_token", formData);
+  }
+
+  registerDevice(label, registrationCode) {
+    const formData = new URLSearchParams();
+    formData.append('label', label)
+    formData.append('registration_code', registrationCode)
+    return this.doPost(this.url + "/register_reader", formData);
+  }
+
+  createPaymentIntent(amount, currency, description) {
+    const formData = new URLSearchParams();
+    formData.append('amount', amount)
+    formData.append('currency', currency)
+    formData.append('description', description)
+    return this.doPost(this.url + "/create_payment_intent", formData);
+  }
+
+  capturePaymentIntent(paymentIntentId) {
+    const formData = new URLSearchParams();
+    formData.append('payment_intent_id', paymentIntentId)
+    return this.doPost(this.url + "/capture_payment_intent", formData);
+  }
+
+  async doPost(url, body) {
+    let response = await fetch(url, {
+      method: "post",
+      body: body
+    });
+
+    if (response.ok) {
+      return response.json();
+    } else {
+      console.log(response)
+      let text = await response.text();
+      throw new Error("Request Failed: " + text);
+    }
+  }
+}
+
+export default Backend;
