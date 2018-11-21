@@ -29,6 +29,12 @@ class Backend {
     return this.doPost(this.url + "/capture_payment_intent", formData);
   }
 
+  saveSourceToCustomer(sourceId) {
+    const formData = new URLSearchParams();
+    formData.append('card_present_source_id', sourceId)
+    return this.doPost(this.url + "/save_card_to_customer", formData);
+  }
+
   async doPost(url, body) {
     let response = await fetch(url, {
       method: "post",
