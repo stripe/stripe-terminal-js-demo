@@ -15,13 +15,14 @@ class App extends Component {
       connectionStatus: "not_connected",
       connectedReader: null,
       readerLabel: '',
-      registrationCode: ''
+      registrationCode: '',
+      cancelablePayment: false
     };
   }
 
   // 1. Stripe Terminal Initialization
   initializeBackendAndTerminal(url) {
-    this.backend = new Backend("http://localhost:4567");
+    this.backend = new Backend(url);
 
     this.terminal = window.StripeTerminal.create({
       onFetchConnectionToken: async () => {
@@ -83,7 +84,7 @@ class App extends Component {
   async registerAndConnectNewReader(label, code) {
     let reader = await this.backend.registerDevice(label, code);
     await this.connectToReader(reader)
-    console.log("Reigstered and Connected Successfully!")
+    console.log("Registered and Connected Successfully!")
    }
 
   // 3. Terminal Workflows (Once Connected)
@@ -117,16 +118,20 @@ class App extends Component {
       );
       this.pendingPaymentIntentSecret = createIntentResponse.secret;
     }
-
-    const result = await this.terminal.collectPaymentMethod(
+    // Read a card from the customer
+    const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret
     );
+    this.setState({cancelablePayment: true})
+    const result = await paymentMethodPromise;    
     if (result.error) {
       alert(`Collect payment method failed: ${result.error.message}`);
     } else {
+      // Can no longer cancel the pending payment because we are sending the request to the network.
       const confirmResult = await this.terminal.confirmPaymentIntent(
         result.paymentIntent
       );
+      this.setState({cancelablePayment: false})
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
@@ -137,6 +142,11 @@ class App extends Component {
         return captureResult;
       }
     }
+  }
+
+  async cancelPendingPayment() {
+    let cancel = await this.terminal.cancelCollectPaymentMethod();
+    this.setState({cancelablePayment: false})
   }
 
   async saveCardForFutureUse() {
@@ -177,6 +187,9 @@ class App extends Component {
   handleRegisterMode = () => {
     this.setState({status: 'reader_registration'})
   }
+  handleDiscoverMode = () => {
+    this.setState({status: 'requires_connecting'})
+  }
   handleConnectClick = (reader) => this.connectToReader(reader);
   handleUseSimulator = async () => {
     let simulatedResults = await this.discoverReaders(true);
@@ -198,6 +211,7 @@ class App extends Component {
                   value={this.state.registrationCode} onChange={this.handleRegistrationCodeChange}>
           </input>
           <button className="btn btn-primary" onClick={this.handleRegisterNewDevice}>Ok</button>
+          <button className="btn btn-primary" onClick={this.handleDiscoverMode}>Cancel</button>
         </section>
       )
     }
@@ -256,6 +270,7 @@ class App extends Component {
 
   handleUpdateReaderDisplay = () => this.updateLineItems();
   handleCollectCardPayment = () => this.collectCardPayment();
+  handleCancelPayment = () => this.cancelPendingPayment();
   handleSaveCardForFutureUse = () => this.saveCardForFutureUse();
 
   renderCommonWorkflows() {
@@ -266,7 +281,11 @@ class App extends Component {
           <button className="btn btn-secondary" onClick={this.handleUpdateReaderDisplay}>Update Line Items And Totals</button>
         </div>
         <div>
-          <button className="btn btn-secondary" onClick={this.handleCollectCardPayment}>Collect Card Payments</button>  
+          {this.state.cancelablePayment ? 
+            <button className="btn btn-secondary" onClick={this.handleCancelPayment}>Cancel Payment</button>  
+          :
+            <button className="btn btn-secondary" onClick={this.handleCollectCardPayment}>Collect Card Payments</button>  
+          }
         </div>
         <div>
           <button className="btn btn-secondary" onClick={this.handleSaveCardForFutureUse}>Save Card For Future Use</button>                    
