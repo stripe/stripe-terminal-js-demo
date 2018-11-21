@@ -37,16 +37,16 @@ class App extends Component {
         let connectionTokenResult = await this.backend.createConnectionToken();
         return connectionTokenResult.secret;
       },
-      onUnexpectedReaderDisconnect: () => {
+      onUnexpectedReaderDisconnect: Logger.tracedFn("onUnexpectedReaderDisconnect", () => {
         alert("Unexpected disconnect from the reader!");
         this.setState({
           connectionStatus: "not_connected",
           connectedReader: null
         });
-      },
-      onConnectionStatusChange: ev => {
+      }),
+      onConnectionStatusChange: Logger.tracedFn("onConnectionStatusChange", ev => {
         this.setState({ connectionStatus: ev.status, connectedReader: null });
-      }
+      })
     });
     Logger.watchObject(this.backend, "backend", [
       'createConnectionToken',
@@ -347,13 +347,13 @@ class App extends Component {
                   Request:
                   <pre>
                     <code>
-                      {log.requestString}
+                      {log.request}
                     </code>
                   </pre>
-                  {log.response ? 'Response:' : 'Exception:'}
+                  {log.exception ? 'Exception:' : 'Response:'}
                   <pre>                    
                     <code>
-                      {log.response || log.exception}
+                      {log.response || log.exception || 'void'}
                     </code>
                   </pre>        
                 </div>
