@@ -1,4 +1,4 @@
-# Stripe Terminal JS <img src="https://img.shields.io/badge/Beta 3-brightgreen.svg">
+# Stripe Terminal JS <img src="https://img.shields.io/badge/Beta-brightgreen.svg">
 
 [Request a Beta invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
 
