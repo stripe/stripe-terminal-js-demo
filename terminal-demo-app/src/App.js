@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Backend from "./backend";
+import Logger from "./logger"
 
 class App extends Component {
   static CHARGE_AMOUNT = 5100;
@@ -16,8 +16,16 @@ class App extends Component {
       connectedReader: null,
       readerLabel: '',
       registrationCode: '',
-      cancelablePayment: false
+      cancelablePayment: false,        
+      logs: []
     };
+
+    Logger.setCollectors([this])
+  }
+
+  collect(log) {    
+    console.log(log)
+    this.setState(state => state.logs.push(log))         
   }
 
   // 1. Stripe Terminal Initialization
@@ -40,6 +48,22 @@ class App extends Component {
         this.setState({ connectionStatus: ev.status, connectedReader: null });
       }
     });
+    Logger.watchObject(this.backend, "backend", [
+      'createConnectionToken',
+      'registerDevice',
+      'createPaymentIntent',
+      'capturePaymentIntent',
+      'saveSourceToCustomer',
+    ])
+    Logger.watchObject(this.terminal, "terminal", [
+      'discoverReaders',
+      'connectReader',
+      'setReaderDisplay',
+      'collectPaymentMethod',
+      'cancelCollectPaymentMethod',
+      'confirmPaymentIntent',
+      'readSource'
+    ])
 
     this.setState({ status: 'requires_connecting' });    
   }
@@ -138,6 +162,7 @@ class App extends Component {
         let captureResult = await this.backend.capturePaymentIntent(
           confirmResult.paymentIntent.id
         );
+        this.pendingPaymentIntentSecret = null;
         console.log("Payment Successful!");
         return captureResult;
       }
@@ -314,7 +339,26 @@ class App extends Component {
                   </div>
                 : ''}                
             </div>
-            <div className="col">Logs Go Here :)</div>
+            <div className="col">
+              {this.state.logs.map(log => 
+                <div>
+                  <h4>{log.method}</h4>
+                  <small>{new Date(log.start_time_ms).toString()}</small>
+                  Request:
+                  <pre>
+                    <code>
+                      {log.requestString}
+                    </code>
+                  </pre>
+                  {log.response ? 'Response:' : 'Exception:'}
+                  <pre>                    
+                    <code>
+                      {log.response || log.exception}
+                    </code>
+                  </pre>        
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
