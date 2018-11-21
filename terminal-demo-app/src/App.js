@@ -9,23 +9,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialized: false,
+      status: 'requires_initializing', // requires_connecting || reader_registration || workflows
       backendUrl: '',
       discoveredReaders: null,
       connectionStatus: "not_connected",
-      connectedReader: null
+      connectedReader: null,
+      readerLabel: '',
+      registrationCode: ''
     };
-    // let fn = async () => {
-    //   this.initializeBackendAndTerminal();
-    //   let results = await this.discoverReaders();
-    //   await this.connectToReader(results[0]);
-
-    //   await this.updateLineItems();
-    //   await this.saveCardForFutureUse();
-    //   await this.collectCardPayment();
-    // };
-
-    // fn();
   }
 
   // 1. Stripe Terminal Initialization
@@ -49,7 +40,7 @@ class App extends Component {
       }
     });
 
-    this.setState({ initialized: true });    
+    this.setState({ status: 'requires_connecting' });    
   }
 
   // 2. Terminal Connection Management: Discovery and Connecting
@@ -74,6 +65,7 @@ class App extends Component {
       console.log("Failed to connect:", connectResult.error);
     } else {
       this.setState({
+        status: 'workflows',
         discoveredReaders: null,
         connectedReader: connectResult.connection.reader
       });
@@ -87,6 +79,12 @@ class App extends Component {
       connectedReader: null
     });
   }
+
+  async registerAndConnectNewReader(label, code) {
+    let reader = await this.backend.registerDevice(label, code);
+    await this.connectToReader(reader)
+    console.log("Reigstered and Connected Successfully!")
+   }
 
   // 3. Terminal Workflows (Once Connected)
   async updateLineItems() {
@@ -147,8 +145,9 @@ class App extends Component {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
       // Pass to Backend to actually save to a customer
-      console.log("Source Saved!");
-      return readSourceResult.source;
+      let customer = await this.backend.saveSourceToCustomer(readSourceResult.source.id)
+      console.log("Source Saved to Customer!", customer);
+      return customer;
     }
   }
 
@@ -157,7 +156,7 @@ class App extends Component {
   handleSetBackendUrl = () => this.initializeBackendAndTerminal(this.state.backendUrl)
 
   renderBackendUrlInput() {
-    if (this.state.initialized) {
+    if (this.state.status !== 'requires_initializing') {
       return <b>{this.state.backendUrl}</b>
     } else {
       return (
@@ -175,19 +174,40 @@ class App extends Component {
 
   handleDiscoverClick = () => this.discoverReaders();
   handleDisconnectClick = () => this.disconnectReader();
+  handleRegisterMode = () => {
+    this.setState({status: 'reader_registration'})
+  }
   handleConnectClick = (reader) => this.connectToReader(reader);
   handleUseSimulator = async () => {
     let simulatedResults = await this.discoverReaders(true);
     await this.connectToReader(simulatedResults[0])
   }
 
+  handleReaderLabelChange = (e) => this.setState({readerLabel: e.target.value})
+  handleRegistrationCodeChange = (e) => this.setState({registrationCode: e.target.value})
+  handleRegisterNewDevice = () => this.registerAndConnectNewReader(this.state.readerLabel, this.state.registrationCode)
+
   renderReaderConnectionManager() {
-    if (this.state.connectionStatus === 'connected') {
+    if (this.state.status === 'reader_registration') {
       return (
-        <div>
-          <b>Reader Label</b>                    
+        <section>
+          <input type="url" className="form-control" placeholder="Enter Reader Label"
+                  value={this.state.readerLabel} onChange={this.handleReaderLabelChange}>
+          </input>
+          <input type="url" className="form-control" placeholder="Enter Registration Code"
+                  value={this.state.registrationCode} onChange={this.handleRegistrationCodeChange}>
+          </input>
+          <button className="btn btn-primary" onClick={this.handleRegisterNewDevice}>Ok</button>
+        </section>
+      )
+    }
+
+    if (this.state.connectionStatus === 'connected' && this.state.connectedReader) {
+      return (
+        <section>
+          <b>{this.state.connectedReader.label}</b>                    
           <button onClick={this.handleDisconnectClick}>Disconnect</button>
-        </div>
+        </section>
       )
     } else if (this.state.connectionStatus === 'connecting') {
       return (
@@ -212,14 +232,21 @@ class App extends Component {
               <div>
                 <b>{reader.label}</b>
                 <div>
+                  {reader.device_type}
+                </div>
+                <div>                  
                   <small>{reader.serial_number} - {reader.ip_address}</small>
-                </div>                    
-                <button onClick={() => this.handleConnectClick(reader)}>Connect</button>
+                </div>
+                {
+                  reader.status === 'online' ?
+                  <button onClick={() => this.handleConnectClick(reader)}>Connect</button>
+                  : <button disabled="true">Offline</button>
+                }                                    
               </div>          
             )
           }          
           <div className="btn-group" role="group" aria-label="Basic example">
-            <button type="button" className="btn btn-secondary">Register New Device</button>                    
+            <button type="button" className="btn btn-secondary" onClick={this.handleRegisterMode}>Register New Device</button>                    
             <button type="button" className="btn btn-secondary" onClick={this.handleUseSimulator}>Use Simulator</button>
           </div>
         </section>
@@ -244,7 +271,7 @@ class App extends Component {
         <div>
           <button className="btn btn-secondary" onClick={this.handleSaveCardForFutureUse}>Save Card For Future Use</button>                    
         </div>
-      </section>
+      </section>      
     )
   }
 
@@ -257,15 +284,14 @@ class App extends Component {
             <div className="col-4">              
                 {this.renderBackendUrlInput()}
                 <hr />
-                {this.state.initialized ? 
+                {this.state.status !== 'requires_initializing' ? 
                   <div>
                     {this.renderReaderConnectionManager()}
                     <hr />
                     {this.state.connectionStatus === 'connected' ? 
                       this.renderCommonWorkflows() 
                       : ''
-                    }
-                    <hr />
+                    }                    
                   </div>
                 : ''}                
             </div>
