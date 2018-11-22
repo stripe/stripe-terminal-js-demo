@@ -1,8 +1,11 @@
 import * as React from "react";
 
-import "./APIKeyForm.css";
 import { breakpoints } from "../styles.jsx";
+import Button from "../Button/Button.jsx";
 import { css } from "emotion";
+import Group from "../Group/Group.jsx";
+import Text from "../Text/Text.jsx";
+import TextInput from "../lib/TextInput/TextInput.jsx";
 
 class APIKeyForm extends React.Component {
   render() {
@@ -14,6 +17,10 @@ class APIKeyForm extends React.Component {
           box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
           height: 146px;
           flex-shrink: 0;
+          padding-top: 16px;
+          padding-bottom: 16px;
+          padding-left: 20px;
+          padding-right: 20px;
 
           ${breakpoints.laptop} {
             width: 310px;
@@ -22,7 +29,36 @@ class APIKeyForm extends React.Component {
             width: 100%;
           }
         `}
-      />
+      >
+        <Group direction="column">
+          <Group
+            direction="row"
+            alignment={{ justifyContent: "space-between" }}
+          >
+            <Text size={16} color="dark">
+              Set API key
+            </Text>
+            <Text size={14} color="blue">
+              Open dashboard
+            </Text>
+          </Group>
+          <TextInput />
+          <Group
+            direction="row"
+            alignment={{ justifyContent: "space-between" }}
+          >
+            <Text size={12} color="lightGrey">
+              The key will only be used for local testing and will not be
+              shared.
+            </Text>
+            <Button>
+              <Text color="white" size={14}>
+                Initialize
+              </Text>
+            </Button>
+          </Group>
+        </Group>
+      </div>
     );
   }
 }
