@@ -28,7 +28,7 @@ class Group extends React.Component {
           ...alignment
         }}
       >
-        {children.map(child => {
+        {children.map((child, i) => {
           return (
             <div
               className="Group-children"
@@ -36,6 +36,7 @@ class Group extends React.Component {
                 ...this.getMarginStyle(direction, spacing),
                 ...alignment
               }}
+              key={i}
             >
               {child}
             </div>

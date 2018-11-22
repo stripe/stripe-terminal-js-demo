@@ -14,6 +14,7 @@ class Logs extends React.Component {
         <div className="Logs-header">
           <Group
             direction="row"
+            spacing={0}
             alignment={{ justifyContent: "space-between" }}
           >
             <Text size="16px" color="grey">

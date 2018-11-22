@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import "./App.css";
+import "./MainPage.css";
 
 import Logs from "./Logs/Logs.jsx";
 
-class App extends Component {
+class MainPage extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="MainPage">
         <Logs />
       </div>
     );
   }
 }
 
-export default App;
+export default MainPage;
