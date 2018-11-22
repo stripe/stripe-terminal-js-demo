@@ -7,6 +7,10 @@
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1"
   },
+  "optionalDependencies": {
+    "fsevents": "2.0.1",
+    "fuse.js": "3.3.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -23,6 +27,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "node-sass": "^4.10.0"
+    "prettier": "1.15.2"
   }
 }
