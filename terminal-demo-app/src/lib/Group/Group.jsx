@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { breakpoints } from "../styles.jsx";
+import { breakpoints } from "../../styles.jsx";
 import { css } from "emotion";
 
 class Group extends React.Component {

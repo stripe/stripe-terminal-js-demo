@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import APIKeyForm from "./APIKeyForm/APIKeyForm.jsx";
-import Group from "./Group/Group.jsx";
+import Group from "./lib/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
 
 import { css } from "emotion";
