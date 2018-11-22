@@ -17,11 +17,7 @@ class APIKeyForm extends React.Component {
           box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
           height: 146px;
           flex-shrink: 0;
-          padding-top: 16px;
-          padding-bottom: 16px;
-          padding-left: 20px;
-          padding-right: 20px;
-
+          padding: 16px 20px;
           ${breakpoints.laptop} {
             width: 310px;
           }
