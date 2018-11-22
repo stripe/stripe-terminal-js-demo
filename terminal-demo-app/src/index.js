@@ -1,10 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+// import "./index.css";
+import MainPage from "./MainPage";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import { injectGlobal } from "emotion";
+
+injectGlobal({
+  html: {
+    height: "100%",
+    width: "100%"
+  },
+  body: {
+    height: "100%",
+    width: "100%",
+    background: "#E3E8EE"
+  }
+});
+
+ReactDOM.render(<MainPage />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
