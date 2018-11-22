@@ -1,0 +1,23 @@
+.Logs {
+    background: #262A41;
+    border-radius: 14px 14px 14px 14px;
+    box-shadow: 0 0 0 0.5px rgba(50, 50, 93, 0),
+    0 7px 14px 0 rgba(50, 50, 93, 0),
+    0 3px 6px 0 rgba(0, 0, 0, 0);
+    height: 675px;
+    width: 727px;
+}
+
+.Logs-header {
+    border-radius: 14px 14px 0 0;
+    border-bottom: 1px solid #4E566D;
+    padding: 20px;
+}
+
+.Logs-body {
+    border-radius: 0 0 14px 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}

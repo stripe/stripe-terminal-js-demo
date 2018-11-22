@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Backend from "./backend";
-import Logger from "./logger"
+import Logger from "./logger";
 
 class App extends Component {
   static CHARGE_AMOUNT = 5100;
@@ -9,23 +9,23 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'requires_initializing', // requires_connecting || reader_registration || workflows
-      backendUrl: '',
+      status: "requires_initializing", // requires_connecting || reader_registration || workflows
+      backendUrl: "",
       discoveredReaders: null,
       connectionStatus: "not_connected",
       connectedReader: null,
-      readerLabel: '',
-      registrationCode: '',
-      cancelablePayment: false,        
+      readerLabel: "",
+      registrationCode: "",
+      cancelablePayment: false,
       logs: []
     };
 
-    Logger.setCollectors([this])
+    Logger.setCollectors([this]);
   }
 
-  collect(log) {    
-    console.log(log)
-    this.setState(state => state.logs.push(log))         
+  collect(log) {
+    console.log(log);
+    this.setState(state => state.logs.push(log));
   }
 
   // 1. Stripe Terminal Initialization
@@ -37,39 +37,45 @@ class App extends Component {
         let connectionTokenResult = await this.backend.createConnectionToken();
         return connectionTokenResult.secret;
       },
-      onUnexpectedReaderDisconnect: Logger.tracedFn("onUnexpectedReaderDisconnect", () => {
-        alert("Unexpected disconnect from the reader!");
-        this.setState({
-          connectionStatus: "not_connected",
-          connectedReader: null
-        });
-      }),
-      onConnectionStatusChange: Logger.tracedFn("onConnectionStatusChange", ev => {
-        this.setState({ connectionStatus: ev.status, connectedReader: null });
-      })
+      onUnexpectedReaderDisconnect: Logger.tracedFn(
+        "onUnexpectedReaderDisconnect",
+        () => {
+          alert("Unexpected disconnect from the reader!");
+          this.setState({
+            connectionStatus: "not_connected",
+            connectedReader: null
+          });
+        }
+      ),
+      onConnectionStatusChange: Logger.tracedFn(
+        "onConnectionStatusChange",
+        ev => {
+          this.setState({ connectionStatus: ev.status, connectedReader: null });
+        }
+      )
     });
     Logger.watchObject(this.backend, "backend", [
-      'createConnectionToken',
-      'registerDevice',
-      'createPaymentIntent',
-      'capturePaymentIntent',
-      'saveSourceToCustomer',
-    ])
+      "createConnectionToken",
+      "registerDevice",
+      "createPaymentIntent",
+      "capturePaymentIntent",
+      "saveSourceToCustomer"
+    ]);
     Logger.watchObject(this.terminal, "terminal", [
-      'discoverReaders',
-      'connectReader',
-      'setReaderDisplay',
-      'collectPaymentMethod',
-      'cancelCollectPaymentMethod',
-      'confirmPaymentIntent',
-      'readSource'
-    ])
+      "discoverReaders",
+      "connectReader",
+      "setReaderDisplay",
+      "collectPaymentMethod",
+      "cancelCollectPaymentMethod",
+      "confirmPaymentIntent",
+      "readSource"
+    ]);
 
-    this.setState({ status: 'requires_connecting' });    
+    this.setState({ status: "requires_connecting" });
   }
 
   // 2. Terminal Connection Management: Discovery and Connecting
-  async discoverReaders(useSimulator=false) {
+  async discoverReaders(useSimulator = false) {
     const discoverResult = await this.terminal.discoverReaders({
       method: useSimulator ? "simulated" : "registered"
     });
@@ -90,7 +96,7 @@ class App extends Component {
       console.log("Failed to connect:", connectResult.error);
     } else {
       this.setState({
-        status: 'workflows',
+        status: "workflows",
         discoveredReaders: null,
         connectedReader: connectResult.connection.reader
       });
@@ -107,9 +113,9 @@ class App extends Component {
 
   async registerAndConnectNewReader(label, code) {
     let reader = await this.backend.registerDevice(label, code);
-    await this.connectToReader(reader)
-    console.log("Registered and Connected Successfully!")
-   }
+    await this.connectToReader(reader);
+    console.log("Registered and Connected Successfully!");
+  }
 
   // 3. Terminal Workflows (Once Connected)
   async updateLineItems() {
@@ -146,8 +152,8 @@ class App extends Component {
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret
     );
-    this.setState({cancelablePayment: true})
-    const result = await paymentMethodPromise;    
+    this.setState({ cancelablePayment: true });
+    const result = await paymentMethodPromise;
     if (result.error) {
       alert(`Collect payment method failed: ${result.error.message}`);
     } else {
@@ -155,7 +161,7 @@ class App extends Component {
       const confirmResult = await this.terminal.confirmPaymentIntent(
         result.paymentIntent
       );
-      this.setState({cancelablePayment: false})
+      this.setState({ cancelablePayment: false });
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
@@ -171,7 +177,7 @@ class App extends Component {
 
   async cancelPendingPayment() {
     let cancel = await this.terminal.cancelCollectPaymentMethod();
-    this.setState({cancelablePayment: false})
+    this.setState({ cancelablePayment: false });
   }
 
   async saveCardForFutureUse() {
@@ -180,117 +186,167 @@ class App extends Component {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
       // Pass to Backend to actually save to a customer
-      let customer = await this.backend.saveSourceToCustomer(readSourceResult.source.id)
+      let customer = await this.backend.saveSourceToCustomer(
+        readSourceResult.source.id
+      );
       console.log("Source Saved to Customer!", customer);
       return customer;
     }
   }
 
   // UI
-  handleBackendUrlChange = (e) => this.setState({backendUrl: e.target.value})
-  handleSetBackendUrl = () => this.initializeBackendAndTerminal(this.state.backendUrl)
+  handleBackendUrlChange = e => this.setState({ backendUrl: e.target.value });
+  handleSetBackendUrl = () =>
+    this.initializeBackendAndTerminal(this.state.backendUrl);
 
   renderBackendUrlInput() {
-    if (this.state.status !== 'requires_initializing') {
-      return <b>{this.state.backendUrl}</b>
+    if (this.state.status !== "requires_initializing") {
+      return <b>{this.state.backendUrl}</b>;
     } else {
       return (
         <section>
           <label>Backend URL</label>
-          <input type="url" className="form-control" id="backendUrl" placeholder="Enter Backend URL"
-                  value={this.state.backendUrl} onChange={this.handleBackendUrlChange}>
-          </input>
-          <small id="backendUrlHelp" className="form-text text-muted">Follow the set up guide at https://github.com/stripe/example-terminal-backend to set one up.</small>
-          <button className="btn btn-primary" onClick={this.handleSetBackendUrl}>Ok</button>
+          <input
+            type="url"
+            className="form-control"
+            id="backendUrl"
+            placeholder="Enter Backend URL"
+            value={this.state.backendUrl}
+            onChange={this.handleBackendUrlChange}
+          />
+          <small id="backendUrlHelp" className="form-text text-muted">
+            Follow the set up guide at
+            https://github.com/stripe/example-terminal-backend to set one up.
+          </small>
+          <button
+            className="btn btn-primary"
+            onClick={this.handleSetBackendUrl}
+          >
+            Ok
+          </button>
         </section>
-      )
+      );
     }
   }
 
   handleDiscoverClick = () => this.discoverReaders();
   handleDisconnectClick = () => this.disconnectReader();
   handleRegisterMode = () => {
-    this.setState({status: 'reader_registration'})
-  }
+    this.setState({ status: "reader_registration" });
+  };
   handleDiscoverMode = () => {
-    this.setState({status: 'requires_connecting'})
-  }
-  handleConnectClick = (reader) => this.connectToReader(reader);
+    this.setState({ status: "requires_connecting" });
+  };
+  handleConnectClick = reader => this.connectToReader(reader);
   handleUseSimulator = async () => {
     let simulatedResults = await this.discoverReaders(true);
-    await this.connectToReader(simulatedResults[0])
-  }
+    await this.connectToReader(simulatedResults[0]);
+  };
 
-  handleReaderLabelChange = (e) => this.setState({readerLabel: e.target.value})
-  handleRegistrationCodeChange = (e) => this.setState({registrationCode: e.target.value})
-  handleRegisterNewDevice = () => this.registerAndConnectNewReader(this.state.readerLabel, this.state.registrationCode)
+  handleReaderLabelChange = e => this.setState({ readerLabel: e.target.value });
+  handleRegistrationCodeChange = e =>
+    this.setState({ registrationCode: e.target.value });
+  handleRegisterNewDevice = () =>
+    this.registerAndConnectNewReader(
+      this.state.readerLabel,
+      this.state.registrationCode
+    );
 
   renderReaderConnectionManager() {
-    if (this.state.status === 'reader_registration') {
+    if (this.state.status === "reader_registration") {
       return (
         <section>
-          <input type="url" className="form-control" placeholder="Enter Reader Label"
-                  value={this.state.readerLabel} onChange={this.handleReaderLabelChange}>
-          </input>
-          <input type="url" className="form-control" placeholder="Enter Registration Code"
-                  value={this.state.registrationCode} onChange={this.handleRegistrationCodeChange}>
-          </input>
-          <button className="btn btn-primary" onClick={this.handleRegisterNewDevice}>Ok</button>
-          <button className="btn btn-primary" onClick={this.handleDiscoverMode}>Cancel</button>
+          <input
+            type="url"
+            className="form-control"
+            placeholder="Enter Reader Label"
+            value={this.state.readerLabel}
+            onChange={this.handleReaderLabelChange}
+          />
+          <input
+            type="url"
+            className="form-control"
+            placeholder="Enter Registration Code"
+            value={this.state.registrationCode}
+            onChange={this.handleRegistrationCodeChange}
+          />
+          <button
+            className="btn btn-primary"
+            onClick={this.handleRegisterNewDevice}
+          >
+            Ok
+          </button>
+          <button className="btn btn-primary" onClick={this.handleDiscoverMode}>
+            Cancel
+          </button>
         </section>
-      )
+      );
     }
 
-    if (this.state.connectionStatus === 'connected' && this.state.connectedReader) {
+    if (
+      this.state.connectionStatus === "connected" &&
+      this.state.connectedReader
+    ) {
       return (
         <section>
-          <b>{this.state.connectedReader.label}</b>                    
+          <b>{this.state.connectedReader.label}</b>
           <button onClick={this.handleDisconnectClick}>Disconnect</button>
         </section>
-      )
-    } else if (this.state.connectionStatus === 'connecting') {
+      );
+    } else if (this.state.connectionStatus === "connecting") {
       return (
         <div>
-          <b>Connecting...</b>                    
+          <b>Connecting...</b>
         </div>
-      )
+      );
     } else {
       return (
         <section>
-          <h4>Discover Readers</h4>                  
+          <h4>Discover Readers</h4>
           <button onClick={this.handleDiscoverClick}>Discover</button>
-          { this.state.discoveredReaders == null ? 
-            <div>
-              Click Discover to Discover Readers
-            </div>
-            : this.state.discoveredReaders.length === 0 ? 
-            <div>
-              No Readers Registered.
-            </div>
-            : this.state.discoveredReaders.map((reader) => 
+          {this.state.discoveredReaders == null ? (
+            <div>Click Discover to Discover Readers</div>
+          ) : this.state.discoveredReaders.length === 0 ? (
+            <div>No Readers Registered.</div>
+          ) : (
+            this.state.discoveredReaders.map(reader => (
               <div>
                 <b>{reader.label}</b>
+                <div>{reader.device_type}</div>
                 <div>
-                  {reader.device_type}
+                  <small>
+                    {reader.serial_number} - {reader.ip_address}
+                  </small>
                 </div>
-                <div>                  
-                  <small>{reader.serial_number} - {reader.ip_address}</small>
-                </div>
-                {
-                  reader.status === 'online' ?
-                  <button onClick={() => this.handleConnectClick(reader)}>Connect</button>
-                  : <button disabled="true">Offline</button>
-                }                                    
-              </div>          
-            )
-          }          
+                {reader.status === "online" ? (
+                  <button onClick={() => this.handleConnectClick(reader)}>
+                    Connect
+                  </button>
+                ) : (
+                  <button disabled="true">Offline</button>
+                )}
+              </div>
+            ))
+          )}
           <div className="btn-group" role="group" aria-label="Basic example">
-            <button type="button" className="btn btn-secondary" onClick={this.handleRegisterMode}>Register New Device</button>                    
-            <button type="button" className="btn btn-secondary" onClick={this.handleUseSimulator}>Use Simulator</button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.handleRegisterMode}
+            >
+              Register New Device
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.handleUseSimulator}
+            >
+              Use Simulator
+            </button>
           </div>
         </section>
-      )
-    }    
+      );
+    }
   }
 
   handleUpdateReaderDisplay = () => this.updateLineItems();
@@ -301,63 +357,79 @@ class App extends Component {
   renderCommonWorkflows() {
     return (
       <section>
-        <h4>Common Workflows</h4>                  
+        <h4>Common Workflows</h4>
         <div>
-          <button className="btn btn-secondary" onClick={this.handleUpdateReaderDisplay}>Update Line Items And Totals</button>
+          <button
+            className="btn btn-secondary"
+            onClick={this.handleUpdateReaderDisplay}
+          >
+            Update Line Items And Totals
+          </button>
         </div>
         <div>
-          {this.state.cancelablePayment ? 
-            <button className="btn btn-secondary" onClick={this.handleCancelPayment}>Cancel Payment</button>  
-          :
-            <button className="btn btn-secondary" onClick={this.handleCollectCardPayment}>Collect Card Payments</button>  
-          }
+          {this.state.cancelablePayment ? (
+            <button
+              className="btn btn-secondary"
+              onClick={this.handleCancelPayment}
+            >
+              Cancel Payment
+            </button>
+          ) : (
+            <button
+              className="btn btn-secondary"
+              onClick={this.handleCollectCardPayment}
+            >
+              Collect Card Payments
+            </button>
+          )}
         </div>
         <div>
-          <button className="btn btn-secondary" onClick={this.handleSaveCardForFutureUse}>Save Card For Future Use</button>                    
+          <button
+            className="btn btn-secondary"
+            onClick={this.handleSaveCardForFutureUse}
+          >
+            Save Card For Future Use
+          </button>
         </div>
-      </section>      
-    )
+      </section>
+    );
   }
-
 
   render() {
     return (
       <div className="App">
         <div className="container-fluid">
-          <div className="row">            
-            <div className="col-4">              
-                {this.renderBackendUrlInput()}
-                <hr />
-                {this.state.status !== 'requires_initializing' ? 
-                  <div>
-                    {this.renderReaderConnectionManager()}
-                    <hr />
-                    {this.state.connectionStatus === 'connected' ? 
-                      this.renderCommonWorkflows() 
-                      : ''
-                    }                    
-                  </div>
-                : ''}                
+          <div className="row">
+            <div className="col-4">
+              {this.renderBackendUrlInput()}
+              <hr />
+              {this.state.status !== "requires_initializing" ? (
+                <div>
+                  {this.renderReaderConnectionManager()}
+                  <hr />
+                  {this.state.connectionStatus === "connected"
+                    ? this.renderCommonWorkflows()
+                    : ""}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="col">
-              {this.state.logs.map(log => 
+              {this.state.logs.map(log => (
                 <div>
                   <h4>{log.method}</h4>
                   <small>{new Date(log.start_time_ms).toString()}</small>
                   Request:
                   <pre>
-                    <code>
-                      {log.request}
-                    </code>
+                    <code>{log.request}</code>
                   </pre>
-                  {log.exception ? 'Exception:' : 'Response:'}
-                  <pre>                    
-                    <code>
-                      {log.response || log.exception || 'void'}
-                    </code>
-                  </pre>        
+                  {log.exception ? "Exception:" : "Response:"}
+                  <pre>
+                    <code>{log.response || log.exception || "void"}</code>
+                  </pre>
                 </div>
-              )}
+              ))}
             </div>
           </div>
         </div>
