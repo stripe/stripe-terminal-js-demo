@@ -16,11 +16,17 @@ class Logs extends React.Component {
             direction="row"
             alignment={{ justifyContent: "space-between" }}
           >
-            <Text>Logs</Text>
+            <Text size="16px" color="grey">
+              Logs
+            </Text>
             <Group direction="row" spacing={6}>
-              <Text>SHOW ALL</Text>
-              <Text>ERRORS</Text>
-              <Text>CLEAR</Text>
+              <Text size={11}>SHOW ALL</Text>
+              <Text size={11} color="lightGrey">
+                ERRORS
+              </Text>
+              <Text size={11} color="lightGrey">
+                CLEAR
+              </Text>
             </Group>
           </Group>
         </div>
@@ -31,8 +37,10 @@ class Logs extends React.Component {
             alignment={{ justifyContent: "center" }}
           >
             <Text>{`{}`}</Text>
-            <Text>Welcome to the Stripe Terminal reference app</Text>
-            <Text>Start by filling your API key then connect to a reader.</Text>
+            <Text size={14}>Welcome to the Stripe Terminal reference app</Text>
+            <Text size={11} color="lightGrey">
+              Start by filling your API key then connect to a reader.
+            </Text>
           </Group>
         </div>
       </div>
