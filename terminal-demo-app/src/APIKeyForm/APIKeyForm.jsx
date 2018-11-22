@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import { breakpoints } from "../styles.jsx";
-import Button from "../Button/Button.jsx";
+import Button from "../lib/Button/Button.jsx";
 import { css } from "emotion";
-import Group from "../Group/Group.jsx";
-import Text from "../Text/Text.jsx";
+import Group from "../lib/Group/Group.jsx";
+import Text from "../lib/Text/Text.jsx";
 import TextInput from "../lib/TextInput/TextInput.jsx";
 
 class APIKeyForm extends React.Component {

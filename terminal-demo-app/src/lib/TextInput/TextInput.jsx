@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import "./TextInput.css";
-import { css } from "emotion";
 
 class TextInput extends React.Component {
   constructor(props) {
