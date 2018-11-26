@@ -7,7 +7,7 @@ class OverflowMenu extends React.Component {
     super(props);
 
     this.state = {
-      shown: true
+      shown: false
     };
   }
 
@@ -28,15 +28,16 @@ class OverflowMenu extends React.Component {
 
   render() {
     const { shown } = this.state;
+    const { children } = this.props;
 
     return (
       <div
         className={css`
           display: flex;
         `}
-        ref={node => (this.node = node)}
       >
         <button
+          ref={node => (this.node = node)}
           className={css`
             height: 20px;
             width: 20px;
@@ -63,17 +64,18 @@ class OverflowMenu extends React.Component {
               flex-direction: column;
               position: absolute;
               transform-origin: 50% -11px;
-              transform: translatey(30px);
+              transform: translatey(30px) translatex(-4px);
             `}
           >
             <div
               className={css`
-                background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zd…A0LjQ4LTEuODA3IDYuMTk2IDBMMjAgOS4wOTNIMWw2LjQwMi02Ljc0eiIvPjwvZz48L3N2Zz4=)
+                background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMjEgOSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjODg5OEFBIiBmaWxsLW9wYWNpdHk9Ii4xIiBkPSJNMSA5LjA5MmgxOWwtNi40MDItNi43NGMtMS43MTctMS44MDYtNC40ODUtMS44LTYuMTk2IDBMMSA5LjA5M3pNMjAuMzQyIDhsLTYuMDItNi4zMzZjLTIuMTA4LTIuMjItNS41MzgtMi4yMTgtNy42NDUgMEwuNjU4IDhoMTkuNjg0eiIvPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik03LjQwMiAyLjM1M2MxLjcxMS0xLjgwMSA0LjQ4LTEuODA3IDYuMTk2IDBMMjAgOS4wOTNIMWw2LjQwMi02Ljc0eiIvPjwvZz48L3N2Zz4=")
                   no-repeat;
                 height: 21px;
                 width: 21px;
                 background-position: center center;
-                z-index: 1;
+                z-index: 301;
+                transform: translatey(-14px) translatex(4px);
               `}
             />
             <div
@@ -89,8 +91,7 @@ class OverflowMenu extends React.Component {
                 padding-top: 8px;
               `}
             >
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
+              {children}
             </div>
           </div>
         )}
