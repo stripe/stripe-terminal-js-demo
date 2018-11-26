@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import APIKeyForm from "./APIKeyForm/APIKeyForm.jsx";
+import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Group from "./lib/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
 
@@ -15,7 +16,10 @@ class MainPage extends Component {
         `}
       >
         <Group direction="row" spacing={43} responsive>
-          <APIKeyForm />
+          <Group direction="column" spacing={16} responsive>
+            <ConnectionInfo />
+            <APIKeyForm />
+          </Group>
           <Logs />
         </Group>
       </div>
