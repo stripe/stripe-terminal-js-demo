@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { css } from "emotion";
+import onClickOutside from "react-onclickoutside";
 
 class OverflowMenu extends React.Component {
   constructor(props) {
@@ -11,19 +12,12 @@ class OverflowMenu extends React.Component {
     };
   }
 
-  componentWillMount() {
-    document.addEventListener("mousedown", this.onClick);
-  }
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.onClick);
-  }
+  handleClickOutside = e => {
+    this.setState({ shown: false });
+  };
 
   onClick = e => {
-    if (this.node.contains(e.target)) {
-      this.setState({ shown: !this.state.shown });
-    } else {
-      this.setState({ shown: false });
-    }
+    this.setState({ shown: !this.state.shown });
   };
 
   render() {
@@ -37,7 +31,6 @@ class OverflowMenu extends React.Component {
         `}
       >
         <button
-          ref={node => (this.node = node)}
           className={css`
             height: 20px;
             width: 20px;
@@ -56,6 +49,7 @@ class OverflowMenu extends React.Component {
               background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+dGFyZ2V0QWN0aXZlPC90aXRsZT48ZyBmaWxsPSIjMzIzMjVEIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgZmlsbC1vcGFjaXR5PSIuMSIgY3g9IjEwIiBjeT0iMTAiIHI9IjEwIi8+PHBhdGggZD0iTTUgMTEuNzVhMS43NSAxLjc1IDAgMSAxIDAtMy41IDEuNzUgMS43NSAwIDAgMSAwIDMuNXptNSAwYTEuNzUgMS43NSAwIDEgMSAwLTMuNSAxLjc1IDEuNzUgMCAwIDEgMCAzLjV6bTUgMGExLjc1IDEuNzUgMCAxIDEgMC0zLjUgMS43NSAxLjc1IDAgMCAxIDAgMy41eiIvPjwvZz48L3N2Zz4=");
             }
           `}
+          onClick={this.onClick}
         />
         {shown && (
           <div
@@ -100,4 +94,4 @@ class OverflowMenu extends React.Component {
   }
 }
 
-export default OverflowMenu;
+export default onClickOutside(OverflowMenu);
