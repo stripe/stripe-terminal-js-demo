@@ -8,7 +8,7 @@ import Link from "../lib/Link/Link.jsx";
 import Text from "../lib/Text/Text.jsx";
 import TextInput from "../lib/TextInput/TextInput.jsx";
 
-class APIKeyForm extends React.Component {
+class BackendURLForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -87,4 +87,4 @@ class APIKeyForm extends React.Component {
   }
 }
 
-export default APIKeyForm;
+export default BackendURLForm;

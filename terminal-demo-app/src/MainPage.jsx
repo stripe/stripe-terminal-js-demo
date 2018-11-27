@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import APIKeyForm from "./APIKeyForm/APIKeyForm.jsx";
+import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Group from "./lib/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
@@ -36,7 +36,7 @@ class MainPage extends Component {
         <Group direction="row" spacing={43} responsive>
           <Group direction="column" spacing={16} responsive>
             <ConnectionInfo backendURL={backendURL} reader={reader} />
-            <APIKeyForm onSetBackendURL={this.onSetBackendURL} />
+            <BackendURLForm onSetBackendURL={this.onSetBackendURL} />
           </Group>
           <Logs />
         </Group>
