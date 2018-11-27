@@ -18,6 +18,15 @@ class Button extends React.Component {
           display: flex;
           align-items: center;
           justify-content: center;
+
+          :disabled {
+            pointer-events: none;
+            opacity: 0.5;
+          }
+
+          :hover {
+            opacity: 0.9;
+          }
         `}
         onClick={onClick}
         disabled={disabled}

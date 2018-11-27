@@ -71,7 +71,10 @@ class APIKeyForm extends React.Component {
               <Text size={12} color="lightGrey">
                 Some info here about this backend URL.
               </Text>
-              <Button onClick={this.onClickInitialize} disabled>
+              <Button
+                onClick={this.onClickInitialize}
+                disabled={backendURL === "" || backendURL === null}
+              >
                 <Text color="white" size={14}>
                   Initialize
                 </Text>
