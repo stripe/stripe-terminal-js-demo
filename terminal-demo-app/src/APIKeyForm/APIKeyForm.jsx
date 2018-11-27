@@ -32,7 +32,7 @@ class APIKeyForm extends React.Component {
             alignment={{ justifyContent: "space-between" }}
           >
             <Text size={16} color="dark">
-              Set API key
+              Set backend URL
             </Text>
             <Text size={14} color="blue">
               Open dashboard
