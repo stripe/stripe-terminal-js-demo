@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import "./Text.css";
+import { css } from "emotion";
 
 class Text extends React.Component {
   getColor = color => {
@@ -15,6 +15,8 @@ class Text extends React.Component {
         return "#C1C9D2";
       case "lightGrey":
         return "#8792A2";
+      case "link":
+        return "#78ACF8";
       case "white":
         return "#FFFFFF";
       default:
@@ -23,10 +25,19 @@ class Text extends React.Component {
   };
 
   render() {
-    const { children, color, size } = this.props;
+    const { children, color, size, truncate } = this.props;
     return (
       <span
-        className="Text"
+        className={css`
+          line-height: 16px;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "Helvetica Neue", Ubuntu;
+          font-weight: 500;
+          letter-spacing: -0.15px;
+
+          overflow: ${truncate ? "hidden" : "inherit"};
+          text-overflow: ${truncate ? "ellipsis" : "inherit"};
+        `}
         style={{ fontSize: size || 14, color: this.getColor(color) }}
       >
         {children}

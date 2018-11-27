@@ -3,24 +3,17 @@ import * as React from "react";
 import "./TextInput.css";
 
 class TextInput extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: ""
-    };
-  }
-  handleChange = e => {
-    this.setState({ value: e.target.value });
+  onChange = e => {
+    this.props.onChange(e.target.value);
   };
 
   render() {
-    const { value } = this.state;
+    const { placeholder, value } = this.props;
     return (
       <input
-        placeholder="sk_test_..."
-        value={value}
-        onChange={this.handleChange}
+        placeholder={placeholder}
+        value={value || ""}
+        onChange={this.onChange}
         className="TextInput"
       />
     );

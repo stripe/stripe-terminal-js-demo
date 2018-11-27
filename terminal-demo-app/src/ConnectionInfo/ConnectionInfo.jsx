@@ -3,8 +3,6 @@ import * as React from "react";
 import { breakpoints } from "../styles.jsx";
 import { css } from "emotion";
 import Group from "../lib/Group/Group.jsx";
-import OverflowMenu from "../lib/OverflowMenu/OverflowMenu.jsx";
-import OverflowMenuItem from "../lib/OverflowMenu/OverflowMenuItem.jsx";
 import Text from "../lib/Text/Text.jsx";
 
 const commonCSS = `
@@ -27,6 +25,8 @@ const commonCSS = `
 
 class ConnectionInfo extends React.Component {
   render() {
+    const { backendURL, reader } = this.props;
+
     return (
       <Group direction="column" spacing={0}>
         <div
@@ -35,11 +35,13 @@ class ConnectionInfo extends React.Component {
             border-radius: 14px 14px 0 0;
           `}
         >
-          <Text color="lightGrey">Set API key</Text>
-          <OverflowMenu>
-            <OverflowMenuItem>Hello 1</OverflowMenuItem>
-            <OverflowMenuItem>Hello 2</OverflowMenuItem>
-          </OverflowMenu>
+          {backendURL ? (
+            <Text truncate color="dark">
+              {backendURL}
+            </Text>
+          ) : (
+            <Text color="lightGrey">Set backend URL</Text>
+          )}
         </div>
         <div
           className={css`
@@ -47,11 +49,13 @@ class ConnectionInfo extends React.Component {
             border-radius: 0 0 14px 14px;
           `}
         >
-          <Text color="lightGrey">Connect to a reader</Text>
-          <OverflowMenu>
-            <OverflowMenuItem>Hello 1</OverflowMenuItem>
-            <OverflowMenuItem>Hello 2</OverflowMenuItem>
-          </OverflowMenu>
+          {reader ? (
+            <Text truncate color="dark">
+              {reader}
+            </Text>
+          ) : (
+            <Text color="lightGrey">Connect to a reader</Text>
+          )}
         </div>
       </Group>
     );

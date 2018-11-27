@@ -5,6 +5,7 @@ import * as React from "react";
 import "./Logs.css";
 
 import Group from "../lib/Group/Group.jsx";
+import Link from "../lib/Link/Link.jsx";
 import Text from "../lib/Text/Text.jsx";
 
 class Logs extends React.Component {
@@ -21,10 +22,7 @@ class Logs extends React.Component {
               Logs
             </Text>
             <Group direction="row" spacing={6}>
-              <Text size={11}>SHOW ALL</Text>
-              <Text size={11} color="lightGrey">
-                ERRORS
-              </Text>
+              <Link href="" text="SHOW ALL" />
               <Text size={11} color="lightGrey">
                 CLEAR
               </Text>
