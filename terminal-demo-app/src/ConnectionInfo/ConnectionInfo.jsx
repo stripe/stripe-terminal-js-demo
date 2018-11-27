@@ -36,7 +36,9 @@ class ConnectionInfo extends React.Component {
           `}
         >
           {backendURL ? (
-            <Text color="dark">{backendURL}</Text>
+            <Text truncate color="dark">
+              {backendURL}
+            </Text>
           ) : (
             <Text color="lightGrey">Set backend URL</Text>
           )}
@@ -48,7 +50,9 @@ class ConnectionInfo extends React.Component {
           `}
         >
           {reader ? (
-            <Text color="dark">{reader}</Text>
+            <Text truncate color="dark">
+              {reader}
+            </Text>
           ) : (
             <Text color="lightGrey">Connect to a reader</Text>
           )}
