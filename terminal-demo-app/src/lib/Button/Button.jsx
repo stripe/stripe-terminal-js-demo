@@ -4,9 +4,10 @@ import { css } from "emotion";
 
 class Button extends React.Component {
   render() {
-    const { children } = this.props;
+    const { children, disabled, onClick } = this.props;
+
     return (
-      <div
+      <button
         className={css`
           background: #586ada;
           border-radius: 4px 4px 4px 4px;
@@ -18,9 +19,11 @@ class Button extends React.Component {
           align-items: center;
           justify-content: center;
         `}
+        onClick={onClick}
+        disabled={disabled}
       >
         {children}
-      </div>
+      </button>
     );
   }
 }
