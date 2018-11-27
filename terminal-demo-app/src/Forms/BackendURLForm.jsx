@@ -1,10 +1,9 @@
 import * as React from "react";
 
-import { breakpoints } from "../styles.jsx";
 import Button from "../components/Button/Button.jsx";
-import { css } from "emotion";
 import Group from "../components/Group/Group.jsx";
 import Link from "../components/Link/Link.jsx";
+import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 import TextInput from "../components/TextInput/TextInput.jsx";
 
@@ -28,21 +27,7 @@ class BackendURLForm extends React.Component {
   render() {
     const { backendURL } = this.state;
     return (
-      <div
-        className={css`
-          background: #ffffff;
-          border-radius: 14px 14px 14px 14px;
-          box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
-          flex-shrink: 0;
-          padding: 16px 20px;
-          ${breakpoints.laptop} {
-            width: 310px;
-          }
-          ${breakpoints.mobile} {
-            width: 100%;
-          }
-        `}
-      >
+      <Section>
         <Group direction="column" spacing={18}>
           <Text size={16} color="dark">
             1. Clone{" "}
@@ -82,7 +67,7 @@ class BackendURLForm extends React.Component {
             </Group>
           </Group>
         </Group>
-      </div>
+      </Section>
     );
   }
 }

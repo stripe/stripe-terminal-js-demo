@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
+import CommonWorkflows from "./Forms/CommonWorkflows.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
+import DiscoverReaders from "./Forms/DiscoverReaders.jsx";
 import Group from "./components/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
 
@@ -25,6 +27,17 @@ class MainPage extends Component {
     this.setState({ reader });
   };
 
+  renderForm() {
+    const { backendURL, reader } = this.state;
+    if (backendURL === null && reader === null) {
+      return <BackendURLForm onSetBackendURL={this.onSetBackendURL} />;
+    } else if (reader === null) {
+      return <DiscoverReaders onSetReader={this.onSetReader} />;
+    } else {
+      return <CommonWorkflows />;
+    }
+  }
+
   render() {
     const { backendURL, reader } = this.state;
     return (
@@ -36,7 +49,7 @@ class MainPage extends Component {
         <Group direction="row" spacing={43} responsive>
           <Group direction="column" spacing={16} responsive>
             <ConnectionInfo backendURL={backendURL} reader={reader} />
-            <BackendURLForm onSetBackendURL={this.onSetBackendURL} />
+            {this.renderForm()}
           </Group>
           <Logs />
         </Group>
