@@ -3,26 +3,26 @@ import * as React from "react";
 import { breakpoints } from "../../styles.jsx";
 import { css } from "emotion";
 
-const commonCSS = `
-    background: #ffffff;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
-    flex-shrink: 0;
-    padding: 16px 20px;
-    ${breakpoints.laptop} {
-    width: 310px;
-    }
-    ${breakpoints.mobile} {
-    width: 100%;
-    }
-    border-bottom: 1px solid #e3e8ee;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
+const commonCSS = {
+  background: "#ffffff",
+  boxShadow: "0 3px 6px 0 rgba(0, 0, 0, 0)",
+  flexShrink: 0,
+  padding: "16px 20px",
+  [breakpoints.laptop]: {
+    width: "310px"
+  },
+  [breakpoints.mobile]: {
+    width: "100%"
+  },
+  borderBottom: "1px solid #e3e8ee",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between"
+};
 
 class Section extends React.Component {
   render() {
-    const { children, position } = this.props;
+    const { alignment, children, position } = this.props;
     let borderRadius;
     switch (position) {
       case "first":
@@ -40,10 +40,11 @@ class Section extends React.Component {
 
     return (
       <div
-        className={css`
-          ${commonCSS}
-          border-radius: ${borderRadius};
-        `}
+        className={css({
+          ...commonCSS,
+          borderRadius,
+          ...alignment
+        })}
       >
         {children}
       </div>
