@@ -4,9 +4,9 @@ import * as React from "react";
 
 import "./Logs.css";
 
-import Group from "../lib/Group/Group.jsx";
-import Link from "../lib/Link/Link.jsx";
-import Text from "../lib/Text/Text.jsx";
+import Group from "../components/Group/Group.jsx";
+import Link from "../components/Link/Link.jsx";
+import Text from "../components/Text/Text.jsx";
 
 class Logs extends React.Component {
   render() {
