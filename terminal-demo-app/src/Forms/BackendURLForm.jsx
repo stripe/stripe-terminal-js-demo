@@ -1,12 +1,12 @@
 import * as React from "react";
 
 import { breakpoints } from "../styles.jsx";
-import Button from "../lib/Button/Button.jsx";
+import Button from "../components/Button/Button.jsx";
 import { css } from "emotion";
-import Group from "../lib/Group/Group.jsx";
-import Link from "../lib/Link/Link.jsx";
-import Text from "../lib/Text/Text.jsx";
-import TextInput from "../lib/TextInput/TextInput.jsx";
+import Group from "../components/Group/Group.jsx";
+import Link from "../components/Link/Link.jsx";
+import Text from "../components/Text/Text.jsx";
+import TextInput from "../components/TextInput/TextInput.jsx";
 
 class BackendURLForm extends React.Component {
   constructor(props) {

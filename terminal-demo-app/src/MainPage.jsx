@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
-import Group from "./lib/Group/Group.jsx";
+import Group from "./components/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
 
 import { css } from "emotion";

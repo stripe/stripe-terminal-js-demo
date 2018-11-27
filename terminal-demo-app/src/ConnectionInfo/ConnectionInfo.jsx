@@ -2,8 +2,8 @@ import * as React from "react";
 
 import { breakpoints } from "../styles.jsx";
 import { css } from "emotion";
-import Group from "../lib/Group/Group.jsx";
-import Text from "../lib/Text/Text.jsx";
+import Group from "../components/Group/Group.jsx";
+import Text from "../components/Text/Text.jsx";
 
 const commonCSS = `
     background: #ffffff;
