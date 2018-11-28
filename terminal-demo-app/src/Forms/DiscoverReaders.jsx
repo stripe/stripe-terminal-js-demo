@@ -3,7 +3,6 @@
 import * as React from "react";
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
-import Link from "../components/Link/Link.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
@@ -37,6 +36,8 @@ class DiscoverReaders extends React.Component {
     }
   }
   render() {
+    const { onClickRegister } = this.props;
+
     return (
       <Group direction="column" spacing={0}>
         <Section
@@ -53,7 +54,7 @@ class DiscoverReaders extends React.Component {
 
         {this.renderReaders()}
         <Section position="last">
-          <Button color="white">
+          <Button color="white" onClick={onClickRegister}>
             <Text color="dark">Register new reader</Text>
           </Button>
           <Button color="white">

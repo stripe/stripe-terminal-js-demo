@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import CommonWorkflows from "./Forms/CommonWorkflows.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
-import DiscoverReaders from "./Forms/DiscoverReaders.jsx";
+import Readers from "./Forms/Readers.jsx";
 import Group from "./components/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
 
@@ -32,7 +32,7 @@ class MainPage extends Component {
     if (backendURL === null && reader === null) {
       return <BackendURLForm onSetBackendURL={this.onSetBackendURL} />;
     } else if (reader === null) {
-      return <DiscoverReaders onSetReader={this.onSetReader} />;
+      return <Readers onSetReader={this.onSetReader} />;
     } else {
       return <CommonWorkflows />;
     }

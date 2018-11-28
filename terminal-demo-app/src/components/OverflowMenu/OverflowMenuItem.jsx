@@ -7,7 +7,6 @@ import Text from "../Text/Text.jsx";
 
 class OverflowMenuItem extends React.Component {
   onClick = () => {
-    console.log("clicked");
     if (this.props.onClick) {
       this.props.onClick();
     }
