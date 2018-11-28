@@ -21,6 +21,8 @@ class Text extends React.Component {
         return "#78ACF8";
       case "white":
         return "#FFFFFF";
+      case "code":
+        return "#D7ECFF";
       default:
         return "#E3E8EE";
     }
