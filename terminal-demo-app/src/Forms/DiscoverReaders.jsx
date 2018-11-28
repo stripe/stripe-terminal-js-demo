@@ -35,6 +35,11 @@ class DiscoverReaders extends React.Component {
       );
     }
   }
+
+  onClickUseSimulator = () => {
+    this.props.onSetReader("simulator");
+  };
+
   render() {
     const { onClickRegister } = this.props;
 
@@ -57,7 +62,7 @@ class DiscoverReaders extends React.Component {
           <Button color="white" onClick={onClickRegister}>
             <Text color="dark">Register new reader</Text>
           </Button>
-          <Button color="white">
+          <Button color="white" onClick={this.onClickUseSimulator}>
             <Text color="dark" size={14}>
               Use simulator
             </Text>
