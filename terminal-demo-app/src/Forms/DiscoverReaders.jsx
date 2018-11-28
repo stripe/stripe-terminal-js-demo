@@ -48,7 +48,7 @@ class DiscoverReaders extends React.Component {
             Readers
           </Text>
           <Button>
-            <Text>Reload</Text>
+            <Text>Discover</Text>
           </Button>
         </Section>
 
