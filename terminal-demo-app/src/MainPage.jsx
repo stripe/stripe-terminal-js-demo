@@ -25,16 +25,8 @@ class App extends Component {
       reader: null,
       readerLabel: "",
       registrationCode: "",
-      cancelablePayment: false,
-      logs: []
+      cancelablePayment: false
     };
-
-    Logger.setCollectors([this]);
-  }
-
-  collect(log) {
-    console.log(log);
-    this.setState(state => state.logs.push(log));
   }
 
   // 1. Stripe Terminal Initialization
@@ -125,7 +117,7 @@ class App extends Component {
   }
 
   // 3. Terminal Workflows (Once Connected)
-  async updateLineItems() {
+  updateLineItems = async () => {
     await this.terminal.setReaderDisplay({
       type: "cart",
       cart: {
@@ -142,9 +134,9 @@ class App extends Component {
       }
     });
     console.log("Reader Display Updated!");
-  }
+  };
 
-  async collectCardPayment() {
+  collectCardPayment = async () => {
     // We want to make sure we reuse the same PaymentIntent object in the case of declined charges so we
     // store the pending PaymentIntent's secret until it has been fulfilled.
     if (!this.pendingPaymentIntentSecret) {
@@ -180,14 +172,14 @@ class App extends Component {
         return captureResult;
       }
     }
-  }
+  };
 
-  async cancelPendingPayment() {
+  cancelPendingPayment = async () => {
     let cancel = await this.terminal.cancelCollectPaymentMethod();
     this.setState({ cancelablePayment: false });
-  }
+  };
 
-  async saveCardForFutureUse() {
+  saveCardForFutureUse = async () => {
     const readSourceResult = await this.terminal.readSource();
     if (readSourceResult.error) {
       alert(`Read source failed: ${readSourceResult.error.message}`);
@@ -199,7 +191,7 @@ class App extends Component {
       console.log("Source Saved to Customer!", customer);
       return customer;
     }
-  }
+  };
 
   handleUseSimulator = async () => {
     let simulatedResults = await this.discoverReaders(true);
@@ -222,19 +214,26 @@ class App extends Component {
     } else if (reader === null) {
       return (
         <Readers
-          onClickDiscover={this.discoverReaders}
+          onClickDiscover={() => this.discoverReaders(false)}
           onSetReader={this.onSetReader}
           readers={discoveredReaders}
           handleUseSimulator={this.handleUseSimulator}
         />
       );
     } else {
-      return <CommonWorkflows />;
+      return (
+        <CommonWorkflows
+          onClickUpdateLineItems={this.updateLineItems}
+          onClickCollectCardPayments={this.collectCardPayment}
+          onClickSaveCardForFutureUse={this.saveCardForFutureUse}
+          onClickCancelPayment={this.cancelPendingPayment}
+        />
+      );
     }
   }
 
   render() {
-    const { backendURL, reader } = this.state;
+    const { backendURL, reader, logs } = this.state;
     return (
       <div
         className={css`

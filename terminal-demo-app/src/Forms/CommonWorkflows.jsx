@@ -9,6 +9,12 @@ import Text from "../components/Text/Text.jsx";
 
 class CommonWorkflows extends React.Component {
   render() {
+    const {
+      onClickUpdateLineItems,
+      onClickCollectCardPayments,
+      onClickSaveCardForFutureUse,
+      onClickCancelPayment
+    } = this.props;
     return (
       <Section>
         <Group direction="column" spacing={12}>
@@ -20,16 +26,16 @@ class CommonWorkflows extends React.Component {
             event log.
           </Text>
 
-          <Button color="white">
+          <Button color="white" onClick={onClickUpdateLineItems}>
             <Text color="blue">Update line items and totals</Text>
           </Button>
-          <Button color="white">
+          <Button color="white" onClick={onClickCollectCardPayments}>
             <Text color="blue">Collect card payments</Text>
           </Button>
-          <Button color="white">
+          <Button color="white" onClick={onClickSaveCardForFutureUse}>
             <Text color="blue">Save card for future use</Text>
           </Button>
-          <Button color="white">
+          <Button color="white" onClick={onClickCancelPayment}>
             <Text color="blue">Cancel payment</Text>
           </Button>
         </Group>
