@@ -52,6 +52,7 @@ class MainPage extends Component {
               backendURL={backendURL}
               reader={reader}
               onSetReader={this.onSetReader}
+              onSetBackendURL={this.onSetBackendURL}
             />
             {this.renderForm()}
           </Group>

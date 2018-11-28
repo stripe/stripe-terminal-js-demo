@@ -10,6 +10,11 @@ class ConnectionInfo extends React.Component {
     this.props.onSetReader(null);
   };
 
+  onChangeBackendURL = () => {
+    this.props.onSetReader(null);
+    this.props.onSetBackendURL(null);
+  };
+
   render() {
     const { backendURL, reader } = this.props;
 
@@ -17,9 +22,20 @@ class ConnectionInfo extends React.Component {
       <Group direction="column" spacing={0}>
         <Section position="first">
           {backendURL ? (
-            <Text truncate color="dark">
-              {backendURL}
-            </Text>
+            <Group
+              direction="row"
+              alignment={{
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text truncate color="dark">
+                {backendURL}
+              </Text>
+              <Button color="white" onClick={this.onChangeBackendURL}>
+                <Text color="dark">Change URL</Text>
+              </Button>
+            </Group>
           ) : (
             <Text color="lightGrey">Set backend URL</Text>
           )}
