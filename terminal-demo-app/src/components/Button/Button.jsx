@@ -15,6 +15,7 @@ class Button extends React.Component {
         return "#78ACF8";
       case "white":
         return "#FFFFFF";
+      case "default":
       default:
         return "#586ADA";
     }

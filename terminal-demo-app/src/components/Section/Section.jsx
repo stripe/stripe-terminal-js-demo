@@ -15,7 +15,7 @@ const commonCSS = {
     width: "100%"
   },
   borderBottom: "1px solid #e3e8ee",
-  display: "flex",
+  display: "block",
   alignItems: "center",
   justifyContent: "space-between"
 };
