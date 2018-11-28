@@ -33,11 +33,16 @@ class RegisterNewReader extends React.Component {
 
   render() {
     const { readerCode, readerLabel } = this.state;
+    const { onClickCancel } = this.props;
     return (
       <Section>
         <Group direction="column" spacing={8}>
           <Text size={16} color="dark">
             Register new reader
+          </Text>
+          <Text size={12} color="lightGrey">
+            Enter the key sequence 0-7-1-3-9 on the Verifone reader you want to
+            register to display the unique registration code.
           </Text>
           <TextInput
             placeholder="Reader code"
@@ -50,7 +55,7 @@ class RegisterNewReader extends React.Component {
             onChange={this.onChangeReaderLabel}
           />
           <Group direction="row" alignment={{ justifyContent: "flex-end" }}>
-            <Button color="white">
+            <Button color="white" onClick={onClickCancel}>
               <Text color="darkGrey" size={14}>
                 Cancel
               </Text>

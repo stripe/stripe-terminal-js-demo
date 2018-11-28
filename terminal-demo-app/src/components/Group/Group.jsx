@@ -50,7 +50,6 @@ class Group extends React.Component {
       <div
         className={css({
           display: "flex",
-          width: "100%",
           flexDirection: direction,
           ...this.getMarginStyles(direction, responsive, spacing),
           ...alignment

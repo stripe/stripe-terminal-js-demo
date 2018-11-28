@@ -22,6 +22,10 @@ class Readers extends React.Component {
     this.setState({ mode: "register" });
   };
 
+  handleSwitchToDiscover = () => {
+    this.setState({ mode: "list" });
+  };
+
   render() {
     const { mode } = this.state;
     switch (mode) {
@@ -33,7 +37,12 @@ class Readers extends React.Component {
           />
         );
       case "register":
-        return <RegisterNewReader onSetReader={this.onSetReader} />;
+        return (
+          <RegisterNewReader
+            onClickCancel={this.handleSwitchToDiscover}
+            onSetReader={this.onSetReader}
+          />
+        );
       default:
         return null;
     }
