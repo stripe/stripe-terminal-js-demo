@@ -6,7 +6,6 @@ import "./Logs.css";
 
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
-import Link from "../components/Link/Link.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class Logs extends React.Component {
@@ -75,6 +74,7 @@ class Logs extends React.Component {
                 border-bottom: 1px solid #4e566d;
                 padding: 20px;
               `}
+              key={i}
             >
               <Group direction="column" key={i}>
                 <Group

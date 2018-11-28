@@ -17,6 +17,8 @@ class ConnectionInfo extends React.Component {
 
   render() {
     const { backendURL, reader } = this.props;
+    console.log("READER");
+    console.log(reader);
 
     return (
       <Group direction="column" spacing={0}>
@@ -50,7 +52,7 @@ class ConnectionInfo extends React.Component {
               }}
             >
               <Text truncate color="dark">
-                {reader}
+                {reader.label}
               </Text>
               <Button color="white" onClick={this.onDisconnectReader}>
                 <Text color="dark">Disconnect</Text>

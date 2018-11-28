@@ -28,12 +28,16 @@ class Readers extends React.Component {
 
   render() {
     const { mode } = this.state;
+    const { readers, onClickDiscover, handleUseSimulator } = this.props;
     switch (mode) {
       case "list":
         return (
           <DiscoverReaders
+            onClickDiscover={onClickDiscover}
             onClickRegister={this.onClickRegister}
             onSetReader={this.onSetReader}
+            readers={readers}
+            handleUseSimulator={handleUseSimulator}
           />
         );
       case "register":
