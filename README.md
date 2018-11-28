@@ -14,7 +14,9 @@ The JS example app shows how to create a page that supports:
 
 To get the example app running locally follow these steps:
 1. First clone and deploy the example backend with heroku:
+
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 (More details about the example backend can be found at [the example backend github page](https://github.com/stripe/example-terminal-backend))
 
 2. Clone this repo and then run the following commands in the root of the directory:
@@ -27,6 +29,8 @@ npm run start
 3. Open [http://localhost:3000](http://localhost:3000) to view the example in the browser.
 
 4. In the Backend URL form, enter the heroku URL generated in step 1.
+
+5. Play around with the example app and read the live log lines to see whats happening behind the scenes.
 
 ## Documentation
 - [Getting Started](https://stripe.com/docs/terminal/js)
