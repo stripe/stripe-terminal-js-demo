@@ -89,7 +89,7 @@ class App extends Component {
     }
   };
 
-  async connectToReader(selectedReader) {
+  connectToReader = async selectedReader => {
     const connectResult = await this.terminal.connectReader(selectedReader);
     if (connectResult.error) {
       console.log("Failed to connect:", connectResult.error);
@@ -101,20 +101,20 @@ class App extends Component {
       });
       return connectResult.connection;
     }
-  }
+  };
 
-  async disconnectReader() {
+  disconnectReader = async () => {
     await this.terminal.disconnectReader();
     this.setState({
       reader: null
     });
-  }
+  };
 
-  async registerAndConnectNewReader(label, code) {
+  registerAndConnectNewReader = async (label, code) => {
     let reader = await this.backend.registerDevice(label, code);
     await this.connectToReader(reader);
     console.log("Registered and Connected Successfully!");
-  }
+  };
 
   // 3. Terminal Workflows (Once Connected)
   updateLineItems = async () => {
@@ -215,7 +215,7 @@ class App extends Component {
       return (
         <Readers
           onClickDiscover={() => this.discoverReaders(false)}
-          onSetReader={this.onSetReader}
+          onClickRegister={this.registerAndConnectNewReader}
           readers={discoveredReaders}
           handleUseSimulator={this.handleUseSimulator}
         />
@@ -247,6 +247,7 @@ class App extends Component {
               reader={reader}
               onSetReader={this.onSetReader}
               onSetBackendURL={this.onSetBackendURL}
+              onClickDisconnect={this.disconnectReader}
             />
             {this.renderForm()}
           </Group>

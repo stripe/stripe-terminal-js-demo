@@ -14,10 +14,6 @@ class Readers extends React.Component {
     };
   }
 
-  onSetReader = reader => {
-    this.props.onSetReader(reader);
-  };
-
   onClickRegister = () => {
     this.setState({ mode: "register" });
   };
@@ -28,7 +24,12 @@ class Readers extends React.Component {
 
   render() {
     const { mode } = this.state;
-    const { readers, onClickDiscover, handleUseSimulator } = this.props;
+    const {
+      readers,
+      onClickDiscover,
+      onClickRegister,
+      handleUseSimulator
+    } = this.props;
     switch (mode) {
       case "list":
         return (
@@ -44,7 +45,7 @@ class Readers extends React.Component {
         return (
           <RegisterNewReader
             onClickCancel={this.handleSwitchToDiscover}
-            onSetReader={this.onSetReader}
+            onClickRegister={onClickRegister}
           />
         );
       default:
