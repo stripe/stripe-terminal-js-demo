@@ -1,0 +1,8 @@
+.ReaderIcon {
+    height: 44px;
+    width: 32px;
+    display: block;
+    background-image: url('reader-image-small.png');
+    background-size: 100%;
+}
+

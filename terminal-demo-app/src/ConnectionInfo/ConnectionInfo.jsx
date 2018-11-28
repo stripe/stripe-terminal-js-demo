@@ -1,40 +1,21 @@
 import * as React from "react";
 
-import { breakpoints } from "../styles.jsx";
-import { css } from "emotion";
+import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
+import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
-const commonCSS = `
-    background: #ffffff;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
-    height: 44px;
-    flex-shrink: 0;
-    padding: 16px 20px;
-    ${breakpoints.laptop} {
-    width: 310px;
-    }
-    ${breakpoints.mobile} {
-    width: 100%;
-    }
-    border-bottom: 1px solid #e3e8ee;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
 class ConnectionInfo extends React.Component {
+  onDisconnectReader = () => {
+    this.props.onSetReader(null);
+  };
+
   render() {
     const { backendURL, reader } = this.props;
 
     return (
       <Group direction="column" spacing={0}>
-        <div
-          className={css`
-            ${commonCSS}
-            border-radius: 14px 14px 0 0;
-          `}
-        >
+        <Section position="first">
           {backendURL ? (
             <Text truncate color="dark">
               {backendURL}
@@ -42,21 +23,27 @@ class ConnectionInfo extends React.Component {
           ) : (
             <Text color="lightGrey">Set backend URL</Text>
           )}
-        </div>
-        <div
-          className={css`
-            ${commonCSS}
-            border-radius: 0 0 14px 14px;
-          `}
-        >
+        </Section>
+        <Section position="last">
           {reader ? (
-            <Text truncate color="dark">
-              {reader}
-            </Text>
+            <Group
+              direction="row"
+              alignment={{
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text truncate color="dark">
+                {reader}
+              </Text>
+              <Button color="white" onClick={this.onDisconnectReader}>
+                <Text color="dark">Disconnect</Text>
+              </Button>
+            </Group>
           ) : (
             <Text color="lightGrey">Connect to a reader</Text>
           )}
-        </div>
+        </Section>
       </Group>
     );
   }
