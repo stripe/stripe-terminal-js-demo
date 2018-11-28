@@ -48,7 +48,11 @@ class MainPage extends Component {
       >
         <Group direction="row" spacing={43} responsive>
           <Group direction="column" spacing={16} responsive>
-            <ConnectionInfo backendURL={backendURL} reader={reader} />
+            <ConnectionInfo
+              backendURL={backendURL}
+              reader={reader}
+              onSetReader={this.onSetReader}
+            />
             {this.renderForm()}
           </Group>
           <Logs />

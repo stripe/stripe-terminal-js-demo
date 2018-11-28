@@ -1,10 +1,15 @@
 import * as React from "react";
 
+import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class ConnectionInfo extends React.Component {
+  onDisconnectReader = () => {
+    this.props.onSetReader(null);
+  };
+
   render() {
     const { backendURL, reader } = this.props;
 
@@ -21,9 +26,20 @@ class ConnectionInfo extends React.Component {
         </Section>
         <Section position="last">
           {reader ? (
-            <Text truncate color="dark">
-              {reader}
-            </Text>
+            <Group
+              direction="row"
+              alignment={{
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text truncate color="dark">
+                {reader}
+              </Text>
+              <Button color="white" onClick={this.onDisconnectReader}>
+                <Text color="dark">Disconnect</Text>
+              </Button>
+            </Group>
           ) : (
             <Text color="lightGrey">Connect to a reader</Text>
           )}
