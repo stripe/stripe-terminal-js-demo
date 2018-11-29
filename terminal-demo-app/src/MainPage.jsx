@@ -222,7 +222,12 @@ class App extends Component {
   };
 
   renderForm() {
-    const { backendURL, reader, discoveredReaders } = this.state;
+    const {
+      backendURL,
+      cancelablePayment,
+      reader,
+      discoveredReaders
+    } = this.state;
     if (backendURL === null && reader === null) {
       return <BackendURLForm onSetBackendURL={this.onSetBackendURL} />;
     } else if (reader === null) {
@@ -242,6 +247,7 @@ class App extends Component {
           onClickCollectCardPayments={this.collectCardPayment}
           onClickSaveCardForFutureUse={this.saveCardForFutureUse}
           onClickCancelPayment={this.cancelPendingPayment}
+          cancelablePayment={cancelablePayment}
         />
       );
     }
