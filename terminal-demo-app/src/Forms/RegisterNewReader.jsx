@@ -28,7 +28,7 @@ class RegisterNewReader extends React.Component {
 
   onClickRegister = () => {
     const { readerCode, readerLabel } = this.state;
-    this.props.onClickRegister(readerCode, readerLabel);
+    this.props.onClickRegister(readerLabel, readerCode);
   };
 
   render() {
