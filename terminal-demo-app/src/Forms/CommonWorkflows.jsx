@@ -13,7 +13,8 @@ class CommonWorkflows extends React.Component {
       onClickUpdateLineItems,
       onClickCollectCardPayments,
       onClickSaveCardForFutureUse,
-      onClickCancelPayment
+      onClickCancelPayment,
+      cancelablePayment
     } = this.props;
     return (
       <Section>
@@ -26,16 +27,32 @@ class CommonWorkflows extends React.Component {
             event log.
           </Text>
 
-          <Button color="white" onClick={onClickUpdateLineItems}>
+          <Button
+            color="white"
+            onClick={onClickUpdateLineItems}
+            disabled={cancelablePayment}
+          >
             <Text color="blue">Update line items and totals</Text>
           </Button>
-          <Button color="white" onClick={onClickCollectCardPayments}>
+          <Button
+            color="white"
+            onClick={onClickCollectCardPayments}
+            disabled={cancelablePayment}
+          >
             <Text color="blue">Collect card payment</Text>
           </Button>
-          <Button color="white" onClick={onClickSaveCardForFutureUse}>
+          <Button
+            color="white"
+            onClick={onClickSaveCardForFutureUse}
+            disabled={cancelablePayment}
+          >
             <Text color="blue">Save card for future use</Text>
           </Button>
-          <Button color="white" onClick={onClickCancelPayment}>
+          <Button
+            color="white"
+            onClick={onClickCancelPayment}
+            disabled={!cancelablePayment}
+          >
             <Text color="blue">Cancel payment</Text>
           </Button>
         </Group>
