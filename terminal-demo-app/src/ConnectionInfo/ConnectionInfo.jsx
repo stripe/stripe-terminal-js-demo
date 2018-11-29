@@ -13,8 +13,6 @@ class ConnectionInfo extends React.Component {
 
   render() {
     const { backendURL, reader, onClickDisconnect } = this.props;
-    console.log("READER");
-    console.log(reader);
 
     return (
       <Group direction="column" spacing={0}>
