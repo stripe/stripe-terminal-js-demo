@@ -34,7 +34,7 @@ class BackendURLForm extends React.Component {
             <Link
               size={16}
               href="https://github.com/stripe/example-terminal-backend"
-              text="example app"
+              text="example backend"
               newWindow
             />
           </Text>
