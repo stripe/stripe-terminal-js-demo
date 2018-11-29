@@ -8,38 +8,12 @@ import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class DiscoverReaders extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      readers: [
-        {
-          id: "rdr_12508124",
-          label: "Evans reader",
-          serialNumber: "275-177-294",
-          ipAddress: "192.188.059",
-          status: "online"
-        },
-        {
-          id: "rdr_1234t6",
-          label: "Fays reader",
-          serialNumber: "275-177-294",
-          ipAddress: "192.188.059",
-          status: "online"
-        },
-        {
-          id: "rdr_12523762347",
-          label: "Jacksons reader",
-          serialNumber: "275-177-294",
-          ipAddress: "192.188.059",
-          status: "offline"
-        }
-      ]
-    };
-  }
+  onConnectToReader = reader => () => {
+    this.props.onConnectToReader(reader);
+  };
 
   renderReaders() {
-    const { readers } = this.state;
+    const { readers } = this.props;
     if (readers.length >= 1) {
       return readers.map((reader, i) => {
         const isOffline = reader.status === "offline";
@@ -58,10 +32,10 @@ class DiscoverReaders extends React.Component {
                   {reader.label}
                   <Group direction="row">
                     <Text size={11} color="darkGrey">
-                      {reader.serialNumber}
+                      {reader.serial_number}
                     </Text>
                     <Text size={11} color="darkGrey">
-                      {reader.ipAddress}
+                      {reader.ip_address}
                     </Text>
                   </Group>
                 </Group>
@@ -69,7 +43,7 @@ class DiscoverReaders extends React.Component {
               <Button
                 disabled={isOffline}
                 color={isOffline ? "white" : "default"}
-                onClick={this.onSetReader(reader.label)}
+                onClick={this.onConnectToReader(reader)}
               >
                 <Text size={14} color={isOffline ? "darkGrey" : "white"}>
                   {isOffline ? "Offline" : "Connect"}
@@ -94,16 +68,12 @@ class DiscoverReaders extends React.Component {
     }
   }
 
-  onSetReader = label => () => {
-    this.props.onSetReader(label);
-  };
-
   onClickUseSimulator = () => {
-    this.props.onSetReader("simulator");
+    this.props.handleUseSimulator();
   };
 
   render() {
-    const { onClickRegister } = this.props;
+    const { onClickDiscover, onClickRegister } = this.props;
 
     return (
       <Group direction="column" spacing={0}>
@@ -118,7 +88,7 @@ class DiscoverReaders extends React.Component {
             <Text size={16} color="dark">
               Readers
             </Text>
-            <Button color="white">
+            <Button color="white" onClick={onClickDiscover}>
               <Text color="dark">Discover</Text>
             </Button>
           </Group>

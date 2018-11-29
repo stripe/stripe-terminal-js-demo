@@ -6,17 +6,15 @@ import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class ConnectionInfo extends React.Component {
-  onDisconnectReader = () => {
-    this.props.onSetReader(null);
-  };
-
   onChangeBackendURL = () => {
-    this.props.onSetReader(null);
+    this.props.onClickDisconnect();
     this.props.onSetBackendURL(null);
   };
 
   render() {
-    const { backendURL, reader } = this.props;
+    const { backendURL, reader, onClickDisconnect } = this.props;
+    console.log("READER");
+    console.log(reader);
 
     return (
       <Group direction="column" spacing={0}>
@@ -50,9 +48,9 @@ class ConnectionInfo extends React.Component {
               }}
             >
               <Text truncate color="dark">
-                {reader}
+                {reader.label}
               </Text>
-              <Button color="white" onClick={this.onDisconnectReader}>
+              <Button color="white" onClick={onClickDisconnect}>
                 <Text color="dark">Disconnect</Text>
               </Button>
             </Group>

@@ -6,7 +6,7 @@ import "./Logs.css";
 
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
-import Link from "../components/Link/Link.jsx";
+import Logger from "../logger";
 import Text from "../components/Text/Text.jsx";
 
 class Logs extends React.Component {
@@ -14,31 +14,14 @@ class Logs extends React.Component {
     super(props);
 
     this.state = {
-      logs: [
-        {
-          title: "terminal.discover",
-          request: "v1/terminal/discover",
-          response: `
-          {
-            a: 1,
-            b: 2,
-          }`,
-          time: "2018-09-12 22:00"
-        },
-        {
-          title: "terminal.register",
-          request: "v1/terminal/register",
-          response: "",
-          time: "2018-05-39 00:00"
-        },
-        {
-          title: "terminal.activate",
-          request: "v1/terminal/activate",
-          response: "",
-          time: "2018-09-03 00:30"
-        }
-      ]
+      logs: []
     };
+    Logger.setCollectors([this]);
+  }
+
+  collect(log) {
+    console.log(log);
+    this.setState(state => state.logs.push(log));
   }
 
   clearLogs = () => {
@@ -66,30 +49,34 @@ class Logs extends React.Component {
   }
 
   renderLogs(logs) {
+    console.log(logs);
     return (
       <Group direction="column">
         {logs.map((log, i) => {
+          const isErrored = log.exception;
           return (
             <div
               className={css`
                 border-bottom: 1px solid #4e566d;
                 padding: 20px;
               `}
+              key={i}
             >
               <Group direction="column" key={i}>
                 <Group
                   direction="row"
                   alignment={{ justifyContent: "space-between" }}
                 >
-                  <Text color="code">{log.title}</Text>
+                  <Text color="code">{log.method}</Text>
                   <Text color="lightGrey" size={12}>
-                    {log.time}
+                    {new Date(log.start_time_ms).toString()}
                   </Text>
                 </Group>
                 <Text color="link">REQUEST</Text>
                 <Text color="lightGrey">{log.request}</Text>
-                <Text color="link">RESPONSE</Text>
-                <Text color="lightGrey">{log.response}</Text>
+
+                <Text color="link">{isErrored ? "EXCEPTION" : "RESPONSE"}</Text>
+                <Text color="lightGrey">{log.response || log.exception}</Text>
               </Group>
             </div>
           );
