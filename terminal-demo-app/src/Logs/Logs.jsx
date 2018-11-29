@@ -48,40 +48,79 @@ class Logs extends React.Component {
     );
   }
 
+  renderJSON(resp) {
+    if (resp) {
+      return JSON.stringify(JSON.parse(resp), undefined, 2);
+    } else return null;
+  }
+
+  renderRequestJSON(req) {
+    const json = JSON.parse(req);
+    return JSON.stringify(json[0], undefined, 2);
+  }
+
   renderLogs(logs) {
-    console.log(logs);
     return (
-      <Group direction="column">
-        {logs.map((log, i) => {
-          const isErrored = log.exception;
-          return (
-            <div
-              className={css`
-                border-bottom: 1px solid #4e566d;
-                padding: 20px;
-              `}
-              key={i}
-            >
-              <Group direction="column" key={i}>
-                <Group
-                  direction="row"
-                  alignment={{ justifyContent: "space-between" }}
-                >
-                  <Text color="code">{log.method}</Text>
-                  <Text color="lightGrey" size={12}>
-                    {new Date(log.start_time_ms).toString()}
+      <div
+        className={css`
+          overflow-y: scroll;
+          height: 550px;
+        `}
+      >
+        <Group direction="column">
+          {logs.map((log, i) => {
+            const isErrored = log.exception;
+            return (
+              <div
+                className={css`
+                  border-bottom: 1px solid #4e566d;
+                  padding: 20px;
+                `}
+                key={i}
+              >
+                <Group direction="column" key={i}>
+                  <Group
+                    direction="row"
+                    alignment={{ justifyContent: "space-between" }}
+                  >
+                    <Text color="code">{log.method}</Text>
+                    <Text color="lightGrey" size={12}>
+                      <code>{new Date(log.start_time_ms).toString()}</code>
+                    </Text>
+                  </Group>
+                  <Text color="link">REQUEST</Text>
+                  <Text color="lightGrey">
+                    <pre>
+                      <code
+                        className={css`
+                          color: #8792a2;
+                        `}
+                      >
+                        {this.renderRequestJSON(log.request)}
+                      </code>
+                    </pre>
+                  </Text>
+
+                  <Text color="link">
+                    {isErrored ? "EXCEPTION" : "RESPONSE"}
+                  </Text>
+                  <Text color="lightGrey">
+                    <pre>
+                      <code
+                        className={css`
+                          color: #8792a2;
+                        `}
+                      >
+                        {this.renderJSON(log.response || log.exception)}
+                      </code>
+                    </pre>
                   </Text>
                 </Group>
-                <Text color="link">REQUEST</Text>
-                <Text color="lightGrey">{log.request}</Text>
-
-                <Text color="link">{isErrored ? "EXCEPTION" : "RESPONSE"}</Text>
-                <Text color="lightGrey">{log.response || log.exception}</Text>
-              </Group>
-            </div>
-          );
-        })}
-      </Group>
+              </div>
+            );
+          })}
+        </Group>
+      </div>
     );
   }
 

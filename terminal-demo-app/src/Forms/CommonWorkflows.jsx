@@ -30,7 +30,7 @@ class CommonWorkflows extends React.Component {
             <Text color="blue">Update line items and totals</Text>
           </Button>
           <Button color="white" onClick={onClickCollectCardPayments}>
-            <Text color="blue">Collect card payments</Text>
+            <Text color="blue">Collect card payment</Text>
           </Button>
           <Button color="white" onClick={onClickSaveCardForFutureUse}>
             <Text color="blue">Save card for future use</Text>
