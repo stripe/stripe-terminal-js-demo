@@ -29,7 +29,7 @@ class Text extends React.Component {
   };
 
   render() {
-    const { children, color, size, truncate } = this.props;
+    const { children, color, size, truncate, nowrap } = this.props;
     return (
       <span
         className={css`
@@ -41,6 +41,7 @@ class Text extends React.Component {
 
           overflow: ${truncate ? "hidden" : "inherit"};
           text-overflow: ${truncate ? "ellipsis" : "inherit"};
+          white-space: ${nowrap ? "nowrap" : "inherit"};
         `}
         style={{ fontSize: size || 14, color: this.getColor(color) }}
       >

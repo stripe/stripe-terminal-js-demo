@@ -27,11 +27,13 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate color="dark">
+              <Text truncate nowrap color="dark">
                 {backendURL}
               </Text>
               <Button color="white" onClick={this.onChangeBackendURL}>
-                <Text color="dark">Change URL</Text>
+                <Text nowrap color="dark">
+                  Change URL
+                </Text>
               </Button>
             </Group>
           ) : (
