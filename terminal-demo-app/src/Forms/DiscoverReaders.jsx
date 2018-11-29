@@ -8,6 +8,10 @@ import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class DiscoverReaders extends React.Component {
+  onConnectToReader = reader => () => {
+    this.props.onConnectToReader(reader);
+  };
+
   renderReaders() {
     const { readers } = this.props;
     if (readers.length >= 1) {
@@ -39,7 +43,7 @@ class DiscoverReaders extends React.Component {
               <Button
                 disabled={isOffline}
                 color={isOffline ? "white" : "default"}
-                onClick={this.onSetReader(reader)}
+                onClick={this.onConnectToReader(reader)}
               >
                 <Text size={14} color={isOffline ? "darkGrey" : "white"}>
                   {isOffline ? "Offline" : "Connect"}
@@ -63,10 +67,6 @@ class DiscoverReaders extends React.Component {
       );
     }
   }
-
-  onSetReader = label => () => {
-    this.props.onSetReader(label);
-  };
 
   onClickUseSimulator = () => {
     this.props.handleUseSimulator();

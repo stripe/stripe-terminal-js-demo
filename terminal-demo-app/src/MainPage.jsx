@@ -203,10 +203,6 @@ class App extends Component {
     this.setState({ backendURL: url });
   };
 
-  onSetReader = reader => {
-    this.setState({ reader });
-  };
-
   renderForm() {
     const { backendURL, reader, discoveredReaders } = this.state;
     if (backendURL === null && reader === null) {
@@ -217,6 +213,7 @@ class App extends Component {
           onClickDiscover={() => this.discoverReaders(false)}
           onClickRegister={this.registerAndConnectNewReader}
           readers={discoveredReaders}
+          onConnectToReader={this.connectToReader}
           handleUseSimulator={this.handleUseSimulator}
         />
       );
@@ -245,7 +242,6 @@ class App extends Component {
             <ConnectionInfo
               backendURL={backendURL}
               reader={reader}
-              onSetReader={this.onSetReader}
               onSetBackendURL={this.onSetBackendURL}
               onClickDisconnect={this.disconnectReader}
             />

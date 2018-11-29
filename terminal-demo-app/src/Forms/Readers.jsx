@@ -24,10 +24,12 @@ class Readers extends React.Component {
 
   render() {
     const { mode } = this.state;
+
     const {
       readers,
       onClickDiscover,
       onClickRegister,
+      onConnectToReader,
       handleUseSimulator
     } = this.props;
     switch (mode) {
@@ -36,7 +38,7 @@ class Readers extends React.Component {
           <DiscoverReaders
             onClickDiscover={onClickDiscover}
             onClickRegister={this.onClickRegister}
-            onSetReader={this.onSetReader}
+            onConnectToReader={onConnectToReader}
             readers={readers}
             handleUseSimulator={handleUseSimulator}
           />

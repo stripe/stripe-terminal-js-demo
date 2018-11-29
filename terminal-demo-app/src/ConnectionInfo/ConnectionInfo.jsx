@@ -7,7 +7,6 @@ import Text from "../components/Text/Text.jsx";
 
 class ConnectionInfo extends React.Component {
   onChangeBackendURL = () => {
-    this.props.onSetReader(null);
     this.props.onSetBackendURL(null);
   };
 
