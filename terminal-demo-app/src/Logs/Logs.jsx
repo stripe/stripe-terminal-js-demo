@@ -20,7 +20,6 @@ class Logs extends React.Component {
   }
 
   collect(log) {
-    console.log(log);
     this.setState(state => state.logs.push(log));
   }
 
@@ -50,7 +49,11 @@ class Logs extends React.Component {
 
   renderJSON(resp) {
     if (resp) {
-      return JSON.stringify(JSON.parse(resp), undefined, 2);
+      try {
+        return JSON.stringify(JSON.parse(resp), undefined, 2);
+      } catch (e) {
+        return resp;
+      }
     } else return null;
   }
 

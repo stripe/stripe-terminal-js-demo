@@ -10,48 +10,46 @@ class Logger {
   }
 
   static log(log) {
-    Logger.forwardToCollectors(log)
+    Logger.forwardToCollectors(log);
   }
 
   static tracedFn(methodName, fn) {
-    return async function(...args) {      
-      let method =  methodName || fn.name;
-      let requestString =  JSON.stringify(args)      
-      let trace = {        
-        start_time_ms: new Date().valueOf(),        
-        method: method,        
-        request: requestString,        
+    return async function(...args) {
+      let method = methodName || fn.name;
+      let requestString = JSON.stringify(args);
+      let trace = {
+        start_time_ms: new Date().valueOf(),
+        method: method,
+        request: requestString,
         response: null,
-        exception: null,
+        exception: null
       };
 
       try {
         let response = await fn.apply(this, args);
         trace.response = JSON.stringify(response);
         return response;
-      } catch(e) {        
+      } catch (e) {
         trace.exception = e.message;
         throw e;
       } finally {
         Logger.log(trace);
       }
-    }
+    };
   }
 
-  static watchObject (obj, name, methods) {
-    let methodSet = new Set(methods)
-    let objProtoype = Object.getPrototypeOf(obj);   
+  static watchObject(obj, name, methods) {
+    let methodSet = new Set(methods);
+    let objProtoype = Object.getPrototypeOf(obj);
     Object.getOwnPropertyNames(objProtoype)
-        .filter((property) => methodSet.has(property))
-        .forEach(instanceMethodName => {
-            console.log(instanceMethodName)
-            obj[instanceMethodName] = Logger.tracedFn(name + "." +instanceMethodName, objProtoype[instanceMethodName])        
-        })
-
-    console.log(obj)    
+      .filter(property => methodSet.has(property))
+      .forEach(instanceMethodName => {
+        obj[instanceMethodName] = Logger.tracedFn(
+          name + "." + instanceMethodName,
+          objProtoype[instanceMethodName]
+        );
+      });
   }
 }
 
-
-
-  export default Logger;
+export default Logger;

@@ -88,6 +88,7 @@ class App extends Component {
 
     if (discoverResult.error) {
       console.log("Failed to discover: ", discoverResult.error);
+      return discoverResult.error;
     } else {
       this.setState({
         discoveredReaders: discoverResult.discoveredReaders
@@ -145,6 +146,7 @@ class App extends Component {
       }
     });
     console.log("Reader Display Updated!");
+    return;
   };
 
   // 3b. Collect a card present payment
@@ -166,7 +168,7 @@ class App extends Component {
     this.setState({ cancelablePayment: true });
     const result = await paymentMethodPromise;
     if (result.error) {
-      alert(`Collect payment method failed: ${result.error.message}`);
+      console.log("Collect payment method failed:", result.error.message);
     } else {
       // Can no longer cancel the pending payment because we are sending the request to the network.
       const confirmResult = await this.terminal.confirmPaymentIntent(

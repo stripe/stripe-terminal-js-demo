@@ -8,13 +8,38 @@ import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class DiscoverReaders extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      discoveryInProgress: false
+    };
+  }
+
+  onTriggerDiscoverReaders = async () => {
+    this.setState({ discoveryInProgress: true });
+    try {
+      await this.props.onClickDiscover();
+    } finally {
+      this.setState({ discoveryInProgress: false });
+    }
+  };
+
   onConnectToReader = reader => () => {
     this.props.onConnectToReader(reader);
   };
 
   renderReaders() {
     const { readers } = this.props;
-    if (readers.length >= 1) {
+    if (this.state.discoveryInProgress) {
+      return (
+        <Section position="middle">
+          <Text size={14} color="darkGrey">
+            Discovering...
+          </Text>
+        </Section>
+      );
+    } else if (readers.length >= 1) {
       return readers.map((reader, i) => {
         const isOffline = reader.status === "offline";
         return (
@@ -73,7 +98,7 @@ class DiscoverReaders extends React.Component {
   };
 
   render() {
-    const { onClickDiscover, onClickRegister } = this.props;
+    const { onClickRegister } = this.props;
 
     return (
       <Group direction="column" spacing={0}>
@@ -88,7 +113,7 @@ class DiscoverReaders extends React.Component {
             <Text size={16} color="dark">
               Readers
             </Text>
-            <Button color="white" onClick={onClickDiscover}>
+            <Button color="white" onClick={this.onTriggerDiscoverReaders}>
               <Text color="dark">Discover</Text>
             </Button>
           </Group>
