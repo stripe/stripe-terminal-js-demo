@@ -1,5 +1,5 @@
 // Client for the example terminal backend: https://github.com/stripe/example-terminal-backend
-class Backend {
+class Client {
   constructor(url) {
     this.url = url;
   }
@@ -51,4 +51,4 @@ class Backend {
   }
 }
 
-export default Backend;
+export default Client;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Backend from "./backend";
+import Backend from "./client";
 import Logger from "./logger";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
