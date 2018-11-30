@@ -3,34 +3,27 @@
 [Request a Beta invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
 
 ## Try the example app
-To help you get up and running even faster, we have developed an example app for the JS SDK in React.
+The JS SDK includes an open-source example app in React, which you can use to familiarize yourself with the SDK and reader before starting your own integration.
 
-The JS example app shows how to create a page that supports:
-- Registering and connecting to new devices
-- Discovering and connecting to previously registered devices
-- Controlling the reader UI and setting line items on the display
-- Collecting card present payments
-- Saving a card presented in store to a customer object so it can be used for subscriptions and other recurring billing
+The example app supports:
+- Registering and connecting to a new reader
+- Discovering and connecting to a previously registered reader
+- Setting line items on the reader display
+- Collecting card payments
+- Saving a card presented in store to a [Customer](https://stripe.com/docs/api/customers), so it can be used for subscriptions and other recurring billing
 
-To get the example app running locally follow these steps:
-1. First clone and deploy the example backend with heroku:
+To set up and run the example app locally, you'll need to:
+1. Navigate to our [example backend](https://github.com/stripe/example-terminal-backend) and click the button to deploy it on Heroku.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
-(More details about the example backend can be found at [the example backend github page](https://github.com/stripe/example-terminal-backend))
-
-2. Clone this repo and then run the following commands in the root of the directory:
+2. Navigate to the `terminal-demo-app` folder, and run the following commands. This will run the example app locally and open it in your browser.
 ```
-cd terminal-demo-app
 npm install
 npm run start
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) to view the example in the browser.
+4. In the Backend URL form, enter the URL of the Heroku app you deployed in in step 1.
 
-4. In the Backend URL form, enter the heroku URL generated in step 1.
-
-5. Play around with the example app and read the live log lines to see whats happening behind the scenes.
+You can now play around with the example app, which includes a logs panel that shows whats happening behind the scenes.
 
 ## Documentation
 - [Getting Started](https://stripe.com/docs/terminal/js)
