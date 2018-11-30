@@ -25,7 +25,7 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate nowrap color="dark">
+              <Text truncate nowrap color="dark" size={14}>
                 {backendURL}
               </Text>
               <Button color="white" onClick={this.onChangeBackendURL}>
@@ -35,7 +35,9 @@ class ConnectionInfo extends React.Component {
               </Button>
             </Group>
           ) : (
-            <Text color="lightGrey">Set backend URL</Text>
+            <Text color="lightGrey" size={14}>
+              Set backend URL
+            </Text>
           )}
         </Section>
         <Section position="last">
@@ -47,7 +49,7 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate color="dark">
+              <Text truncate color="dark" size={14}>
                 {reader.label}
               </Text>
               <Button color="white" onClick={onClickDisconnect}>
@@ -55,7 +57,9 @@ class ConnectionInfo extends React.Component {
               </Button>
             </Group>
           ) : (
-            <Text color="lightGrey">Connect to a reader</Text>
+            <Text color="lightGrey" size={14}>
+              Connect to a reader
+            </Text>
           )}
         </Section>
       </Group>

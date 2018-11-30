@@ -30,7 +30,7 @@ class BackendURLForm extends React.Component {
       <Section>
         <Group direction="column" spacing={18}>
           <Text size={16} color="dark">
-            1. Clone{" "}
+            1. Deploy{" "}
             <Link
               size={16}
               href="https://github.com/stripe/example-terminal-backend"
@@ -45,7 +45,7 @@ class BackendURLForm extends React.Component {
             </Text>
 
             <TextInput
-              placeholder="http://www..."
+              placeholder="https://your-backend.herokuapp.com..."
               value={backendURL}
               onChange={this.onChangeBackendURL}
             />

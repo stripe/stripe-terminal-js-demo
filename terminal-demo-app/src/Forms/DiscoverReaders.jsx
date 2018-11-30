@@ -6,6 +6,7 @@ import Group from "../components/Group/Group.jsx";
 import ReaderIcon from "../components/Icon/reader/ReaderIcon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
+import InfoTooltip from "../components/InfoTooltip/InfoTooltip.jsx";
 
 class DiscoverReaders extends React.Component {
   constructor(props) {
@@ -86,7 +87,9 @@ class DiscoverReaders extends React.Component {
             spacing={12}
             alignment={{ justifyContent: "center" }}
           >
-            <Text color="darkGrey">No reader registered</Text>
+            <Text color="darkGrey" size={14}>
+              No reader registered
+            </Text>
           </Group>
         </Section>
       );
@@ -130,8 +133,9 @@ class DiscoverReaders extends React.Component {
               <Text color="dark">Register new reader</Text>
             </Button>
             <Button color="white" onClick={this.onClickUseSimulator}>
-              <Text color="dark" size={14}>
-                Use simulator
+              <Text color="dark">
+                Use simulator{" "}
+                <InfoTooltip text="Discover a simulated reader provided by the Stripe Terminal SDK. Select this option to try out the SDK without using physical reader hardware." />
               </Text>
             </Button>
           </Group>

@@ -43,7 +43,11 @@ class Button extends React.Component {
           }
 
           :hover {
-            opacity: 0.9;
+            opacity: 0.8;
+          }
+
+          :focus {
+            outline: 0;
           }
         `}
         onClick={onClick}

@@ -43,7 +43,7 @@ class Text extends React.Component {
           text-overflow: ${truncate ? "ellipsis" : "inherit"};
           white-space: ${nowrap ? "nowrap" : "inherit"};
         `}
-        style={{ fontSize: size || 14, color: this.getColor(color) }}
+        style={{ fontSize: size || 12, color: this.getColor(color) }}
       >
         {children}
       </span>
