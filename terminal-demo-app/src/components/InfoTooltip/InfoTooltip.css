@@ -1,0 +1,27 @@
+.InfoTooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.InfoTooltip .InfoTooltipText {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(255,255,255,1);
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    top: 200%;
+
+    transform: translatex(-100px);
+ 
+    /* Position the InfoTooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0px 0px 0px 1px rgba(136, 152, 170, 0.1),
+                  0px 15px 35px 0px rgba(49, 49, 93, 0.1),
+                  0px 5px 15px 0px rgba(0, 0, 0, 0.08);
+}
+
+.InfoTooltip:hover .InfoTooltipText {
+    visibility: visible;
+}
