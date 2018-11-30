@@ -71,7 +71,7 @@ class Logs extends React.Component {
         `}
       >
         <Group direction="column">
-          {logs.map((log, i) => {
+          {logs.reverse().map((log, i) => {
             const isErrored = log.exception;
             return (
               <div
