@@ -40,7 +40,7 @@ class Logs extends React.Component {
           <Text>{`{}`}</Text>
           <Text size={14}>Welcome to the Stripe Terminal reference app</Text>
           <Text size={11} color="lightGrey">
-            Start by filling your API key then connect to a reader.
+            Start by filling your backend URL then connect to a reader.
           </Text>
         </Group>
       </div>
