@@ -45,7 +45,7 @@ class BackendURLForm extends React.Component {
             </Text>
 
             <TextInput
-              placeholder="http://www..."
+              placeholder="https://your-backend.herokuapp.com..."
               value={backendURL}
               onChange={this.onChangeBackendURL}
             />

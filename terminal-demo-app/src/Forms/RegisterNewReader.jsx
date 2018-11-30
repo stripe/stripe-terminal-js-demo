@@ -41,8 +41,9 @@ class RegisterNewReader extends React.Component {
             Register new reader
           </Text>
           <Text size={12} color="lightGrey">
-            Enter the key sequence 0-7-1-3-9 on the Verifone reader you want to
-            register to display the unique registration code.
+            Before connecting to a reader for the first time, you'll need to
+            register the device. Enter the key sequence 0-7-1-3-9 on the reader
+            to display its unique registration code.
           </Text>
           <TextInput
             placeholder="Reader code"
