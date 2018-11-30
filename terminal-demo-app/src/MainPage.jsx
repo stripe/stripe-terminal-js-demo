@@ -31,18 +31,18 @@ class App extends Component {
 
   // 1. Stripe Terminal Initialization
   initializeBackendAndTerminal(url) {
-    // 1a. Initialize JS class to fascilitate communication to backend
+    // 1a. Initialize Backend class, which communicates with the example terminal backend
     this.backend = new Backend(url);
 
-    // 1b. Initialize the Stripe Terminal object
+    // 1b. Initialize the StripeTerminal object
     this.terminal = window.StripeTerminal.create({
-      // 1c. Create a callback that will return a new connection token secret when called
+      // 1c. Create a callback that retrieves a new ConnectionToken from the example backend
       onFetchConnectionToken: async () => {
         let connectionTokenResult = await this.backend.createConnectionToken();
         return connectionTokenResult.secret;
       },
-      // 1c. (Optionally) Create a callback that will be called if the reader unexpectedly disconnects.
-      // You likely will want to alert your user that the reader is no longer connected and will need to be reconnected.
+      // 1c. (Optional) Create a callback that will be called if the reader unexpectedly disconnects.
+      // You can use this callback to alert your user that the reader is no longer connected and will need to be reconnected.
       onUnexpectedReaderDisconnect: Logger.tracedFn(
         "onUnexpectedReaderDisconnect",
         () => {
@@ -53,7 +53,8 @@ class App extends Component {
           });
         }
       ),
-      // 1c. (Optionally) Create a callback that will update your UI with the connection state of the reader.
+      // 1c. (Optional) Create a callback that will be called when the reader's connection status changes.
+      // You can use this callback to update your UI with the reader's connection status.
       onConnectionStatusChange: Logger.tracedFn(
         "onConnectionStatusChange",
         ev => {
@@ -79,9 +80,9 @@ class App extends Component {
     ]);
   }
 
-  // 2. Terminal Connection Management: Discovery and Connecting
+  // 2. Discover and connect to a reader.
   discoverReaders = async (useSimulator = false) => {
-    // 2a. Discover either a simulated or registered readers to connect to.
+    // 2a. Discover either simulated or registered readers to connect to.
     const discoverResult = await this.terminal.discoverReaders({
       method: useSimulator ? "simulated" : "registered"
     });
@@ -113,7 +114,7 @@ class App extends Component {
   };
 
   disconnectReader = async () => {
-    //2c. Disconnect from the reader in case the user wants to switch readers.
+    // 2c. Disconnect from the reader, in case the user wants to switch readers.
     await this.terminal.disconnectReader();
     this.setState({
       reader: null
@@ -122,12 +123,12 @@ class App extends Component {
 
   registerAndConnectNewReader = async (label, code) => {
     let reader = await this.backend.registerDevice(label, code);
-    // When registering a new reader, we can just without discovery using the reader object returned from the server.
+    // After registering a new reader, we can connect immediately using the reader object returned from the server.
     await this.connectToReader(reader);
     console.log("Registered and Connected Successfully!");
   };
 
-  // 3. Terminal Workflows (Once Connected)
+  // 3. Terminal Workflows (Once connected to a reader)
   updateLineItems = async () => {
     // 3a. Update the reader display to show cart contents to the customer
     await this.terminal.setReaderDisplay({
@@ -151,8 +152,8 @@ class App extends Component {
 
   // 3b. Collect a card present payment
   collectCardPayment = async () => {
-    // We want to make sure we reuse the same PaymentIntent object in the case of declined charges so we
-    // store the pending PaymentIntent's secret until it has been fulfilled.
+    // We want to reuse the same PaymentIntent object in the case of declined charges, so we
+    // store the pending PaymentIntent's secret until the payment is complete.
     if (!this.pendingPaymentIntentSecret) {
       let createIntentResponse = await this.backend.createPaymentIntent(
         App.CHARGE_AMOUNT,
@@ -170,10 +171,10 @@ class App extends Component {
     if (result.error) {
       console.log("Collect payment method failed:", result.error.message);
     } else {
-      // Can no longer cancel the pending payment because we are sending the request to the network.
       const confirmResult = await this.terminal.confirmPaymentIntent(
         result.paymentIntent
       );
+      // At this stage, the payment can no longer be canceled because we've sent the request to the network.
       this.setState({ cancelablePayment: false });
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
@@ -190,20 +191,20 @@ class App extends Component {
   };
 
   // 3c. Cancel a pending payment.
-  // Note this can only be done before calling `confirmPaymentIntent` because after that call the charge request will be sent to the network.
+  // Note this can only be done before calling `confirmPaymentIntent`.
   cancelPendingPayment = async () => {
     await this.terminal.cancelCollectPaymentMethod();
     this.setState({ cancelablePayment: false });
   };
 
-  // 3d. Save a card present source for use with billing/subscriptions
+  // 3d. Save a card present source for re-use online.
   saveCardForFutureUse = async () => {
-    // First read a card without charging it or use the card_present type source from a PaymentIntent completed using flow 3b
+    // First, read a card without charging it using `readSource`
     const readSourceResult = await this.terminal.readSource();
     if (readSourceResult.error) {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
-      // Pass to Backend to actually save to a customer
+      // Then, pass the source to your backend save it to a customer
       let customer = await this.backend.saveSourceToCustomer(
         readSourceResult.source.id
       );

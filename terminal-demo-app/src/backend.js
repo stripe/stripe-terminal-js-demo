@@ -1,3 +1,4 @@
+// Client for the example terminal backend: https://github.com/stripe/example-terminal-backend
 class Backend {
   constructor(url) {
     this.url = url;
