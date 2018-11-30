@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Backend from "./client";
+import Client from "./client";
 import Logger from "./logger";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
@@ -30,15 +30,15 @@ class App extends Component {
   }
 
   // 1. Stripe Terminal Initialization
-  initializeBackendAndTerminal(url) {
-    // 1a. Initialize Backend class, which communicates with the example terminal backend
-    this.backend = new Backend(url);
+  initializeBackendClientAndTerminal(url) {
+    // 1a. Initialize Client class, which communicates with the example terminal backend
+    this.client = new Client(url);
 
     // 1b. Initialize the StripeTerminal object
     this.terminal = window.StripeTerminal.create({
       // 1c. Create a callback that retrieves a new ConnectionToken from the example backend
       onFetchConnectionToken: async () => {
-        let connectionTokenResult = await this.backend.createConnectionToken();
+        let connectionTokenResult = await this.client.createConnectionToken();
         return connectionTokenResult.secret;
       },
       // 1c. (Optional) Create a callback that will be called if the reader unexpectedly disconnects.
@@ -62,7 +62,7 @@ class App extends Component {
         }
       )
     });
-    Logger.watchObject(this.backend, "backend", [
+    Logger.watchObject(this.client, "backend", [
       "createConnectionToken",
       "registerDevice",
       "createPaymentIntent",
@@ -122,7 +122,7 @@ class App extends Component {
   };
 
   registerAndConnectNewReader = async (label, code) => {
-    let reader = await this.backend.registerDevice(label, code);
+    let reader = await this.client.registerDevice(label, code);
     // After registering a new reader, we can connect immediately using the reader object returned from the server.
     await this.connectToReader(reader);
     console.log("Registered and Connected Successfully!");
@@ -155,7 +155,7 @@ class App extends Component {
     // We want to reuse the same PaymentIntent object in the case of declined charges, so we
     // store the pending PaymentIntent's secret until the payment is complete.
     if (!this.pendingPaymentIntentSecret) {
-      let createIntentResponse = await this.backend.createPaymentIntent(
+      let createIntentResponse = await this.client.createPaymentIntent(
         App.CHARGE_AMOUNT,
         "usd",
         "Test Charge"
@@ -179,8 +179,8 @@ class App extends Component {
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
-        // Capture the PaymentIntent from your backend and mark the payment as complete
-        let captureResult = await this.backend.capturePaymentIntent(
+        // Capture the PaymentIntent from your backend client and mark the payment as complete
+        let captureResult = await this.client.capturePaymentIntent(
           confirmResult.paymentIntent.id
         );
         this.pendingPaymentIntentSecret = null;
@@ -204,8 +204,8 @@ class App extends Component {
     if (readSourceResult.error) {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
-      // Then, pass the source to your backend save it to a customer
-      let customer = await this.backend.saveSourceToCustomer(
+      // Then, pass the source to your backend client to save it to a customer
+      let customer = await this.client.saveSourceToCustomer(
         readSourceResult.source.id
       );
       console.log("Source Saved to Customer!", customer);
@@ -220,7 +220,7 @@ class App extends Component {
   };
 
   onSetBackendURL = url => {
-    this.initializeBackendAndTerminal(url);
+    this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
   };
 
