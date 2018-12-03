@@ -3,7 +3,7 @@
 import * as React from "react";
 import { css } from "emotion";
 import "./Logs.css";
-
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
 import Logger from "../logger";
@@ -21,7 +21,10 @@ class Logs extends React.Component {
   }
 
   collect(log) {
-    this.setState(state => state.logs.push(log));
+    console.log(log);
+    this.setState(state => ({
+      logs: [log, ...state.logs]
+    }));
   }
 
   clearLogs = () => {
@@ -74,74 +77,80 @@ class Logs extends React.Component {
         `}
       >
         <Group direction="column">
-          {logs.reverse().map((log, i) => {
-            const returnType = log.response
-              ? "RESPONSE"
-              : log.exception
-              ? "EXCEPTION"
-              : "VOID";
-            return (
-              <div
-                className={css`
-                  border-bottom: 1px solid #4e566d;
-                  padding: 20px;
-                `}
-                key={i}
-              >
-                <Group direction="column" key={i}>
-                  <Group
-                    direction="row"
-                    alignment={{ justifyContent: "space-between" }}
+          <TransitionGroup className="todo-list">
+            {logs.map(log => {
+              const returnType = log.response
+                ? "RESPONSE"
+                : log.exception
+                ? "EXCEPTION"
+                : "VOID";
+              return (
+                <CSSTransition key={log.id} timeout={500} classNames="fade">
+                  <div
+                    className={css`
+                      border-bottom: 1px solid #4e566d;
+                      padding: 20px;
+                    `}
                   >
-                    <Group direction="row" alignment={{ alignItems: "center" }}>
-                      <Text color="code" size={14}>
-                        {log.method}
+                    <Group direction="column">
+                      <Group
+                        direction="row"
+                        alignment={{ justifyContent: "space-between" }}
+                      >
+                        <Group
+                          direction="row"
+                          alignment={{ alignItems: "center" }}
+                        >
+                          <Text color="code" size={14}>
+                            {log.method}
+                          </Text>
+
+                          <Link
+                            size={14}
+                            href={log.docsUrl}
+                            text="Learn more"
+                            newWindow
+                          />
+                        </Group>
+                        <Text color="lightGrey" size={12}>
+                          <code>{new Date(log.start_time_ms).toString()}</code>
+                        </Text>
+                      </Group>
+                      <Text color="link">REQUEST</Text>
+                      <Text color="lightGrey">
+                        <pre>
+                          <code
+                            className={css`
+                              color: #8792a2;
+                            `}
+                          >
+                            {this.renderRequestJSON(log.request)}
+                          </code>
+                        </pre>
                       </Text>
 
-                      <Link
-                        size={14}
-                        href={log.docsUrl}
-                        text="Learn more"
-                        newWindow
-                      />
+                      <Text color="link">{returnType}</Text>
+                      {returnType !== "VOID" ? (
+                        <Text color="lightGrey">
+                          <pre>
+                            <code
+                              className={css`
+                                color: #8792a2;
+                              `}
+                            >
+                              {this.renderJSON(log.response || log.exception)}
+                            </code>
+                          </pre>
+                        </Text>
+                      ) : (
+                        ""
+                      )}
                     </Group>
-                    <Text color="lightGrey" size={12}>
-                      <code>{new Date(log.start_time_ms).toString()}</code>
-                    </Text>
-                  </Group>
-                  <Text color="link">REQUEST</Text>
-                  <Text color="lightGrey">
-                    <pre>
-                      <code
-                        className={css`
-                          color: #8792a2;
-                        `}
-                      >
-                        {this.renderRequestJSON(log.request)}
-                      </code>
-                    </pre>
-                  </Text>
-
-                  <Text color="link">{returnType}</Text>
-                  {returnType != "VOID" ? (
-                    <Text color="lightGrey">
-                      <pre>
-                        <code
-                          className={css`
-                            color: #8792a2;
-                          `}
-                        >
-                          {this.renderJSON(log.response || log.exception)}
-                        </code>
-                      </pre>
-                    </Text>
-                  ) : (
-                    ""
-                  )}
-                </Group>
-              </div>
-            );
-          })}
+                  </div>
+                </CSSTransition>
+              );
+            })}
+          </TransitionGroup>
         </Group>
       </div>
     );
