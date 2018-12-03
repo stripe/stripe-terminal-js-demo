@@ -4,7 +4,7 @@ import "./TextInput.css";
 
 class TextInput extends React.Component {
   onChange = e => {
-    this.props.onChange(e.target.value);
+    this.props.onChange(e.target.value.trim());
   };
 
   render() {
