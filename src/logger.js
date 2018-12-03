@@ -13,13 +13,14 @@ class Logger {
     Logger.forwardToCollectors(log);
   }
 
-  static tracedFn(methodName, fn) {
+  static tracedFn(methodName, docsUrl, fn) {
     return async function(...args) {
       let method = methodName || fn.name;
       let requestString = JSON.stringify(args);
       let trace = {
         start_time_ms: new Date().valueOf(),
         method: method,
+        docsUrl: docsUrl,
         request: requestString,
         response: null,
         exception: null
@@ -38,14 +39,14 @@ class Logger {
     };
   }
 
-  static watchObject(obj, name, methods) {
-    let methodSet = new Set(methods);
+  static watchObject(obj, objName, methodsMetadata) {
     let objProtoype = Object.getPrototypeOf(obj);
     Object.getOwnPropertyNames(objProtoype)
-      .filter(property => methodSet.has(property))
+      .filter(property => methodsMetadata[property] !== undefined)
       .forEach(instanceMethodName => {
         obj[instanceMethodName] = Logger.tracedFn(
-          name + "." + instanceMethodName,
+          objName + "." + instanceMethodName,
+          methodsMetadata[instanceMethodName].docsUrl,
           objProtoype[instanceMethodName]
         );
       });
