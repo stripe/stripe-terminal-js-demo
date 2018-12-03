@@ -265,12 +265,12 @@ class App extends Component {
           padding: 41px 10vw;
         `}
       >
-        <Group direction="column" spacing={26}>
+        <Group direction="column" spacing={30}>
           <Text size={22} color="darkGrey">
             Stripe Terminal JS Example App
           </Text>
-          <Group direction="row" spacing={43} responsive>
-            <Group direction="column" spacing={16} responsive>
+          <Group direction="row" spacing={30} responsive>
+            <Group direction="column" spacing={30} responsive>
               <ConnectionInfo
                 backendURL={backendURL}
                 reader={reader}
