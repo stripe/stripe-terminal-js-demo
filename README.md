@@ -16,7 +16,7 @@ The example app supports:
 To set up and run the example app locally, you'll need to:
 1. Navigate to our [example backend](https://github.com/stripe/example-terminal-backend) and click the button to deploy it on Heroku or run it locally.
 
-2. Navigate to the `terminal-demo-app` folder, and run the following commands. This will run the example app locally and open it in your browser.
+2. In the directory root, run the following commands to run the example app locally and open it in your browser.
 ```
 npm install
 npm run start
