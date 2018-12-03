@@ -9,6 +9,7 @@ import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Readers from "./Forms/Readers.jsx";
 import Group from "./components/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
+import Text from "./components//Text/Text.jsx";
 
 import { css } from "emotion";
 
@@ -264,17 +265,22 @@ class App extends Component {
           padding: 41px 10vw;
         `}
       >
-        <Group direction="row" spacing={43} responsive>
-          <Group direction="column" spacing={16} responsive>
-            <ConnectionInfo
-              backendURL={backendURL}
-              reader={reader}
-              onSetBackendURL={this.onSetBackendURL}
-              onClickDisconnect={this.disconnectReader}
-            />
-            {this.renderForm()}
+        <Group direction="column" spacing={26}>
+          <Text size={22} color="darkGrey">
+            Stripe Terminal JS Example App
+          </Text>
+          <Group direction="row" spacing={43} responsive>
+            <Group direction="column" spacing={16} responsive>
+              <ConnectionInfo
+                backendURL={backendURL}
+                reader={reader}
+                onSetBackendURL={this.onSetBackendURL}
+                onClickDisconnect={this.disconnectReader}
+              />
+              {this.renderForm()}
+            </Group>
+            <Logs />
           </Group>
-          <Logs />
         </Group>
       </div>
     );
