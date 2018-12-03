@@ -144,8 +144,8 @@ class Logs extends React.Component {
             </Text>
             <Group direction="row" spacing={6}>
               <Button color="white" onClick={this.clearLogs}>
-                <Text size={11} color="darkGrey">
-                  CLEAR
+                <Text size={12} color="darkGrey">
+                  Clear
                 </Text>
               </Button>
             </Group>
