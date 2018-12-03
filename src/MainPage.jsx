@@ -46,6 +46,7 @@ class App extends Component {
       // You can use this callback to alert your user that the reader is no longer connected and will need to be reconnected.
       onUnexpectedReaderDisconnect: Logger.tracedFn(
         "onUnexpectedReaderDisconnect",
+        "https://stripe.com/docs/terminal/js/reference#stripeterminal-create",
         () => {
           alert("Unexpected disconnect from the reader!");
           this.setState({
@@ -58,34 +59,65 @@ class App extends Component {
       // You can use this callback to update your UI with the reader's connection status.
       onConnectionStatusChange: Logger.tracedFn(
         "onConnectionStatusChange",
+        "https://stripe.com/docs/terminal/js/reference#stripeterminal-create",
         ev => {
           this.setState({ connectionStatus: ev.status, reader: null });
         }
       )
     });
-    Logger.watchObject(this.client, "backend", [
-      "createConnectionToken",
-      "registerDevice",
-      "createPaymentIntent",
-      "capturePaymentIntent",
-      "saveSourceToCustomer"
-    ]);
-    Logger.watchObject(this.terminal, "terminal", [
-      "discoverReaders",
-      "connectReader",
-      "setReaderDisplay",
-      "collectPaymentMethod",
-      "cancelCollectPaymentMethod",
-      "confirmPaymentIntent",
-      "readSource"
-    ]);
+    Logger.watchObject(this.client, "backend", {
+      createConnectionToken: {
+        docsUrl: "https://stripe.com/docs/terminal/js#connection-token"
+      },
+      registerDevice: {
+        docsUrl: "https://stripe.com/docs/terminal/js#reader"
+      },
+      createPaymentIntent: {
+        docsUrl: "https://stripe.com/docs/terminal/js/payment#create"
+      },
+      capturePaymentIntent: {
+        docsUrl: "https://stripe.com/docs/terminal/js/payment#capture"
+      },
+      saveSourceToCustomer: {
+        docsUrl: "https://stripe.com/docs/terminal/js/workflows#save-source"
+      }
+    });
+    Logger.watchObject(this.terminal, "terminal", {
+      discoverReaders: {
+        docsUrl: "https://stripe.com/docs/terminal/js#reader"
+      },
+      connectReader: {
+        docsUrl: "https://stripe.com/docs/terminal/js#reader"
+      },
+      setReaderDisplay: {
+        docsUrl:
+          "https://stripe.com/docs/terminal/js/workflows#customize-the-display-during-a-payment"
+      },
+      collectPaymentMethod: {
+        docsUrl: "https://stripe.com/docs/terminal/js/payment#confirm"
+      },
+      cancelCollectPaymentMethod: {
+        docsUrl:
+          "https://stripe.com/docs/terminal/js/reference#cancel-collect-payment-method"
+      },
+      confirmPaymentIntent: {
+        docsUrl: "https://stripe.com/docs/terminal/js/payment#confirm"
+      },
+      readSource: {
+        docsUrl: "https://stripe.com/docs/terminal/js/workflows#read-source"
+      },
+      cancelReadSource: {
+        docsUrl:
+          "https://stripe.com/docs/terminal/js/reference#cancel-read-source"
+      }
+    });
   }
 
   // 2. Discover and connect to a reader.
-  discoverReaders = async (useSimulator = false) => {
-    // 2a. Discover either simulated or registered readers to connect to.
+  discoverReaders = async () => {
+    // 2a. Discover registered readers to connect to.
     const discoverResult = await this.terminal.discoverReaders({
-      method: useSimulator ? "simulated" : "registered"
+      method: "registered"
     });
 
     if (discoverResult.error) {
@@ -97,6 +129,13 @@ class App extends Component {
       });
       return discoverResult.discoveredReaders;
     }
+  };
+
+  connectToSimulator = async () => {
+    const simulatedResult = await this.terminal.discoverReaders({
+      method: "simulated"
+    });
+    await this.connectToReader(simulatedResult.discoveredReaders[0]);
   };
 
   connectToReader = async selectedReader => {
@@ -215,11 +254,6 @@ class App extends Component {
   };
 
   // 4. UI Methods
-  handleUseSimulator = async () => {
-    let simulatedResults = await this.discoverReaders(true);
-    await this.connectToReader(simulatedResults[0]);
-  };
-
   onSetBackendURL = url => {
     this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
@@ -241,7 +275,7 @@ class App extends Component {
           onClickRegister={this.registerAndConnectNewReader}
           readers={discoveredReaders}
           onConnectToReader={this.connectToReader}
-          handleUseSimulator={this.handleUseSimulator}
+          handleUseSimulator={this.connectToSimulator}
         />
       );
     } else {

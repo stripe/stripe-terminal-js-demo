@@ -8,6 +8,7 @@ import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
 import Logger from "../logger";
 import Text from "../components/Text/Text.jsx";
+import Link from "../components/Link/Link.jsx";
 
 class Logs extends React.Component {
   constructor(props) {
@@ -74,7 +75,11 @@ class Logs extends React.Component {
       >
         <Group direction="column">
           {logs.reverse().map((log, i) => {
-            const isErrored = log.exception;
+            const returnType = log.response
+              ? "RESPONSE"
+              : log.exception
+              ? "EXCEPTION"
+              : "VOID";
             return (
               <div
                 className={css`
@@ -89,6 +94,12 @@ class Logs extends React.Component {
                     alignment={{ justifyContent: "space-between" }}
                   >
                     <Text color="code">{log.method}</Text>
+                    <Link
+                      size={16}
+                      href={log.docsUrl}
+                      text="See more on the docs page!"
+                      newWindow
+                    />
                     <Text color="lightGrey" size={12}>
                       <code>{new Date(log.start_time_ms).toString()}</code>
                     </Text>
@@ -106,20 +117,22 @@ class Logs extends React.Component {
                     </pre>
                   </Text>
 
-                  <Text color="link">
-                    {isErrored ? "EXCEPTION" : "RESPONSE"}
-                  </Text>
-                  <Text color="lightGrey">
-                    <pre>
-                      <code
-                        className={css`
-                          color: #8792a2;
-                        `}
-                      >
-                        {this.renderJSON(log.response || log.exception)}
-                      </code>
-                    </pre>
-                  </Text>
+                  <Text color="link">{returnType}</Text>
+                  {returnType != "VOID" ? (
+                    <Text color="lightGrey">
+                      <pre>
+                        <code
+                          className={css`
+                            color: #8792a2;
+                          `}
+                        >
+                          {this.renderJSON(log.response || log.exception)}
+                        </code>
+                      </pre>
+                    </Text>
+                  ) : (
+                    ""
+                  )}
                 </Group>
               </div>
             );

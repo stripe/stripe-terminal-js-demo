@@ -24,7 +24,12 @@ npm run start
 
 4. In the Backend URL form, enter the URL of the Heroku app you deployed in in step 1.
 
-You can now play around with the example app, which includes a logs panel that shows whats happening behind the scenes.
+As you click around and try the different supported workflows, you can see everything happening behind the scenes in the logs panel!
+
+## Using the Simulator
+With the simulator, you can get started before getting an invite into the beta program!
+After setting up the example backend and starting the example app just hit the 'Use Simulator' button to connect to a simulated device.
+After connecting, you will be able to run all the workflows and see the simulated request/response data in the logs panel.
 
 ## SDK Documentation
 - [Getting Started](https://stripe.com/docs/terminal/js)
