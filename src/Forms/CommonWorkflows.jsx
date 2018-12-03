@@ -52,16 +52,6 @@ class CommonWorkflows extends React.Component {
           <Text size={16} color="dark">
             Common workflows
           </Text>
-          {this.state.workFlowInProgress ? (
-            <Text size={14} color="darkGrey">
-              Running workflow...
-            </Text>
-          ) : (
-            <Text size={14} color="darkGrey">
-              Tap a workflow to play. See all method calls and response in the
-              event log.
-            </Text>
-          )}
 
           <Button
             color="white"
