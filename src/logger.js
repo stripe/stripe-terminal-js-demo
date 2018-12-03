@@ -17,7 +17,9 @@ class Logger {
     return async function(...args) {
       let method = methodName || fn.name;
       let requestString = JSON.stringify(args);
+      let UUID = Math.floor(Math.random() * 10000000).toString();
       let trace = {
+        id: UUID,
         start_time_ms: new Date().valueOf(),
         method: method,
         docsUrl: docsUrl,
