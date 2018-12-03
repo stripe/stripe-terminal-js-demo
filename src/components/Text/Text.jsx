@@ -38,6 +38,7 @@ class Text extends React.Component {
             "Helvetica Neue", Ubuntu;
           font-weight: 500;
           letter-spacing: -0.15px;
+          -webkit-font-smoothing: antialiased;
 
           overflow: ${truncate ? "hidden" : "inherit"};
           text-overflow: ${truncate ? "ellipsis" : "inherit"};
