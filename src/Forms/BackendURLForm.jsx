@@ -17,7 +17,7 @@ class BackendURLForm extends React.Component {
   }
 
   onClickInitialize = () => {
-    this.props.onSetBackendURL(this.state.backendURL);
+    this.props.onSetBackendURL(this.state.backendURL.trim());
   };
 
   onChangeBackendURL = str => {
