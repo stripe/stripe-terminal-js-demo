@@ -89,6 +89,9 @@ class App extends Component {
       connectReader: {
         docsUrl: "https://stripe.com/docs/terminal/js#reader"
       },
+      disconnectReader: {
+        docsUrl: "https://stripe.com/docs/terminal/js/reference#disconnect"
+      },
       setReaderDisplay: {
         docsUrl:
           "https://stripe.com/docs/terminal/js/workflows#customize-the-display-during-a-payment"

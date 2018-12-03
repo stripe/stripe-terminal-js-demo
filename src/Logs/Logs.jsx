@@ -21,7 +21,6 @@ class Logs extends React.Component {
   }
 
   collect(log) {
-    console.log(log);
     this.setState(state => ({
       logs: [log, ...state.logs]
     }));
@@ -65,6 +64,9 @@ class Logs extends React.Component {
 
   renderRequestJSON(req) {
     const json = JSON.parse(req);
+    if (json.length === 0) {
+      return "()";
+    }
     return JSON.stringify(json[0], undefined, 2);
   }
 
