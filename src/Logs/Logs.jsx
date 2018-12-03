@@ -93,13 +93,18 @@ class Logs extends React.Component {
                     direction="row"
                     alignment={{ justifyContent: "space-between" }}
                   >
-                    <Text color="code">{log.method}</Text>
-                    <Link
-                      size={16}
-                      href={log.docsUrl}
-                      text="See more on the docs page!"
-                      newWindow
-                    />
+                    <Group direction="row" alignment={{ alignItems: "center" }}>
+                      <Text color="code" size={14}>
+                        {log.method}
+                      </Text>
+
+                      <Link
+                        size={14}
+                        href={log.docsUrl}
+                        text="Learn more"
+                        newWindow
+                      />
+                    </Group>
                     <Text color="lightGrey" size={12}>
                       <code>{new Date(log.start_time_ms).toString()}</code>
                     </Text>
