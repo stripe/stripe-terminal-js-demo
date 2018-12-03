@@ -35,7 +35,7 @@ class Logs extends React.Component {
         <Group
           direction="column"
           spacing={8}
-          alignment={{ alignItems: "center" }}
+          alignment={{ alignItems: "center", textAlign: "center" }}
         >
           <Text>{`{}`}</Text>
           <Text size={14}>Welcome to the Stripe Terminal reference app</Text>
