@@ -45,13 +45,19 @@ class RegisterNewReader extends React.Component {
             register the device. Enter the key sequence 0-7-1-3-9 on the reader
             to display its unique registration code.
           </Text>
+          <Text size={14} color="darkGrey">
+            Reader code
+          </Text>
           <TextInput
-            placeholder="Reader code"
+            placeholder="quick-brown-fox"
             value={readerCode}
             onChange={this.onChangeReaderCode}
           />
+          <Text size={14} color="darkGrey">
+            Reader label
+          </Text>
           <TextInput
-            placeholder="Reader label"
+            placeholder="Front desk"
             value={readerLabel}
             onChange={this.onChangeReaderLabel}
           />
