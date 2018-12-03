@@ -53,9 +53,7 @@ class BackendURLForm extends React.Component {
               direction="row"
               alignment={{ justifyContent: "space-between" }}
             >
-              <Text size={12} color="lightGrey">
-                Some info here about this backend URL.
-              </Text>
+              <div />
               <Button
                 onClick={this.onClickInitialize}
                 disabled={backendURL === "" || backendURL === null}
