@@ -137,7 +137,10 @@ class Logs extends React.Component {
           <Group
             direction="row"
             spacing={0}
-            alignment={{ justifyContent: "space-between" }}
+            alignment={{
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
           >
             <Text size="16px" color="grey">
               Logs
