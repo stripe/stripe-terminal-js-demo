@@ -1,6 +1,6 @@
-# Stripe Terminal JS <img src="https://img.shields.io/badge/Beta-brightgreen.svg">
+# Stripe Terminal JS
 
-[Request a Beta invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
+[Request an invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
 
 ## Try the example app
 The JS SDK includes an open-source example app in React, which you can use to familiarize yourself with the SDK and reader before starting your own integration. The SDK comes with a reader simulator, so you can get started without any physical hardware!
