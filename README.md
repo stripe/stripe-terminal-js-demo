@@ -6,12 +6,25 @@
 The JS SDK includes an open-source example app in React, which you can use to familiarize yourself with the SDK and reader before starting your own integration. The SDK comes with a reader simulator, so you can get started without any physical hardware!
 
 The example app supports:
-- Connecting and using the simulator
+- Connecting and using the simulator:
+  - Docs: https://stripe.com/docs/terminal/js#reader
+  - In the Project: https://github.com/stripe/example-terminal-js-client/blob/master/src/MainPage.jsx#L137
 - Setting line items on the reader display
+  - Docs: https://stripe.com/docs/terminal/js/workflows#customize-the-display-during-a-payment
+  - In the Project: https://github.com/stripe/example-terminal-js-client/blob/master/src/MainPage.jsx#L182
 - Collecting card payments
-- Saving a card presented in store to a [Customer](https://stripe.com/docs/api/customers), so it can be used for subscriptions and other recurring billing
+  - Docs: https://stripe.com/docs/terminal/js/payment
+  - In the Project: https://github.com/stripe/example-terminal-js-client/blob/master/src/MainPage.jsx#L204
+- Saving a card presented in store to a [Customer](https://stripe.com/docs/api/customers), so it can be used for subscriptions 
+and other recurring billing
+  - Docs: https://stripe.com/docs/terminal/js/workflows#read-source
+  - In the Project: https://github.com/stripe/example-terminal-js-client/blob/master/src/MainPage.jsx#L261
 - Registering and connecting to a new reader (Invite to Beta needed to get hardware)
+  - Docs: https://stripe.com/docs/terminal/js#reader
+  - In the Project: https://github.com/stripe/example-terminal-js-client/blob/master/src/MainPage.jsx#L167
 - Discovering and connecting to a previously registered reader (Invite to Beta needed to get hardware)
+  - Docs: https://stripe.com/docs/terminal/js#reader
+  - In the Project: https://github.com/stripe/example-terminal-js-client/blob/master/src/MainPage.jsx#L120
 
 To set up and run the example app locally, you'll need to:
 1. Navigate to our [example backend](https://github.com/stripe/example-terminal-backend) and click the button to deploy it on Heroku or run it locally.
