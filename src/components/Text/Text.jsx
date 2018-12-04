@@ -18,7 +18,7 @@ class Text extends React.Component {
       case "darkGrey":
         return "#697386";
       case "link":
-        return "#78ACF8";
+        return "#586ADA";
       case "white":
         return "#FFFFFF";
       case "code":

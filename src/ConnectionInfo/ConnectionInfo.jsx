@@ -42,7 +42,7 @@ class ConnectionInfo extends React.Component {
               </Group>
               <Button color="white" onClick={this.onChangeBackendURL}>
                 <Text nowrap color="dark">
-                  Change URL
+                  Change
                 </Text>
               </Button>
             </Group>
@@ -50,7 +50,7 @@ class ConnectionInfo extends React.Component {
             <Group direction="row">
               <Icon icon="lock" />
               <Text color="lightGrey" size={14}>
-                Set backend URL
+                Connect to backend server
               </Text>
             </Group>
           )}
