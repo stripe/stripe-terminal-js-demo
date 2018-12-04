@@ -3,7 +3,7 @@
 [Request an invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
 
 ## Try the example app
-
+![Example App Main Page](JSExampleApp-MainPage.png)
 The JS SDK includes an open-source example app in React, which you can use to familiarize yourself with the SDK and reader before starting your own integration. The SDK comes with a reader simulator, so you can get started without any physical hardware!
 
 The example app supports:
