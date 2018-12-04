@@ -1,11 +1,12 @@
 class Logger {
   static collectors = [];
+  static serializer = Promise.resolve;
 
   static setCollectors(collectors) {
     this.collectors = collectors;
   }
 
-  static forwardToCollectors(log) {
+  static async forwardToCollectors(log) {
     this.collectors.forEach(collector => collector.collect(log));
   }
 

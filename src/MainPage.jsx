@@ -164,11 +164,18 @@ class App extends Component {
     });
   };
 
-  registerAndConnectNewReader = async (label, code) => {
-    let reader = await this.client.registerDevice(label, code);
-    // After registering a new reader, we can connect immediately using the reader object returned from the server.
-    await this.connectToReader(reader);
-    console.log("Registered and Connected Successfully!");
+  registerAndConnectNewReader = async (label, registrationCode) => {
+    try {
+      let reader = await this.client.registerDevice({
+        label,
+        registrationCode
+      });
+      // After registering a new reader, we can connect immediately using the reader object returned from the server.
+      await this.connectToReader(reader);
+      console.log("Registered and Connected Successfully!");
+    } catch (e) {
+      // Suppress backend errors since they will be shown in logs
+    }
   };
 
   // 3. Terminal Workflows (Once connected to a reader)
@@ -198,12 +205,17 @@ class App extends Component {
     // We want to reuse the same PaymentIntent object in the case of declined charges, so we
     // store the pending PaymentIntent's secret until the payment is complete.
     if (!this.pendingPaymentIntentSecret) {
-      let createIntentResponse = await this.client.createPaymentIntent(
-        App.CHARGE_AMOUNT,
-        "usd",
-        "Test Charge"
-      );
-      this.pendingPaymentIntentSecret = createIntentResponse.secret;
+      try {
+        let createIntentResponse = await this.client.createPaymentIntent({
+          amount: App.CHARGE_AMOUNT,
+          currency: "usd",
+          description: "Test Charge"
+        });
+        this.pendingPaymentIntentSecret = createIntentResponse.secret;
+      } catch (e) {
+        // Suppress backend errors since they will be shown in logs
+        return;
+      }
     }
     // Read a card from the customer
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
@@ -222,13 +234,18 @@ class App extends Component {
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
-        // Capture the PaymentIntent from your backend client and mark the payment as complete
-        let captureResult = await this.client.capturePaymentIntent(
-          confirmResult.paymentIntent.id
-        );
-        this.pendingPaymentIntentSecret = null;
-        console.log("Payment Successful!");
-        return captureResult;
+        try {
+          // Capture the PaymentIntent from your backend client and mark the payment as complete
+          let captureResult = await this.client.capturePaymentIntent({
+            paymentIntentId: confirmResult.paymentIntent.id
+          });
+          this.pendingPaymentIntentSecret = null;
+          console.log("Payment Successful!");
+          return captureResult;
+        } catch (e) {
+          // Suppress backend errors since they will be shown in logs
+          return;
+        }
       }
     }
   };
@@ -247,12 +264,17 @@ class App extends Component {
     if (readSourceResult.error) {
       alert(`Read source failed: ${readSourceResult.error.message}`);
     } else {
-      // Then, pass the source to your backend client to save it to a customer
-      let customer = await this.client.saveSourceToCustomer(
-        readSourceResult.source.id
-      );
-      console.log("Source Saved to Customer!", customer);
-      return customer;
+      try {
+        // Then, pass the source to your backend client to save it to a customer
+        let customer = await this.client.saveSourceToCustomer({
+          sourceId: readSourceResult.source.id
+        });
+        console.log("Source Saved to Customer!", customer);
+        return customer;
+      } catch (e) {
+        // Suppress backend errors since they will be shown in logs
+        return;
+      }
     }
   };
 
