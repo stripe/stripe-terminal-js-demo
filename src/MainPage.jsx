@@ -308,12 +308,15 @@ class App extends Component {
           </Text>
           <Group direction="row" spacing={30} responsive>
             <Group direction="column" spacing={30} responsive>
-              <ConnectionInfo
-                backendURL={backendURL}
-                reader={reader}
-                onSetBackendURL={this.onSetBackendURL}
-                onClickDisconnect={this.disconnectReader}
-              />
+              {backendURL && (
+                <ConnectionInfo
+                  backendURL={backendURL}
+                  reader={reader}
+                  onSetBackendURL={this.onSetBackendURL}
+                  onClickDisconnect={this.disconnectReader}
+                />
+              )}
+
               {this.renderForm()}
             </Group>
             <Logs />
