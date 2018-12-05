@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
+import Icon from "../components/Icon/icon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
@@ -25,9 +26,12 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate nowrap color="dark" size={14}>
-                {backendURL}
-              </Text>
+              <Group direction="row">
+                <Icon icon="lock" />
+                <Text truncate nowrap color="dark" size={14}>
+                  {backendURL}
+                </Text>
+              </Group>
               <Button color="white" onClick={this.onChangeBackendURL}>
                 <Text nowrap color="dark">
                   Change URL
