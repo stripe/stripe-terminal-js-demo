@@ -1,4 +1,4 @@
-# Stripe Terminal JS
+# Stripe Terminal JS Example App
 
 [Request an invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
 
@@ -30,9 +30,9 @@ npm install
 npm run start
 ```
 
-4. In the Backend URL form, enter the URL of the Heroku app you deployed in in step 1.
+3. In the Backend URL form, enter the URL of the Heroku app you deployed in in step 1.
 
-As you click around and try the different supported workflows, you can see everything happening behind the scenes in the logs panel!
+As you try the different workflows, you can see everything happening behind the scenes in the logs panel!
 
 ## Using the Simulator
 With the simulator, you can get started before getting an invite into the beta program!
