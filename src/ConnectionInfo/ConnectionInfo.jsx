@@ -39,9 +39,12 @@ class ConnectionInfo extends React.Component {
               </Button>
             </Group>
           ) : (
-            <Text color="lightGrey" size={14}>
-              Set backend URL
-            </Text>
+            <Group direction="row">
+              <Icon icon="lock" />
+              <Text color="lightGrey" size={14}>
+                Set backend URL
+              </Text>
+            </Group>
           )}
         </Section>
         <Section position="last">
@@ -53,17 +56,23 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate color="dark" size={14}>
-                {reader.label}
-              </Text>
+              <Group direction="row">
+                <Icon icon="keypad" />
+                <Text truncate color="dark" size={14}>
+                  {reader.label}
+                </Text>
+              </Group>
               <Button color="white" onClick={onClickDisconnect}>
                 <Text color="dark">Disconnect</Text>
               </Button>
             </Group>
           ) : (
-            <Text color="lightGrey" size={14}>
-              Connect to a reader
-            </Text>
+            <Group direction="row">
+              <Icon icon="keypad" />
+              <Text color="lightGrey" size={14}>
+                Connect to a reader
+              </Text>
+            </Group>
           )}
         </Section>
       </Group>

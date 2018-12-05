@@ -29,8 +29,7 @@ const ICONS = {
 class Icon extends React.Component {
   render() {
     const { icon } = this.props;
-    console.log(ICONS[icon]);
-    return <img src={ICONS[icon]} />;
+    return <object data={ICONS[icon]} />;
   }
 }
 
