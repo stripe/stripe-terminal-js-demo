@@ -23,9 +23,10 @@ This demo features an developer-focused example for integrating with Stripe Term
 💳 | **Collect a card payment.** You can easily [collect a payment method](https://stripe.com/docs/terminal/js/payment) in-person using the JS SDK and our pre-certified card readers.
 🖥 | **Control the reader display.** The demo shows you how to [display line items on your reader](https://stripe.com/docs/terminal/js/workflows#customize-the-display-during-a-payment). The SDK makes it easy to build a dynamic checkout experience where the reader display updates as items are added.
 💾 | **Read a card without charging.** You can also use the SDK to [read a card without charging it](https://stripe.com/docs/terminal/js/workflows#read-source). This can be useful to defer a payment for later. Note that the transaction will not receive the beneficial rates and liability shift associated with card present transactions. Most integrations should not need to use this workflow. Instead, use our [standard integration](https://stripe.com/docs/terminal/js/payment) for collecting a payment.
+
 ## Running locally
 
-You can also run the example app locally. Run the following commands:
+If you prefer running the example app locally, you can run the following commands:
 ```
 npm install
 npm run start
