@@ -141,7 +141,6 @@ class DiscoverReaders extends React.Component {
             <Button onClick={this.onClickUseSimulator}>
               <Text size={14} color="dark">
                 Use simulator{" "}
-                {/* <InfoTooltip text="Discover a simulated reader provided by the Stripe Terminal SDK. Select this option to try out the SDK without using physical reader hardware." /> */}
               </Text>
             </Button>
           </Group>

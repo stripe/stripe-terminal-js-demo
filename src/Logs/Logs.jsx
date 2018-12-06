@@ -71,7 +71,7 @@ class Logs extends React.Component {
 
   renderLogs(logs) {
     return (
-      <Group direction="column">
+      <div className="Logs-content">
         <TransitionGroup className="todo-list">
           {logs.map(log => {
             const returnType = log.response
@@ -96,22 +96,18 @@ class Logs extends React.Component {
                         direction="row"
                         alignment={{ alignItems: "center" }}
                       >
-                        <Text color="code" size={14}>
-                          {log.method}
-                        </Text>
-
                         <Link
                           size={14}
                           href={log.docsUrl}
-                          text="Learn more"
+                          text={log.method}
                           newWindow
                         />
                       </Group>
                       <Text color="lightGrey" size={12}>
-                        <code>{new Date(log.start_time_ms).toString()}</code>
+                        {new Date(log.start_time_ms).toLocaleString()}
                       </Text>
                     </Group>
-                    <Text color="link">REQUEST</Text>
+                    <Text color="lightGrey">REQUEST</Text>
                     <Text color="lightGrey">
                       <pre>
                         <code
@@ -124,7 +120,7 @@ class Logs extends React.Component {
                       </pre>
                     </Text>
 
-                    <Text color="link">{returnType}</Text>
+                    <Text color="lightGrey">{returnType}</Text>
                     {returnType !== "VOID" ? (
                       <Text color="lightGrey">
                         <pre>
@@ -146,7 +142,7 @@ class Logs extends React.Component {
             );
           })}
         </TransitionGroup>
-      </Group>
+      </div>
     );
   }
 

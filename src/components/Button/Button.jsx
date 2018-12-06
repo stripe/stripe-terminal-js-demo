@@ -29,7 +29,7 @@ class Button extends React.Component {
         return "#484bad";
       case "secondary":
       default:
-        return "#C1C9D2";
+        return "#F7FAFC";
     }
   };
 
@@ -84,7 +84,7 @@ class Button extends React.Component {
           }
 
           :hover {
-            background-color: ${this.getButtonColor(type)};
+            background-color: ${this.getButtonHoverColor(type)};
           }
 
           :focus {

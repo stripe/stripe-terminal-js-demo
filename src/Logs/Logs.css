@@ -29,6 +29,12 @@
     justify-content: center;
 }
 
+.Logs-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .Logs-empty {
     flex: 1;
     display: flex;
