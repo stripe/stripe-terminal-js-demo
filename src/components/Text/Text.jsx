@@ -31,7 +31,7 @@ class Text extends React.Component {
   render() {
     const { children, color, size, truncate, nowrap } = this.props;
     return (
-      <span
+      <div
         className={css`
           line-height: 16px;
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -47,7 +47,7 @@ class Text extends React.Component {
         style={{ fontSize: size || 12, color: this.getColor(color) }}
       >
         {children}
-      </span>
+      </div>
     );
   }
 }

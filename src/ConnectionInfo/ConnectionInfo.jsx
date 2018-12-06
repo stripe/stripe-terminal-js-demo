@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { css } from "emotion";
+
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
 import Icon from "../components/Icon/icon.jsx";
@@ -28,9 +30,15 @@ class ConnectionInfo extends React.Component {
             >
               <Group direction="row">
                 <Icon icon="lock" />
-                <Text truncate nowrap color="dark" size={14}>
-                  {backendURL}
-                </Text>
+                <div
+                  className={css`
+                    width: 130px;
+                  `}
+                >
+                  <Text truncate nowrap color="dark" size={14}>
+                    {backendURL}
+                  </Text>
+                </div>
               </Group>
               <Button color="white" onClick={this.onChangeBackendURL}>
                 <Text nowrap color="dark">
