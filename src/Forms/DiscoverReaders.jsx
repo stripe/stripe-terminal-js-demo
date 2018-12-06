@@ -89,7 +89,7 @@ class DiscoverReaders extends React.Component {
           >
             <ReaderIcon />
             <Text color="darkGrey" size={14}>
-              No reader registered
+              No readers discovered
             </Text>
           </Group>
         </Section>
