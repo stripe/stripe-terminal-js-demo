@@ -7,7 +7,7 @@ const commonCSS = {
   background: "#ffffff",
   boxShadow: "0 3px 6px 0 rgba(0,0,0,0.07)",
   flexShrink: 0,
-  padding: "16px 20px",
+  padding: "16px",
   [breakpoints.laptop]: {
     width: "310px"
   },

@@ -56,6 +56,7 @@ class BackendURLForm extends React.Component {
               <Button
                 onClick={this.onClickInitialize}
                 disabled={backendURL === "" || backendURL === null}
+                color="primary"
               >
                 <Text color="white" size={14}>
                   Connect

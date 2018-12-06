@@ -36,31 +36,34 @@ class RegisterNewReader extends React.Component {
     const { onClickCancel } = this.props;
     return (
       <Section>
-        <Group direction="column" spacing={8}>
-          <Text size={16} color="dark">
-            Register new reader
-          </Text>
-          <Text size={12} color="lightGrey">
-            Before connecting to a reader for the first time, you'll need to
-            register the device. Enter the key sequence 0-7-1-3-9 on the reader
-            to display its unique registration code.
-          </Text>
-          <Text size={14} color="darkGrey">
-            Reader code
-          </Text>
-          <TextInput
-            placeholder="quick-brown-fox"
-            value={readerCode}
-            onChange={this.onChangeReaderCode}
-          />
-          <Text size={14} color="darkGrey">
-            Reader label
-          </Text>
-          <TextInput
-            placeholder="Front desk"
-            value={readerLabel}
-            onChange={this.onChangeReaderLabel}
-          />
+        <Group direction="column" spacing={16}>
+          <Group direction="column" spacing={8}>
+            <Text size={16} color="dark">
+              Register new reader
+            </Text>
+            <Text size={12} color="lightGrey">
+              Enter the key sequence 0-7-1-3-9 on the reader to display its
+              unique registration code.
+            </Text>
+          </Group>
+          <Group direction="column" spacing={8}>
+            <Text size={14} color="darkGrey">
+              Registration code
+            </Text>
+            <TextInput
+              placeholder="quick-brown-fox"
+              value={readerCode}
+              onChange={this.onChangeReaderCode}
+            />
+            <Text size={14} color="darkGrey">
+              Reader label
+            </Text>
+            <TextInput
+              placeholder="Front desk"
+              value={readerLabel}
+              onChange={this.onChangeReaderLabel}
+            />
+          </Group>
           <Group direction="row" alignment={{ justifyContent: "flex-end" }}>
             <Button color="white" onClick={onClickCancel}>
               <Text color="darkGrey" size={14}>
@@ -75,6 +78,7 @@ class RegisterNewReader extends React.Component {
                 readerLabel === null ||
                 readerCode === ""
               }
+              color="primary"
             >
               <Text color="white" size={14}>
                 Register

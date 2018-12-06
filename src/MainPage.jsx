@@ -48,7 +48,7 @@ class App extends Component {
         "onUnexpectedReaderDisconnect",
         "https://stripe.com/docs/terminal/js/reference#stripeterminal-create",
         () => {
-          alert("Unexpected disconnect from the reader!");
+          alert("Unexpected disconnect from the reader");
           this.setState({
             connectionStatus: "not_connected",
             reader: null
@@ -321,13 +321,18 @@ class App extends Component {
     return (
       <div
         className={css`
-          padding: 41px 10vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          padding: 24px;
+          @media (max-width: 800px) {
+            height: auto;
+            padding: 24px;
+          }
         `}
       >
         <Group direction="column" spacing={30}>
-          <Text size={22} color="darkGrey">
-            Stripe Terminal JS Example App
-          </Text>
           <Group direction="row" spacing={30} responsive>
             <Group direction="column" spacing={30} responsive>
               {backendURL && (

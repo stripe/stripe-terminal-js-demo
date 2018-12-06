@@ -40,7 +40,7 @@ class ConnectionInfo extends React.Component {
                   </Text>
                 </div>
               </Group>
-              <Button color="white" onClick={this.onChangeBackendURL}>
+              <Button color="text" onClick={this.onChangeBackendURL}>
                 <Text nowrap color="dark">
                   Change
                 </Text>
@@ -70,8 +70,8 @@ class ConnectionInfo extends React.Component {
                   {reader.label}
                 </Text>
               </Group>
-              <Button color="white" onClick={onClickDisconnect}>
-                <Text color="dark">Disconnect</Text>
+              <Button color="text" onClick={onClickDisconnect}>
+                Disconnect
               </Button>
             </Group>
           ) : (
