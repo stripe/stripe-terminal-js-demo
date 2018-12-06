@@ -4,7 +4,7 @@ import { css } from "emotion";
 
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
-import Icon from "../components/Icon/icon.jsx";
+import Icon from "../components/Icon/Icon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 

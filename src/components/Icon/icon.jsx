@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { css } from "emotion";
+// import { css } from "emotion";
 
 import cancel from "./svg/icon-cancel.svg";
 import card from "./svg/icon-card.svg";
@@ -29,7 +29,7 @@ const ICONS = {
 class Icon extends React.Component {
   render() {
     const { icon } = this.props;
-    return <object data={ICONS[icon]} />;
+    return <object data={ICONS[icon]}>""</object>;
   }
 }
 
