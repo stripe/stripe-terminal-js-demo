@@ -33,8 +33,7 @@ class Button extends React.Component {
             0 2px 5px 0 rgba(43, 45, 80, 0.08),
             0 1px 1.5px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
           display: flex;
-          align-items: center;
-          justify-content: center;
+
           padding: 8px;
 
           :disabled {

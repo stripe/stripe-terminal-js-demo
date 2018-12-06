@@ -29,15 +29,17 @@ class BackendURLForm extends React.Component {
     return (
       <Section>
         <Group direction="column" spacing={18}>
-          <Text size={16} color="dark">
-            1. Deploy{" "}
+          <Group direction="row" spacing={4}>
+            <Text size={16} color="dark">
+              1. Deploy
+            </Text>
             <Link
               size={16}
               href="https://github.com/stripe/example-terminal-backend"
               text="example backend"
               newWindow
             />
-          </Text>
+          </Group>
 
           <Group direction="column">
             <Text size={16} color="dark">

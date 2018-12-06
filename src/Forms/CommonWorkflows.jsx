@@ -4,6 +4,7 @@ import * as React from "react";
 
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
+import Icon from "../components/Icon/Icon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
@@ -48,7 +49,11 @@ class CommonWorkflows extends React.Component {
     const { onClickCancelPayment, cancelablePayment } = this.props;
     return (
       <Section>
-        <Group direction="column" spacing={12}>
+        <Group
+          direction="column"
+          spacing={12}
+          alignment={{ alignItems: "left" }}
+        >
           <Text size={16} color="dark">
             Common workflows
           </Text>
@@ -58,28 +63,40 @@ class CommonWorkflows extends React.Component {
             onClick={this.onRunUpdateLineItemsWorkflow}
             disabled={this.isWorkflowDisabled()}
           >
-            <Text color="blue">Update line items and totals</Text>
+            <Group direction="row">
+              <Icon icon="list" />
+              <Text color="blue">Update line items and totals</Text>
+            </Group>
           </Button>
           <Button
             color="white"
             onClick={this.onRunCollectPaymentWorkflow}
             disabled={this.isWorkflowDisabled()}
           >
-            <Text color="blue">Collect card payment</Text>
+            <Group direction="row">
+              <Icon icon="payments" />
+              <Text color="blue">Collect card payment</Text>
+            </Group>
           </Button>
           <Button
             color="white"
             onClick={this.onRunSaveCardWorkflow}
             disabled={this.isWorkflowDisabled()}
           >
-            <Text color="blue">Save card for future use</Text>
+            <Group direction="row">
+              <Icon icon="card" />
+              <Text color="blue">Save card for future use</Text>
+            </Group>
           </Button>
           <Button
             color="white"
             onClick={onClickCancelPayment}
             disabled={!cancelablePayment}
           >
-            <Text color="blue">Cancel payment</Text>
+            <Group direction="row">
+              <Icon icon="cancel" />
+              <Text color="blue">Cancel payment</Text>
+            </Group>
           </Button>
         </Group>
       </Section>

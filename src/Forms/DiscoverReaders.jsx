@@ -85,8 +85,9 @@ class DiscoverReaders extends React.Component {
           <Group
             direction="column"
             spacing={12}
-            alignment={{ justifyContent: "center" }}
+            alignment={{ justifyContent: "center", alignItems: "center" }}
           >
+            <ReaderIcon />
             <Text color="darkGrey" size={14}>
               No reader registered
             </Text>

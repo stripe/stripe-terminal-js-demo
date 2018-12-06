@@ -1,17 +1,17 @@
 import * as React from "react";
 
-import { css } from "emotion";
+// import { css } from "emotion";
 
-import cancel from "./icon-cancel.svg";
-import card from "./icon-card.svg";
-import chevronDown from "./icon-chevrondown.svg";
-import keypad from "./icon-keypad.svg";
-import list from "./icon-list.svg";
-import lock from "./icon-lock.svg";
-import more from "./icon-more.svg";
-import payments from "./icon-payments.svg";
-import reader from "./icon-reader.svg";
-import refresh from "./icon-refresh.svg";
+import cancel from "./svg/icon-cancel.svg";
+import card from "./svg/icon-card.svg";
+import chevronDown from "./svg/icon-chevrondown.svg";
+import keypad from "./svg/icon-keypad.svg";
+import list from "./svg/icon-list.svg";
+import lock from "./svg/icon-lock.svg";
+import more from "./svg/icon-more.svg";
+import payments from "./svg/icon-payments.svg";
+import reader from "./svg/icon-reader.svg";
+import refresh from "./svg/icon-refresh.svg";
 
 const ICONS = {
   cancel,
@@ -28,7 +28,8 @@ const ICONS = {
 
 class Icon extends React.Component {
   render() {
-    return null;
+    const { icon } = this.props;
+    return <object data={ICONS[icon]}>""</object>;
   }
 }
 

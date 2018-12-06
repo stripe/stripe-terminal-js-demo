@@ -1,7 +1,10 @@
 import * as React from "react";
 
+import { css } from "emotion";
+
 import Button from "../components/Button/Button.jsx";
 import Group from "../components/Group/Group.jsx";
+import Icon from "../components/Icon/Icon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
@@ -25,9 +28,18 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate nowrap color="dark" size={14}>
-                {backendURL}
-              </Text>
+              <Group direction="row">
+                <Icon icon="lock" />
+                <div
+                  className={css`
+                    width: 130px;
+                  `}
+                >
+                  <Text truncate nowrap color="dark" size={14}>
+                    {backendURL}
+                  </Text>
+                </div>
+              </Group>
               <Button color="white" onClick={this.onChangeBackendURL}>
                 <Text nowrap color="dark">
                   Change URL
@@ -35,9 +47,12 @@ class ConnectionInfo extends React.Component {
               </Button>
             </Group>
           ) : (
-            <Text color="lightGrey" size={14}>
-              Set backend URL
-            </Text>
+            <Group direction="row">
+              <Icon icon="lock" />
+              <Text color="lightGrey" size={14}>
+                Set backend URL
+              </Text>
+            </Group>
           )}
         </Section>
         <Section position="last">
@@ -49,17 +64,23 @@ class ConnectionInfo extends React.Component {
                 alignItems: "center"
               }}
             >
-              <Text truncate color="dark" size={14}>
-                {reader.label}
-              </Text>
+              <Group direction="row">
+                <Icon icon="keypad" />
+                <Text truncate color="dark" size={14}>
+                  {reader.label}
+                </Text>
+              </Group>
               <Button color="white" onClick={onClickDisconnect}>
                 <Text color="dark">Disconnect</Text>
               </Button>
             </Group>
           ) : (
-            <Text color="lightGrey" size={14}>
-              Connect to a reader
-            </Text>
+            <Group direction="row">
+              <Icon icon="keypad" />
+              <Text color="lightGrey" size={14}>
+                Connect to a reader
+              </Text>
+            </Group>
           )}
         </Section>
       </Group>
