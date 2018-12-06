@@ -61,7 +61,9 @@ class CommonWorkflows extends React.Component {
             >
               <Group direction="row">
                 <Icon icon="list" />
-                <Text color="blue">Update line items and totals</Text>
+                <Text color="blue" size={14}>
+                  Update line items and totals
+                </Text>
               </Group>
             </Button>
             <Button
@@ -71,7 +73,9 @@ class CommonWorkflows extends React.Component {
             >
               <Group direction="row">
                 <Icon icon="payments" />
-                <Text color="blue">Collect card payment</Text>
+                <Text color="blue" size={14}>
+                  Collect card payment
+                </Text>
               </Group>
             </Button>
             <Button
@@ -81,7 +85,9 @@ class CommonWorkflows extends React.Component {
             >
               <Group direction="row">
                 <Icon icon="card" />
-                <Text color="blue">Save card for future use</Text>
+                <Text color="blue" size={14}>
+                  Save card for future use
+                </Text>
               </Group>
             </Button>
             <Button
@@ -91,7 +97,9 @@ class CommonWorkflows extends React.Component {
             >
               <Group direction="row">
                 <Icon icon="cancel" />
-                <Text color="blue">Cancel payment</Text>
+                <Text color="blue" size={14}>
+                  Cancel payment
+                </Text>
               </Group>
             </Button>
           </Group>

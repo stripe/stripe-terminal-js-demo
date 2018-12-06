@@ -41,9 +41,7 @@ class ConnectionInfo extends React.Component {
                 </div>
               </Group>
               <Button color="text" onClick={this.onChangeBackendURL}>
-                <Text nowrap color="dark">
-                  Change
-                </Text>
+                Change
               </Button>
             </Group>
           ) : (

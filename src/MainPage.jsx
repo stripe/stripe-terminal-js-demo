@@ -334,7 +334,7 @@ class App extends Component {
       >
         <Group direction="column" spacing={30}>
           <Group direction="row" spacing={30} responsive>
-            <Group direction="column" spacing={30} responsive>
+            <Group direction="column" spacing={16} responsive>
               {backendURL && (
                 <ConnectionInfo
                   backendURL={backendURL}
