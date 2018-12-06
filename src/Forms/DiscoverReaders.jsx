@@ -6,7 +6,6 @@ import Group from "../components/Group/Group.jsx";
 import ReaderIcon from "../components/Icon/reader/ReaderIcon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
-import InfoTooltip from "../components/InfoTooltip/InfoTooltip.jsx";
 
 class DiscoverReaders extends React.Component {
   constructor(props) {

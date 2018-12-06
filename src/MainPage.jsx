@@ -9,7 +9,6 @@ import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Readers from "./Forms/Readers.jsx";
 import Group from "./components/Group/Group.jsx";
 import Logs from "./Logs/Logs.jsx";
-import Text from "./components//Text/Text.jsx";
 
 import { css } from "emotion";
 

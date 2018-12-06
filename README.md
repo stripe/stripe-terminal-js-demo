@@ -10,7 +10,7 @@ To use the demo, you'll need to deploy our example backend. Navigate to our [exa
 
 ## Overview
 
-<img src="JSExampleApp-MainPage.gif" alt="Demo" width="610">
+<img src="JSExampleApp_MainPage.gif" alt="Demo" width="610">
 
 This demo features an developer-focused example for integrating with Stripe Terminal on the web: 
 
