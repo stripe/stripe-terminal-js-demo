@@ -34,18 +34,17 @@ class Logs extends React.Component {
 
   renderEmpty() {
     return (
-      <div className="Logs-body">
+      <div className="Logs-empty">
         <Group
           direction="column"
           spacing={8}
           alignment={{ alignItems: "center", textAlign: "center" }}
         >
-          <Text>{`{}`}</Text>
           <Text size={14}>Welcome to the Stripe Terminal reference app</Text>
-          <Text size={11} color="lightGrey">
-            Start by filling your backend URL then connect to a reader. The SDK
-            comes with a simple reader simulator, so you can get started without
-            any physical hardware.
+          <Text size={12} color="lightGrey">
+            Start by filling your backend server URL, then connect to a reader.
+            The SDK comes with a simple reader simulator, so you can get started
+            without any physical hardware.
           </Text>
         </Group>
       </div>
@@ -72,53 +71,57 @@ class Logs extends React.Component {
 
   renderLogs(logs) {
     return (
-      <div
-        className={css`
-          overflow-y: scroll;
-          height: 550px;
-        `}
-      >
-        <Group direction="column">
-          <TransitionGroup className="todo-list">
-            {logs.map(log => {
-              const returnType = log.response
-                ? "RESPONSE"
-                : log.exception
-                ? "EXCEPTION"
-                : "VOID";
-              return (
-                <CSSTransition key={log.id} timeout={500} classNames="fade">
-                  <div
-                    className={css`
-                      border-bottom: 1px solid #4e566d;
-                      padding: 20px;
-                    `}
-                  >
-                    <Group direction="column">
+      <div className="Logs-content">
+        <TransitionGroup className="todo-list">
+          {logs.map(log => {
+            const returnType = log.response
+              ? "RESPONSE"
+              : log.exception
+              ? "EXCEPTION"
+              : "VOID";
+            return (
+              <CSSTransition key={log.id} timeout={500} classNames="fade">
+                <div
+                  className={css`
+                    border-bottom: 1px solid #4e566d;
+                    padding: 20px;
+                  `}
+                >
+                  <Group direction="column">
+                    <Group
+                      direction="row"
+                      alignment={{ justifyContent: "space-between" }}
+                    >
                       <Group
                         direction="row"
-                        alignment={{ justifyContent: "space-between" }}
+                        alignment={{ alignItems: "center" }}
                       >
-                        <Group
-                          direction="row"
-                          alignment={{ alignItems: "center" }}
-                        >
-                          <Text color="code" size={14}>
-                            {log.method}
-                          </Text>
-
-                          <Link
-                            size={14}
-                            href={log.docsUrl}
-                            text="Learn more"
-                            newWindow
-                          />
-                        </Group>
-                        <Text color="lightGrey" size={12}>
-                          <code>{new Date(log.start_time_ms).toString()}</code>
-                        </Text>
+                        <Link
+                          size={14}
+                          href={log.docsUrl}
+                          text={log.method}
+                          newWindow
+                        />
                       </Group>
-                      <Text color="link">REQUEST</Text>
+                      <Text color="lightGrey" size={12}>
+                        {new Date(log.start_time_ms).toLocaleString()}
+                      </Text>
+                    </Group>
+                    <Text color="lightGrey">REQUEST</Text>
+                    <Text color="lightGrey">
+                      <pre>
+                        <code
+                          className={css`
+                            color: #8792a2;
+                          `}
+                        >
+                          {this.renderRequestJSON(log.request)}
+                        </code>
+                      </pre>
+                    </Text>
+
+                    <Text color="lightGrey">{returnType}</Text>
+                    {returnType !== "VOID" ? (
                       <Text color="lightGrey">
                         <pre>
                           <code
@@ -126,34 +129,19 @@ class Logs extends React.Component {
                               color: #8792a2;
                             `}
                           >
-                            {this.renderRequestJSON(log.request)}
+                            {this.renderJSON(log.response || log.exception)}
                           </code>
                         </pre>
                       </Text>
-
-                      <Text color="link">{returnType}</Text>
-                      {returnType !== "VOID" ? (
-                        <Text color="lightGrey">
-                          <pre>
-                            <code
-                              className={css`
-                                color: #8792a2;
-                              `}
-                            >
-                              {this.renderJSON(log.response || log.exception)}
-                            </code>
-                          </pre>
-                        </Text>
-                      ) : (
-                        ""
-                      )}
-                    </Group>
-                  </div>
-                </CSSTransition>
-              );
-            })}
-          </TransitionGroup>
-        </Group>
+                    ) : (
+                      ""
+                    )}
+                  </Group>
+                </div>
+              </CSSTransition>
+            );
+          })}
+        </TransitionGroup>
       </div>
     );
   }
@@ -163,27 +151,16 @@ class Logs extends React.Component {
     return (
       <div className="Logs">
         <div className="Logs-header">
-          <Group
-            direction="row"
-            spacing={0}
-            alignment={{
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}
-          >
-            <Text size="16px" color="grey">
-              Logs
-            </Text>
-            <Group direction="row" spacing={6}>
-              <Button color="white" onClick={this.clearLogs}>
-                <Text size={12} color="darkGrey">
-                  Clear
-                </Text>
-              </Button>
-            </Group>
-          </Group>
+          <Text size="16px" color="grey">
+            Logs
+          </Text>
+          <Button color="textDark" onClick={this.clearLogs}>
+            Clear
+          </Button>
         </div>
-        {logs.length < 1 ? this.renderEmpty() : this.renderLogs(logs)}
+        <div className="Logs-body">
+          {logs.length < 1 ? this.renderEmpty() : this.renderLogs(logs)}
+        </div>
       </div>
     );
   }

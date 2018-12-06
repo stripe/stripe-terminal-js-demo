@@ -49,55 +49,60 @@ class CommonWorkflows extends React.Component {
     const { onClickCancelPayment, cancelablePayment } = this.props;
     return (
       <Section>
-        <Group
-          direction="column"
-          spacing={12}
-          alignment={{ alignItems: "left" }}
-        >
+        <Group direction="column" spacing={16}>
           <Text size={16} color="dark">
             Common workflows
           </Text>
-
-          <Button
-            color="white"
-            onClick={this.onRunUpdateLineItemsWorkflow}
-            disabled={this.isWorkflowDisabled()}
-          >
-            <Group direction="row">
-              <Icon icon="list" />
-              <Text color="blue">Update line items and totals</Text>
-            </Group>
-          </Button>
-          <Button
-            color="white"
-            onClick={this.onRunCollectPaymentWorkflow}
-            disabled={this.isWorkflowDisabled()}
-          >
-            <Group direction="row">
-              <Icon icon="payments" />
-              <Text color="blue">Collect card payment</Text>
-            </Group>
-          </Button>
-          <Button
-            color="white"
-            onClick={this.onRunSaveCardWorkflow}
-            disabled={this.isWorkflowDisabled()}
-          >
-            <Group direction="row">
-              <Icon icon="card" />
-              <Text color="blue">Save card for future use</Text>
-            </Group>
-          </Button>
-          <Button
-            color="white"
-            onClick={onClickCancelPayment}
-            disabled={!cancelablePayment}
-          >
-            <Group direction="row">
-              <Icon icon="cancel" />
-              <Text color="blue">Cancel payment</Text>
-            </Group>
-          </Button>
+          <Group direction="column" spacing={8}>
+            <Button
+              color="white"
+              onClick={this.onRunUpdateLineItemsWorkflow}
+              disabled={this.isWorkflowDisabled()}
+            >
+              <Group direction="row">
+                <Icon icon="list" />
+                <Text color="blue" size={14}>
+                  Update line items and totals
+                </Text>
+              </Group>
+            </Button>
+            <Button
+              color="white"
+              onClick={this.onRunCollectPaymentWorkflow}
+              disabled={this.isWorkflowDisabled()}
+            >
+              <Group direction="row">
+                <Icon icon="payments" />
+                <Text color="blue" size={14}>
+                  Collect card payment
+                </Text>
+              </Group>
+            </Button>
+            <Button
+              color="white"
+              onClick={this.onRunSaveCardWorkflow}
+              disabled={this.isWorkflowDisabled()}
+            >
+              <Group direction="row">
+                <Icon icon="card" />
+                <Text color="blue" size={14}>
+                  Save card for future use
+                </Text>
+              </Group>
+            </Button>
+            <Button
+              color="white"
+              onClick={onClickCancelPayment}
+              disabled={!cancelablePayment}
+            >
+              <Group direction="row">
+                <Icon icon="cancel" />
+                <Text color="blue" size={14}>
+                  Cancel payment
+                </Text>
+              </Group>
+            </Button>
+          </Group>
         </Group>
       </Section>
     );

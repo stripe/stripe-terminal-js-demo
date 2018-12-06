@@ -3,38 +3,80 @@ import * as React from "react";
 import { css } from "emotion";
 
 class Button extends React.Component {
-  getColor = color => {
+  getButtonColor = color => {
     switch (color) {
-      case "dark":
-        return "#3B415E";
-      case "grey":
-        return "#C1C9D2";
-      case "lightGrey":
-        return "#8792A2";
-      case "link":
-        return "#78ACF8";
-      case "white":
+      case "primary":
+        return "#586ADA";
+      case "secondary":
+      default:
         return "#FFFFFF";
-      case "default":
+    }
+  };
+
+  getTextButtonColor = color => {
+    switch (color) {
+      case "textDark":
+        return "#78acf8";
+      case "text":
       default:
         return "#586ADA";
     }
   };
 
-  render() {
-    const { children, color, disabled, onClick } = this.props;
+  getButtonHoverColor = color => {
+    switch (color) {
+      case "primary":
+        return "#484bad";
+      case "secondary":
+      default:
+        return "#F7FAFC";
+    }
+  };
 
-    return (
-      <button
-        className={css`
-          background: ${this.getColor(color)};
-          border-radius: 4px 4px 4px 4px;
-          box-shadow: 0 0 0 1px rgba(43, 45, 80, 0.1),
-            0 2px 5px 0 rgba(43, 45, 80, 0.08),
-            0 1px 1.5px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  getButtonStyles = type => {
+    switch (type) {
+      case "text":
+      case "textDark":
+        return css`
+          font-weight: 600;
+          font-size: 11px;
+          color: ${this.getTextButtonColor(type)};
+          letter-spacing: 0.06px;
+          background: transparent;
+          text-transform: uppercase;
+          border: 0;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          padding: 0;
+
+          :hover {
+            color: #9fcdff;
+          }
+
+          :focus {
+            outline: 0;
+          }
+        `;
+      case "primary":
+      case "secondary":
+      case "default":
+      default:
+        return css`
+          background: ${this.getButtonColor(type)};
+          box-shadow: 0 0 0 1px rgba(50, 50, 93, 0.1),
+            0 2px 5px 0 rgba(50, 50, 93, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.07);
+          border-radius: 4px;
+          border: 0;
+          padding: 6px 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          height: 28px;
+
           display: flex;
 
-          padding: 8px;
+          align-items: center;
+          justify-content: center;
 
           :disabled {
             pointer-events: none;
@@ -42,13 +84,22 @@ class Button extends React.Component {
           }
 
           :hover {
-            opacity: 0.8;
+            background-color: ${this.getButtonHoverColor(type)};
           }
 
           :focus {
             outline: 0;
           }
-        `}
+        `;
+    }
+  };
+
+  render() {
+    const { children, disabled, onClick, color } = this.props;
+
+    return (
+      <button
+        className={this.getButtonStyles(color)}
         onClick={onClick}
         disabled={disabled}
       >

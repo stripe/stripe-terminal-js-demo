@@ -12,13 +12,17 @@
     border: 0;
     padding: 8px;
 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu;
-    font-weight: 500;
     letter-spacing: -0.15px;
     font-size: 14px;
+
+    transition: all 0.2s ease;
 }
 
 .TextInput:focus {
-    box-shadow: 0 0 0 1px rgba(6,122,184, 0.2),
+    box-shadow: 0 0 0 2px rgba(6,122,184, 0.2),
     0 0 0 2px rgba(6,122,184, 0.25), 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.TextInput::placeholder {
+    color: #A3ACB9;
 }

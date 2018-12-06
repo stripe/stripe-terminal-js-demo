@@ -18,7 +18,7 @@ class Text extends React.Component {
       case "darkGrey":
         return "#697386";
       case "link":
-        return "#78ACF8";
+        return "#586ADA";
       case "white":
         return "#FFFFFF";
       case "code":
@@ -43,6 +43,7 @@ class Text extends React.Component {
           overflow: ${truncate ? "hidden" : "inherit"};
           text-overflow: ${truncate ? "ellipsis" : "inherit"};
           white-space: ${nowrap ? "nowrap" : "inherit"};
+          display: ${truncate ? "block" : "inline"};
         `}
         style={{ fontSize: size || 12, color: this.getColor(color) }}
       >

@@ -68,7 +68,7 @@ class DiscoverReaders extends React.Component {
               </Group>
               <Button
                 disabled={isOffline}
-                color={isOffline ? "white" : "default"}
+                color={isOffline ? "white" : "primary"}
                 onClick={this.onConnectToReader(reader)}
               >
                 <Text size={14} color={isOffline ? "darkGrey" : "white"}>
@@ -88,8 +88,11 @@ class DiscoverReaders extends React.Component {
             alignment={{ justifyContent: "center", alignItems: "center" }}
           >
             <ReaderIcon />
-            <Text color="darkGrey" size={14}>
-              No readers discovered
+
+            <Text color="darkGrey" size={12}>
+              Register a new reader, then discover readers on your account. You
+              can also use the reader simulator provided by the SDK if you don't
+              have hardware.
             </Text>
           </Group>
         </Section>
@@ -115,10 +118,10 @@ class DiscoverReaders extends React.Component {
             }}
           >
             <Text size={16} color="dark">
-              Readers
+              Connect to a reader
             </Text>
-            <Button color="white" onClick={this.onTriggerDiscoverReaders}>
-              <Text color="dark">Discover</Text>
+            <Button color="text" onClick={this.onTriggerDiscoverReaders}>
+              Discover
             </Button>
           </Group>
         </Section>
@@ -130,13 +133,14 @@ class DiscoverReaders extends React.Component {
             alignment={{ justifyContent: "center" }}
             spacing={8}
           >
-            <Button color="white" onClick={onClickRegister}>
-              <Text color="dark">Register new reader</Text>
+            <Button onClick={onClickRegister}>
+              <Text size={14} color="dark">
+                Register reader
+              </Text>
             </Button>
-            <Button color="white" onClick={this.onClickUseSimulator}>
-              <Text color="dark">
+            <Button onClick={this.onClickUseSimulator}>
+              <Text size={14} color="dark">
                 Use simulator{" "}
-                <InfoTooltip text="Discover a simulated reader provided by the Stripe Terminal SDK. Select this option to try out the SDK without using physical reader hardware." />
               </Text>
             </Button>
           </Group>

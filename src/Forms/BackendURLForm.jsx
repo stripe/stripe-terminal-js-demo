@@ -29,39 +29,37 @@ class BackendURLForm extends React.Component {
     return (
       <Section>
         <Group direction="column" spacing={18}>
-          <Group direction="row" spacing={4}>
-            <Text size={16} color="dark">
-              1. Deploy
-            </Text>
-            <Link
-              size={16}
-              href="https://github.com/stripe/example-terminal-backend"
-              text="example backend"
-              newWindow
-            />
-          </Group>
+          <Text size={16} color="dark">
+            Connect to backend server
+          </Text>
 
           <Group direction="column">
-            <Text size={16} color="dark">
-              2. Set backend URL
-            </Text>
-
             <TextInput
-              placeholder="https://your-backend.herokuapp.com..."
+              placeholder="https://yourserver.herokuapp.com"
               value={backendURL}
               onChange={this.onChangeBackendURL}
             />
+
             <Group
               direction="row"
               alignment={{ justifyContent: "space-between" }}
             >
-              <div />
+              <Text size={12} color="lightGrey">
+                Set up and deploy{" "}
+                <Link
+                  href="https://github.com/stripe/example-terminal-backend"
+                  text="example backend"
+                  newWindow
+                />
+                , then fill in the URL.
+              </Text>
               <Button
                 onClick={this.onClickInitialize}
                 disabled={backendURL === "" || backendURL === null}
+                color="primary"
               >
                 <Text color="white" size={14}>
-                  Initialize
+                  Connect
                 </Text>
               </Button>
             </Group>
