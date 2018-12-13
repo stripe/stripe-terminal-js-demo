@@ -1,45 +1,47 @@
 // Client for the example terminal backend: https://github.com/stripe/example-terminal-backend
+
 class Client {
   constructor(url) {
     this.url = url;
   }
 
   createConnectionToken() {
-    const formData = new URLSearchParams();
-    return this.doPost(this.url + "/connection_token", formData);
+    return this.doPost(this.url + "/connection_token");
   }
 
   registerDevice({ label, registrationCode }) {
-    const formData = new URLSearchParams();
-    formData.append("label", label);
-    formData.append("registration_code", registrationCode);
-    return this.doPost(this.url + "/register_reader", formData);
+    return this.doPost(this.url + "/register_reader", {
+      label,
+      registration_code: registrationCode
+    });
   }
 
-  createPaymentIntent({ amount, currency, description }) {
-    const formData = new URLSearchParams();
-    formData.append("amount", amount);
-    formData.append("currency", currency);
-    formData.append("description", description);
-    return this.doPost(this.url + "/create_payment_intent", formData);
+  createPaymentIntent(params) {
+    return this.doPost(this.url + "/create_payment_intent", params);
   }
 
   capturePaymentIntent({ paymentIntentId }) {
-    const formData = new URLSearchParams();
-    formData.append("payment_intent_id", paymentIntentId);
-    return this.doPost(this.url + "/capture_payment_intent", formData);
+    return this.doPost(this.url + "/capture_payment_intent", {
+      payment_intent_id: paymentIntentId
+    });
   }
 
   saveSourceToCustomer({ sourceId }) {
-    const formData = new URLSearchParams();
-    formData.append("card_present_source_id", sourceId);
-    return this.doPost(this.url + "/save_card_to_customer", formData);
+    return this.doPost(this.url + "/save_card_to_customer", {
+      card_present_source_id: sourceId
+    });
   }
 
   async doPost(url, body) {
-    let response = await fetch(url, {
-      method: "post",
-      body: body
+    let response = await fetch(`${url}/`, {
+      // trailing slash is needed for stdlib CORS
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      mode: "cors",
+      redirect: "follow",
+      body: JSON.stringify(body)
     });
 
     if (response.ok) {

@@ -210,7 +210,7 @@ class App extends Component {
           currency: "usd",
           description: "Test Charge"
         });
-        this.pendingPaymentIntentSecret = createIntentResponse.secret;
+        this.pendingPaymentIntentSecret = createIntentResponse.client_secret;
       } catch (e) {
         // Suppress backend errors since they will be shown in logs
         return;
@@ -279,6 +279,8 @@ class App extends Component {
 
   // 4. UI Methods
   onSetBackendURL = url => {
+    // Stripe trailing slash(es) if needed
+    url = url.replace(/\/+$/, "");
     this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
   };
