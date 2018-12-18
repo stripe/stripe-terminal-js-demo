@@ -3,10 +3,13 @@
 import * as React from "react";
 
 import Button from "../components/Button/Button.jsx";
+import Select from "../components/Select/Select.jsx";
 import Group from "../components/Group/Group.jsx";
 import Icon from "../components/Icon/Icon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
+
+import testCases from "../testCases";
 
 class CommonWorkflows extends React.Component {
   constructor(props) {
@@ -30,8 +33,11 @@ class CommonWorkflows extends React.Component {
     }
   };
 
-  onRunUpdateLineItemsWorkflow = () => {
-    this.runWorkflow("updateLineItems", this.props.onClickUpdateLineItems);
+  onRunUpdateLineItemsWorkflow = e => {
+    this.runWorkflow(
+      "updateLineItems",
+      this.props.onClickUpdateLineItems.bind(null, e.target.value)
+    );
   };
 
   onRunCollectPaymentWorkflow = () => {
@@ -54,18 +60,12 @@ class CommonWorkflows extends React.Component {
             Common workflows
           </Text>
           <Group direction="column" spacing={8}>
-            <Button
+            <Select
               color="white"
-              onClick={this.onRunUpdateLineItemsWorkflow}
+              onChange={this.onRunUpdateLineItemsWorkflow}
               disabled={this.isWorkflowDisabled()}
-            >
-              <Group direction="row">
-                <Icon icon="list" />
-                <Text color="blue" size={14}>
-                  Update line items and totals
-                </Text>
-              </Group>
-            </Button>
+              options={testCases}
+            />
             <Button
               color="white"
               onClick={this.onRunCollectPaymentWorkflow}

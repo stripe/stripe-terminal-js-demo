@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Client from "./client";
 import Logger from "./logger";
+import testCases from "./testCases";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import CommonWorkflows from "./Forms/CommonWorkflows.jsx";
@@ -13,8 +14,6 @@ import Logs from "./Logs/Logs.jsx";
 import { css } from "emotion";
 
 class App extends Component {
-  static CHARGE_AMOUNT = 5100;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -178,21 +177,21 @@ class App extends Component {
   };
 
   // 3. Terminal Workflows (Once connected to a reader)
-  updateLineItems = async () => {
+  updateLineItems = async testCaseId => {
     // 3a. Update the reader display to show cart contents to the customer
     await this.terminal.setReaderDisplay({
       type: "cart",
       cart: {
         lineItems: [
           {
-            description: "Blue Shirt",
-            amount: App.CHARGE_AMOUNT,
+            description: testCases[testCaseId].description,
+            amount: testCases[testCaseId].amount,
             quantity: 1
           }
         ],
         tax: 0,
-        total: App.CHARGE_AMOUNT,
-        currency: "usd"
+        total: testCases[testCaseId].amount,
+        currency: "usd" // TODO: put in config
       }
     });
     console.log("Reader Display Updated!");
