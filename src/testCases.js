@@ -1,3 +1,4 @@
+// https://stripe.com/docs/terminal/testing#test-cards
 const testCases = {
   approved: { amount: 100, description: "Payment is approved" },
   call_issuer: {

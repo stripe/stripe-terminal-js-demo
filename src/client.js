@@ -1,4 +1,4 @@
-// Client for the example terminal backend: https://github.com/stripe/example-terminal-backend
+// Client for the example terminal backend: https://github.com/stripe/example-terminal-backend-stdlib
 
 class Client {
   constructor(url) {

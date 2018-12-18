@@ -47,7 +47,7 @@ class BackendURLForm extends React.Component {
               <Text size={12} color="lightGrey">
                 Set up and deploy{" "}
                 <Link
-                  href="https://github.com/stripe/example-terminal-backend"
+                  href="https://github.com/stripe/example-terminal-backend-stdlib"
                   text="example backend"
                   newWindow
                 />

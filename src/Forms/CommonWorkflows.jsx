@@ -49,7 +49,9 @@ class CommonWorkflows extends React.Component {
   };
 
   isWorkflowDisabled = () =>
-    this.props.cancelablePayment || this.state.workFlowInProgress;
+    !this.props.testCaseSelected ||
+    this.props.cancelablePayment ||
+    this.state.workFlowInProgress;
 
   render() {
     const { onClickCancelPayment, cancelablePayment } = this.props;
@@ -63,7 +65,6 @@ class CommonWorkflows extends React.Component {
             <Select
               color="white"
               onChange={this.onRunUpdateLineItemsWorkflow}
-              disabled={this.isWorkflowDisabled()}
               options={testCases}
             />
             <Button

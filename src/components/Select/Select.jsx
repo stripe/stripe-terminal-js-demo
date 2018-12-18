@@ -95,14 +95,11 @@ class Select extends React.Component {
   };
 
   render() {
-    const { disabled, onChange, color, options } = this.props;
+    const { onChange, color, options } = this.props;
 
     return (
-      <select
-        className={this.getButtonStyles(color)}
-        onChange={onChange}
-        disabled={disabled}
-      >
+      <select className={this.getButtonStyles(color)} onChange={onChange}>
+        <option value="">--Please choose a test case--</option>
         {Object.keys(options).map(caseId => (
           <option
             className={this.getButtonStyles(color)}

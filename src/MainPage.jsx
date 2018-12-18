@@ -24,7 +24,8 @@ class App extends Component {
       reader: null,
       readerLabel: "",
       registrationCode: "",
-      cancelablePayment: false
+      cancelablePayment: false,
+      testCaseId: ""
     };
   }
 
@@ -178,6 +179,11 @@ class App extends Component {
 
   // 3. Terminal Workflows (Once connected to a reader)
   updateLineItems = async testCaseId => {
+    this.setState({ testCaseId });
+    this.pendingPaymentIntentSecret = null; // TODO: Alternatively we could update the existing PaymentIntent amount.
+    if (testCaseId === "") {
+      return;
+    }
     // 3a. Update the reader display to show cart contents to the customer
     await this.terminal.setReaderDisplay({
       type: "cart",
@@ -191,7 +197,7 @@ class App extends Component {
         ],
         tax: 0,
         total: testCases[testCaseId].amount,
-        currency: "usd" // TODO: put in config
+        currency: "usd" // TODO: get from server config
       }
     });
     console.log("Reader Display Updated!");
@@ -205,8 +211,8 @@ class App extends Component {
     if (!this.pendingPaymentIntentSecret) {
       try {
         let createIntentResponse = await this.client.createPaymentIntent({
-          amount: App.CHARGE_AMOUNT,
-          currency: "usd",
+          test_case: this.state.testCaseId,
+          currency: "usd", // TODO: get from server config
           description: "Test Charge"
         });
         this.pendingPaymentIntentSecret = createIntentResponse.client_secret;
@@ -288,6 +294,7 @@ class App extends Component {
     const {
       backendURL,
       cancelablePayment,
+      testCaseId,
       reader,
       discoveredReaders
     } = this.state;
@@ -311,6 +318,7 @@ class App extends Component {
           onClickSaveCardForFutureUse={this.saveCardForFutureUse}
           onClickCancelPayment={this.cancelPendingPayment}
           cancelablePayment={cancelablePayment}
+          testCaseSelected={testCaseId !== ""}
         />
       );
     }
