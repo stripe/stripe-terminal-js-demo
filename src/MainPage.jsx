@@ -285,7 +285,7 @@ class App extends Component {
   // 4. UI Methods
   onSetBackendURL = url => {
     // Stripe trailing slash(es) if needed
-    url = url.replace(/\/+$/, "");
+    url = url ? url.replace(/\/+$/, "") : null;
     this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
   };
