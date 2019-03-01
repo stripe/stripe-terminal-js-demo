@@ -249,6 +249,99 @@ class App extends Component {
     }
   };
 
+  // 3b. Collect a card present payment
+  collectCardPaymentWithTip = async () => {
+    // We want to reuse the same PaymentIntent object in the case of declined charges, so we
+    // store the pending PaymentIntent's secret until the payment is complete.
+    if (!this.pendingPaymentIntentSecret) {
+      try {
+        let createIntentResponse = await this.client.createPaymentIntent({
+          amount: 199,
+          currency: "usd",
+          description: "Test Charge"
+        });
+        this.pendingPaymentIntentSecret = createIntentResponse.secret;
+      } catch (e) {
+        // Suppress backend errors since they will be shown in logs
+        return;
+      }
+    }
+    // Read a card from the customer
+    let tipConfig = {
+      tip_presentations: [
+        {
+          description: "some long description",
+          options: [
+            {
+              amount: App.CHARGE_AMOUNT * 0.1,
+              option_label: "10%"
+            },
+            {
+              amount: App.CHARGE_AMOUNT * 0.15,
+              option_label: "15%"
+            },
+            {
+              amount: App.CHARGE_AMOUNT * 0.2,
+              option_label: "20%"
+            }
+          ]
+        },
+        {
+          description: "some other very long description of a tip presentation",
+          options: [
+            {
+              amount: App.CHARGE_AMOUNT * 0.1,
+              option_label: "10%"
+            },
+            {
+              amount: App.CHARGE_AMOUNT * 0.15,
+              option_label: "15%"
+            },
+            {
+              amount: App.CHARGE_AMOUNT * 0.2,
+              option_label: "20%"
+            }
+          ]
+        }
+      ],
+      hide_custom_amount: false
+    };
+    console.log(tipConfig);
+    const paymentMethodPromise = this.terminal.collectPaymentMethod(
+      this.pendingPaymentIntentSecret,
+      { tip_configuration: tipConfig }
+    );
+    this.setState({ cancelablePayment: true });
+    const result = await paymentMethodPromise;
+    if (result.error) {
+      console.log("Collect payment method failed:", result.error.message);
+    } else {
+      console.log(result.paymentIntent);
+
+      const confirmResult = await this.terminal.confirmPaymentIntent(
+        result.paymentIntent
+      );
+      // At this stage, the payment can no longer be canceled because we've sent the request to the network.
+      this.setState({ cancelablePayment: false });
+      if (confirmResult.error) {
+        alert(`Confirm failed: ${confirmResult.error.message}`);
+      } else if (confirmResult.paymentIntent) {
+        try {
+          // Capture the PaymentIntent from your backend client and mark the payment as complete
+          let captureResult = await this.client.capturePaymentIntent({
+            paymentIntentId: confirmResult.paymentIntent.id
+          });
+          this.pendingPaymentIntentSecret = null;
+          console.log("Payment Successful!");
+          return captureResult;
+        } catch (e) {
+          // Suppress backend errors since they will be shown in logs
+          return;
+        }
+      }
+    }
+  };
+
   // 3c. Cancel a pending payment.
   // Note this can only be done before calling `confirmPaymentIntent`.
   cancelPendingPayment = async () => {
@@ -306,7 +399,8 @@ class App extends Component {
       return (
         <CommonWorkflows
           onClickUpdateLineItems={this.updateLineItems}
-          onClickCollectCardPayments={this.collectCardPayment}
+          onClickCollectCardPayment={this.collectCardPayment}
+          onClickCollectCardPaymentWithTip={this.collectCardPaymentWithTip}
           onClickSaveCardForFutureUse={this.saveCardForFutureUse}
           onClickCancelPayment={this.cancelPendingPayment}
           cancelablePayment={cancelablePayment}

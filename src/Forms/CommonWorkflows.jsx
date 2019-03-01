@@ -35,7 +35,14 @@ class CommonWorkflows extends React.Component {
   };
 
   onRunCollectPaymentWorkflow = () => {
-    this.runWorkflow("collectPayment", this.props.onClickCollectCardPayments);
+    this.runWorkflow("collectPayment", this.props.onClickCollectCardPayment);
+  };
+
+  onRunCollectPaymentWithTipWorkflow = () => {
+    this.runWorkflow(
+      "collectPaymentWithTip",
+      this.props.onClickCollectCardPaymentWithTip
+    );
   };
 
   onRunSaveCardWorkflow = () => {
@@ -75,6 +82,18 @@ class CommonWorkflows extends React.Component {
                 <Icon icon="payments" />
                 <Text color="blue" size={14}>
                   Collect card payment
+                </Text>
+              </Group>
+            </Button>
+            <Button
+              color="white"
+              onClick={this.onRunCollectPaymentWithTipWorkflow}
+              disabled={this.isWorkflowDisabled()}
+            >
+              <Group direction="row">
+                <Icon icon="payments" />
+                <Text color="blue" size={14}>
+                  Collect card payment with tip
                 </Text>
               </Group>
             </Button>
