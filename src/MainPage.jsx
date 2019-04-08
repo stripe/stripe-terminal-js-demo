@@ -119,7 +119,7 @@ class App extends Component {
   discoverReaders = async () => {
     // 2a. Discover registered readers to connect to.
     const discoverResult = await this.terminal.discoverReaders({
-      method: "registered"
+      method: "internet"
     });
 
     if (discoverResult.error) {
@@ -149,9 +149,9 @@ class App extends Component {
       this.setState({
         status: "workflows",
         discoveredReaders: [],
-        reader: connectResult.connection.reader
+        reader: connectResult.reader
       });
-      return connectResult.connection;
+      return connectResult;
     }
   };
 
@@ -225,7 +225,7 @@ class App extends Component {
     if (result.error) {
       console.log("Collect payment method failed:", result.error.message);
     } else {
-      const confirmResult = await this.terminal.confirmPaymentIntent(
+      const confirmResult = await this.terminal.processPayment(
         result.paymentIntent
       );
       // At this stage, the payment can no longer be canceled because we've sent the request to the network.
@@ -268,44 +268,23 @@ class App extends Component {
     }
     // Read a card from the customer
     let tipConfig = {
-      tip_presentations: [
-        {
-          description: "some long description",
-          options: [
+        options: [
             {
-              amount: App.CHARGE_AMOUNT * 0.1,
-              option_label: "10%"
+              amount: 190,
+              label: "10%"
             },
             {
-              amount: App.CHARGE_AMOUNT * 0.15,
-              option_label: "15%"
+              amount: 285,
+              label: "15%"
             },
             {
-              amount: App.CHARGE_AMOUNT * 0.2,
-              option_label: "20%"
+              amount: 379,
+              label: "20%"
             }
-          ]
-        },
-        {
-          description: "some other very long description of a tip presentation",
-          options: [
-            {
-              amount: App.CHARGE_AMOUNT * 0.1,
-              option_label: "10%"
-            },
-            {
-              amount: App.CHARGE_AMOUNT * 0.15,
-              option_label: "15%"
-            },
-            {
-              amount: App.CHARGE_AMOUNT * 0.2,
-              option_label: "20%"
-            }
-          ]
-        }
-      ],
-      hide_custom_amount: false
+        ],
+        hide_custom_amount: true
     };
+
     console.log(tipConfig);
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret,
@@ -318,7 +297,7 @@ class App extends Component {
     } else {
       console.log(result.paymentIntent);
 
-      const confirmResult = await this.terminal.confirmPaymentIntent(
+      const confirmResult = await this.terminal.processPayment(
         result.paymentIntent
       );
       // At this stage, the payment can no longer be canceled because we've sent the request to the network.
