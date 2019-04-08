@@ -119,7 +119,7 @@ class App extends Component {
   discoverReaders = async () => {
     // 2a. Discover registered readers to connect to.
     const discoverResult = await this.terminal.discoverReaders({
-      method: "registered"
+      method: "internet"
     });
 
     if (discoverResult.error) {
@@ -149,9 +149,9 @@ class App extends Component {
       this.setState({
         status: "workflows",
         discoveredReaders: [],
-        reader: connectResult.connection.reader
+        reader: connectResult.reader
       });
-      return connectResult.connection;
+      return connectResult;
     }
   };
 
@@ -225,7 +225,7 @@ class App extends Component {
     if (result.error) {
       console.log("Collect payment method failed:", result.error.message);
     } else {
-      const confirmResult = await this.terminal.confirmPaymentIntent(
+      const confirmResult = await this.terminal.processPayment(
         result.paymentIntent
       );
       // At this stage, the payment can no longer be canceled because we've sent the request to the network.
