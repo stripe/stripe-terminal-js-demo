@@ -102,7 +102,7 @@ class App extends Component {
         docsUrl:
           "https://stripe.com/docs/terminal/js/reference#cancel-collect-payment-method"
       },
-      confirmPaymentIntent: {
+      processPayment: {
         docsUrl: "https://stripe.com/docs/terminal/js/payment#confirm"
       },
       readSource: {
@@ -250,7 +250,7 @@ class App extends Component {
   };
 
   // 3c. Cancel a pending payment.
-  // Note this can only be done before calling `confirmPaymentIntent`.
+  // Note this can only be done before calling `processPayment`.
   cancelPendingPayment = async () => {
     await this.terminal.cancelCollectPaymentMethod();
     this.setState({ cancelablePayment: false });
