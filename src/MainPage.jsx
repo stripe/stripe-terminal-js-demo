@@ -135,7 +135,7 @@ class App extends Component {
 
   connectToSimulator = async () => {
     const simulatedResult = await this.terminal.discoverReaders({
-      method: "simulated"
+      simulated: true
     });
     await this.connectToReader(simulatedResult.discoveredReaders[0]);
   };
