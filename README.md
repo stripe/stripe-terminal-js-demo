@@ -1,8 +1,8 @@
-# Stripe Terminal JS Example App
+# Stripe Terminal JS Demo
 
 👋 [Request an invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
 
-This demo features an example point of sale built with React, which you can use to familiarize yourself with the SDK and reader before starting your own integration. 
+Use this demo app to familiarize yourself with the Stripe Terminal JS SDK before starting your own integration. 
 
 **You can see this demo app running on [stripe-terminal-demo.appspot.com](https://stripe-terminal-demo.appspot.com)**
 
