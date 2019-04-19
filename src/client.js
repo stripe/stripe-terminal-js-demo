@@ -30,10 +30,13 @@ class Client {
     return this.doPost(this.url + "/capture_payment_intent", formData);
   }
 
-  saveSourceToCustomer({ sourceId }) {
+  savePaymentMethodToCustomer({ paymentMethodId }) {
     const formData = new URLSearchParams();
-    formData.append("card_present_source_id", sourceId);
-    return this.doPost(this.url + "/save_card_to_customer", formData);
+    formData.append("payment_method_id", paymentMethodId);
+    return this.doPost(
+      this.url + "/attach_payment_method_to_customer",
+      formData
+    );
   }
 
   async doPost(url, body) {

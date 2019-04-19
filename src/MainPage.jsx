@@ -45,7 +45,7 @@ class App extends Component {
       // You can use this callback to alert your user that the reader is no longer connected and will need to be reconnected.
       onUnexpectedReaderDisconnect: Logger.tracedFn(
         "onUnexpectedReaderDisconnect",
-        "https://stripe.com/docs/terminal/js/reference#stripeterminal-create",
+        "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-create",
         () => {
           alert("Unexpected disconnect from the reader");
           this.setState({
@@ -58,7 +58,7 @@ class App extends Component {
       // You can use this callback to update your UI with the reader's connection status.
       onConnectionStatusChange: Logger.tracedFn(
         "onConnectionStatusChange",
-        "https://stripe.com/docs/terminal/js/reference#stripeterminal-create",
+        "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-create",
         ev => {
           this.setState({ connectionStatus: ev.status, reader: null });
         }
@@ -66,51 +66,56 @@ class App extends Component {
     });
     Logger.watchObject(this.client, "backend", {
       createConnectionToken: {
-        docsUrl: "https://stripe.com/docs/terminal/js#connection-token"
+        docsUrl: "https://stripe.com/docs/terminal/sdk/js#connection-token"
       },
       registerDevice: {
-        docsUrl: "https://stripe.com/docs/terminal/js#reader"
+        docsUrl:
+          "https://stripe.com/docs/terminal/readers/connecting/verifone-p400#connecting-register"
       },
       createPaymentIntent: {
-        docsUrl: "https://stripe.com/docs/terminal/js/payment#create"
+        docsUrl: "https://stripe.com/docs/terminal/payments#create"
       },
       capturePaymentIntent: {
-        docsUrl: "https://stripe.com/docs/terminal/js/payment#capture"
+        docsUrl: "https://stripe.com/docs/terminal/payments#capture"
       },
-      saveSourceToCustomer: {
-        docsUrl: "https://stripe.com/docs/terminal/js/workflows#save-source"
+      savePaymentMethodToCustomer: {
+        docsUrl: "https://stripe.com/docs/terminal/payments/saving-cards"
       }
     });
     Logger.watchObject(this.terminal, "terminal", {
       discoverReaders: {
-        docsUrl: "https://stripe.com/docs/terminal/js#reader"
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#discover-readers"
       },
       connectReader: {
-        docsUrl: "https://stripe.com/docs/terminal/js#reader"
+        docsUrl: "docs/terminal/js-api-reference#connect-reader"
       },
       disconnectReader: {
-        docsUrl: "https://stripe.com/docs/terminal/js/reference#disconnect"
+        docsUrl: "docs/terminal/js-api-reference#disconnect"
       },
       setReaderDisplay: {
         docsUrl:
-          "https://stripe.com/docs/terminal/js/workflows#customize-the-display-during-a-payment"
+          "https://stripe.com/docs/terminal/js-api-reference#set-reader-display"
       },
       collectPaymentMethod: {
-        docsUrl: "https://stripe.com/docs/terminal/js/payment#confirm"
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#collect-payment-method"
       },
       cancelCollectPaymentMethod: {
         docsUrl:
-          "https://stripe.com/docs/terminal/js/reference#cancel-collect-payment-method"
+          "https://stripe.com/docs/terminal/js-api-reference#cancel-collect-payment-method"
       },
       processPayment: {
-        docsUrl: "https://stripe.com/docs/terminal/js/payment#confirm"
-      },
-      readSource: {
-        docsUrl: "https://stripe.com/docs/terminal/js/workflows#read-source"
-      },
-      cancelReadSource: {
         docsUrl:
-          "https://stripe.com/docs/terminal/js/reference#cancel-read-source"
+          "https://stripe.com/docs/terminal/js-api-reference#process-payment"
+      },
+      readReusableCard: {
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#read-reusable-card"
+      },
+      cancelReadReusableCard: {
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#cancel-read-reusable-card"
       }
     });
   }
@@ -135,7 +140,7 @@ class App extends Component {
 
   connectToSimulator = async () => {
     const simulatedResult = await this.terminal.discoverReaders({
-      method: "simulated"
+      simulated: true
     });
     await this.connectToReader(simulatedResult.discoveredReaders[0]);
   };
@@ -183,7 +188,7 @@ class App extends Component {
     await this.terminal.setReaderDisplay({
       type: "cart",
       cart: {
-        lineItems: [
+        line_items: [
           {
             description: "Blue Shirt",
             amount: App.CHARGE_AMOUNT,
@@ -256,19 +261,19 @@ class App extends Component {
     this.setState({ cancelablePayment: false });
   };
 
-  // 3d. Save a card present source for re-use online.
+  // 3d. Save a card for re-use online.
   saveCardForFutureUse = async () => {
-    // First, read a card without charging it using `readSource`
-    const readSourceResult = await this.terminal.readSource();
-    if (readSourceResult.error) {
-      alert(`Read source failed: ${readSourceResult.error.message}`);
+    // First, read a card without charging it using `readReusableCard`
+    const readResult = await this.terminal.readReusableCard();
+    if (readResult.error) {
+      alert(`readReusableCard failed: ${readResult.error.message}`);
     } else {
       try {
         // Then, pass the source to your backend client to save it to a customer
-        let customer = await this.client.saveSourceToCustomer({
-          sourceId: readSourceResult.source.id
+        let customer = await this.client.savePaymentMethodToCustomer({
+          paymentMethodId: readResult.source.id
         });
-        console.log("Source Saved to Customer!", customer);
+        console.log("Payment method saved to customer!", customer);
         return customer;
       } catch (e) {
         // Suppress backend errors since they will be shown in logs
