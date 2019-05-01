@@ -70,7 +70,7 @@ class App extends Component {
       },
       registerDevice: {
         docsUrl:
-          "https://stripe.com/docs/terminal/readers/connecting/verifone-p400#connecting-register"
+          "https://stripe.com/docs/terminal/readers/connecting/verifone-p400#register-reader"
       },
       createPaymentIntent: {
         docsUrl: "https://stripe.com/docs/terminal/payments#create"
