@@ -5,6 +5,7 @@ import Logger from "./logger";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import CommonWorkflows from "./Forms/CommonWorkflows.jsx";
+import CartForm from "./Forms/CartForm.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Readers from "./Forms/Readers.jsx";
 import Group from "./components/Group/Group.jsx";
@@ -13,8 +14,6 @@ import Logs from "./Logs/Logs.jsx";
 import { css } from "emotion";
 
 class App extends Component {
-  static CHARGE_AMOUNT = 5100;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -25,9 +24,31 @@ class App extends Component {
       reader: null,
       readerLabel: "",
       registrationCode: "",
-      cancelablePayment: false
+      cancelablePayment: false,
+      chargeAmount: 5100,
+      itemDescription: "Red t-shirt",
+      taxAmount: 100,
+      currency: "usd",
+      workFlowInProgress: null
     };
   }
+
+  isWorkflowDisabled = () =>
+    this.state.cancelablePayment || this.state.workFlowInProgress;
+
+  runWorkflow = async (workflowName, workflowFn) => {
+    console.log(workflowName, workflowFn);
+    this.setState({
+      workFlowInProgress: workflowName
+    });
+    try {
+      await workflowFn();
+    } finally {
+      this.setState({
+        workFlowInProgress: null
+      });
+    }
+  };
 
   // 1. Stripe Terminal Initialization
   initializeBackendClientAndTerminal(url) {
@@ -190,14 +211,14 @@ class App extends Component {
       cart: {
         line_items: [
           {
-            description: "Blue Shirt",
-            amount: App.CHARGE_AMOUNT,
+            description: this.state.itemDescription,
+            amount: this.state.chargeAmount,
             quantity: 1
           }
         ],
-        tax: 0,
-        total: App.CHARGE_AMOUNT,
-        currency: "usd"
+        tax: this.state.taxAmount,
+        total: this.state.chargeAmount + this.state.taxAmount,
+        currency: this.state.currency
       }
     });
     console.log("Reader Display Updated!");
@@ -211,8 +232,8 @@ class App extends Component {
     if (!this.pendingPaymentIntentSecret) {
       try {
         let createIntentResponse = await this.client.createPaymentIntent({
-          amount: App.CHARGE_AMOUNT,
-          currency: "usd",
+          amount: this.state.chargeAmount + this.state.taxAmount,
+          currency: this.state.currency,
           description: "Test Charge"
         });
         this.pendingPaymentIntentSecret = createIntentResponse.secret;
@@ -287,6 +308,13 @@ class App extends Component {
     this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
   };
+  updateChargeAmount = amount =>
+    this.setState({ chargeAmount: parseInt(amount, 10) });
+  updateItemDescription = description =>
+    this.setState({ itemDescription: description });
+  updateTaxAmount = amount =>
+    this.setState({ taxAmount: parseInt(amount, 10) });
+  updateCurrency = currency => this.setState({ currency: currency });
 
   renderForm() {
     const {
@@ -309,13 +337,35 @@ class App extends Component {
       );
     } else {
       return (
-        <CommonWorkflows
-          onClickUpdateLineItems={this.updateLineItems}
-          onClickCollectCardPayments={this.collectCardPayment}
-          onClickSaveCardForFutureUse={this.saveCardForFutureUse}
-          onClickCancelPayment={this.cancelPendingPayment}
-          cancelablePayment={cancelablePayment}
-        />
+        <>
+          <CommonWorkflows
+            workFlowDisabled={this.isWorkflowDisabled()}
+            onClickCollectCardPayments={() =>
+              this.runWorkflow("collectPayment", this.collectCardPayment)
+            }
+            onClickSaveCardForFutureUse={() =>
+              this.runWorkflow("saveCard", this.saveCardForFutureUse)
+            }
+            onClickCancelPayment={this.cancelPendingPayment}
+            cancelablePayment={cancelablePayment}
+          />
+          <CartForm
+            workFlowDisabled={this.isWorkflowDisabled()}
+            onClickUpdateLineItems={() =>
+              this.runWorkflow("updateLineItems", this.updateLineItems)
+            }
+            itemDescription={this.state.itemDescription}
+            chargeAmount={this.state.chargeAmount}
+            taxAmount={this.state.taxAmount}
+            currency={this.state.currency}
+            onChangeCurrency={currency => this.updateCurrency(currency)}
+            onChangeChargeAmount={amount => this.updateChargeAmount(amount)}
+            onChangeTaxAmount={amount => this.updateTaxAmount(amount)}
+            onChangeItemDescription={description =>
+              this.updateItemDescription(description)
+            }
+          />
+        </>
       );
     }
   }
