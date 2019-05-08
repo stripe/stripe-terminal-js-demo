@@ -9,44 +9,12 @@ import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 
 class CommonWorkflows extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      workFlowInProgress: null
-    };
-  }
-
-  runWorkflow = async (workflowName, workflowFn) => {
-    this.setState({
-      workFlowInProgress: workflowName
-    });
-    try {
-      await workflowFn();
-    } finally {
-      this.setState({
-        workFlowInProgress: null
-      });
-    }
-  };
-
-  onRunUpdateLineItemsWorkflow = () => {
-    this.runWorkflow("updateLineItems", this.props.onClickUpdateLineItems);
-  };
-
-  onRunCollectPaymentWorkflow = () => {
-    this.runWorkflow("collectPayment", this.props.onClickCollectCardPayments);
-  };
-
-  onRunSaveCardWorkflow = () => {
-    this.runWorkflow("collectPayment", this.props.onClickSaveCardForFutureUse);
-  };
-
-  isWorkflowDisabled = () =>
-    this.props.cancelablePayment || this.state.workFlowInProgress;
-
   render() {
-    const { onClickCancelPayment, cancelablePayment } = this.props;
+    const {
+      onClickCancelPayment,
+      cancelablePayment,
+      workFlowDisabled
+    } = this.props;
     return (
       <Section>
         <Group direction="column" spacing={16}>
@@ -56,20 +24,8 @@ class CommonWorkflows extends React.Component {
           <Group direction="column" spacing={8}>
             <Button
               color="white"
-              onClick={this.onRunUpdateLineItemsWorkflow}
-              disabled={this.isWorkflowDisabled()}
-            >
-              <Group direction="row">
-                <Icon icon="list" />
-                <Text color="blue" size={14}>
-                  Update line items and totals
-                </Text>
-              </Group>
-            </Button>
-            <Button
-              color="white"
-              onClick={this.onRunCollectPaymentWorkflow}
-              disabled={this.isWorkflowDisabled()}
+              onClick={this.props.onClickCollectCardPayments}
+              disabled={workFlowDisabled}
             >
               <Group direction="row">
                 <Icon icon="payments" />
@@ -80,8 +36,8 @@ class CommonWorkflows extends React.Component {
             </Button>
             <Button
               color="white"
-              onClick={this.onRunSaveCardWorkflow}
-              disabled={this.isWorkflowDisabled()}
+              onClick={this.props.onClickSaveCardForFutureUse}
+              disabled={workFlowDisabled}
             >
               <Group direction="row">
                 <Icon icon="card" />
