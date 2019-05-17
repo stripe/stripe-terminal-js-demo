@@ -279,6 +279,7 @@ class App extends Component {
   // Note this can only be done before calling `processPayment`.
   cancelPendingPayment = async () => {
     await this.terminal.cancelCollectPaymentMethod();
+    this.pendingPaymentIntentSecret = null;
     this.setState({ cancelablePayment: false });
   };
 
