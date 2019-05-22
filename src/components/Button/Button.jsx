@@ -76,7 +76,7 @@ class Button extends React.Component {
           display: flex;
 
           align-items: center;
-          justify-content: left;
+          justify-content: ${this.props.justifyContent || "center"};
 
           :disabled {
             pointer-events: none;

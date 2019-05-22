@@ -26,6 +26,7 @@ class CommonWorkflows extends React.Component {
               color="white"
               onClick={this.props.onClickCollectCardPayments}
               disabled={workFlowDisabled}
+              justifyContent="left"
             >
               <Group direction="row">
                 <Icon icon="payments" />
@@ -38,6 +39,7 @@ class CommonWorkflows extends React.Component {
               color="white"
               onClick={this.props.onClickSaveCardForFutureUse}
               disabled={workFlowDisabled}
+              justifyContent="left"
             >
               <Group direction="row">
                 <Icon icon="card" />
@@ -50,6 +52,7 @@ class CommonWorkflows extends React.Component {
               color="white"
               onClick={onClickCancelPayment}
               disabled={!cancelablePayment}
+              justifyContent="left"
             >
               <Group direction="row">
                 <Icon icon="cancel" />
