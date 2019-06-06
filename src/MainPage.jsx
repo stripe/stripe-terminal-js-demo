@@ -144,9 +144,7 @@ class App extends Component {
   // 2. Discover and connect to a reader.
   discoverReaders = async () => {
     // 2a. Discover registered readers to connect to.
-    const discoverResult = await this.terminal.discoverReaders({
-      method: "internet"
-    });
+    const discoverResult = await this.terminal.discoverReaders();
 
     if (discoverResult.error) {
       console.log("Failed to discover: ", discoverResult.error);
