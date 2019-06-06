@@ -11,8 +11,8 @@ import Select from "../components/Select/Select.jsx";
 
 class CartForm extends React.Component {
   static CURRENCIES = [
-    { value: "gbp", label: "GBP" },
-    { value: "usd", label: "USD" }
+    { value: "usd", label: "USD" },
+    { value: "gbp", label: "GBP" }
   ];
 
   render() {
