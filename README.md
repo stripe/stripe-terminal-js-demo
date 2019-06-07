@@ -1,7 +1,5 @@
 # Stripe Terminal JS Demo
 
-👋 [Request an invite](https://stripe.com/terminal#request-invite) to get started with Stripe Terminal.
-
 Use this demo app to familiarize yourself with the Stripe Terminal JS SDK before starting your own integration. 
 
 <img src="JSExampleApp_MainPage.gif" alt="Demo" width="610">
