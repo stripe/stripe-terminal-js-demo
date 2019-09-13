@@ -289,9 +289,9 @@ class App extends Component {
       alert(`readReusableCard failed: ${readResult.error.message}`);
     } else {
       try {
-        // Then, pass the source to your backend client to save it to a customer
+        // Then, pass the payment method to your backend client to save it to a customer
         let customer = await this.client.savePaymentMethodToCustomer({
-          paymentMethodId: readResult.source.id
+          paymentMethodId: readResult.payment_method.id
         });
         console.log("Payment method saved to customer!", customer);
         return customer;
