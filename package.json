@@ -2,6 +2,9 @@
   "name": "terminal-demo-app",
   "version": "0.1.0",
   "private": true,
+  "engines" : {
+    "node" : ">=8.0.0"
+  },
   "dependencies": {
     "emotion": "^9.2.12",
     "react": "^16.8.6",
