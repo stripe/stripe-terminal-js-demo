@@ -16,7 +16,8 @@ class BackendURLForm extends React.Component {
     };
   }
 
-  onClickInitialize = () => {
+  onFormInitialize = (event) => {
+    event.preventDefault();
     this.props.onSetBackendURL(this.state.backendURL.trim());
   };
 
@@ -28,43 +29,46 @@ class BackendURLForm extends React.Component {
     const { backendURL } = this.state;
     return (
       <Section>
-        <Group direction="column" spacing={18}>
-          <Text size={16} color="dark">
-            Connect to backend server
-          </Text>
+        <form onSubmit={this.onFormInitialize}>
+          <Group direction="column" spacing={18}>
+            <Text size={16} color="dark">
+              Connect to backend server
+            </Text>
 
-          <Group direction="column">
-            <TextInput
-              placeholder="https://yourserver.herokuapp.com"
-              value={backendURL}
-              onChange={this.onChangeBackendURL}
-            />
+            <Group direction="column">
+              <TextInput
+                placeholder="https://yourserver.herokuapp.com"
+                value={backendURL}
+                ariaLabel="Backend URL"
+                onChange={this.onChangeBackendURL}
+              />
 
-            <Group
-              direction="row"
-              alignment={{ justifyContent: "space-between" }}
-            >
-              <Text size={12} color="lightGrey">
-                Set up and deploy{" "}
-                <Link
-                  href="https://github.com/stripe/example-terminal-backend"
-                  text="example backend"
-                  newWindow
-                />
-                , then fill in the URL.
-              </Text>
-              <Button
-                onClick={this.onClickInitialize}
-                disabled={backendURL === "" || backendURL === null}
-                color="primary"
+              <Group
+                direction="row"
+                alignment={{ justifyContent: "space-between" }}
               >
-                <Text color="white" size={14}>
-                  Connect
+                <Text size={12} color="lightGrey">
+                  Set up and deploy{" "}
+                  <Link
+                    href="https://github.com/stripe/example-terminal-backend"
+                    text="example backend"
+                    newWindow
+                  />
+                  , then fill in the URL.
                 </Text>
-              </Button>
+                <Button
+                  disabled={backendURL === "" || backendURL === null}
+                  color="primary"
+                  type="submit"
+                >
+                  <Text color="white" size={14}>
+                    Connect
+                  </Text>
+                </Button>
+              </Group>
             </Group>
           </Group>
-        </Group>
+        </form>
       </Section>
     );
   }

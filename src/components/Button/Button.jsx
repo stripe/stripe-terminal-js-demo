@@ -49,12 +49,14 @@ class Button extends React.Component {
           transition: all 0.2s ease;
           padding: 0;
 
-          :hover {
+          :hover, :focus {
             color: #9fcdff;
           }
 
           :focus {
             outline: 0;
+            box-shadow: 0 0 0 2px rgba(6,122,184, 0.2),
+            0 0 0 2px rgba(6,122,184, 0.25), 0 1px 1px rgba(0, 0, 0, 0.08);
           }
         `;
       case "primary":
@@ -83,25 +85,28 @@ class Button extends React.Component {
             opacity: 0.5;
           }
 
-          :hover {
+          :hover, :focus {
             background-color: ${this.getButtonHoverColor(type)};
           }
 
           :focus {
             outline: 0;
+            box-shadow: 0 0 0 2px rgba(6,122,184, 0.2),
+            0 0 0 2px rgba(6,122,184, 0.25), 0 1px 1px rgba(0, 0, 0, 0.08);
           }
         `;
     }
   };
 
   render() {
-    const { children, disabled, onClick, color } = this.props;
+    const { children, disabled, onClick, color, type } = this.props;
 
     return (
       <button
         className={this.getButtonStyles(color)}
         onClick={onClick}
         disabled={disabled}
+        type={type || "button"}
       >
         {children}
       </button>

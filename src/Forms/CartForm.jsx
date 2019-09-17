@@ -39,6 +39,7 @@ class CartForm extends React.Component {
                 <TextInput
                   value={this.props.itemDescription}
                   onChange={this.props.onChangeItemDescription}
+                  ariaLabel="Item description"
                 />
               </Group>
               <Group
@@ -54,6 +55,7 @@ class CartForm extends React.Component {
                 <TextInput
                   value={this.props.chargeAmount}
                   onChange={this.props.onChangeChargeAmount}
+                  ariaLabel="Charge amount"
                 />
               </Group>
               <Group
@@ -69,6 +71,7 @@ class CartForm extends React.Component {
                 <TextInput
                   value={this.props.taxAmount}
                   onChange={this.props.onChangeTaxAmount}
+                  ariaLabel="Tax amount"
                 />
               </Group>
               <Group
@@ -85,6 +88,7 @@ class CartForm extends React.Component {
                   items={CartForm.CURRENCIES}
                   value={CartForm.CURRENCIES[0]}
                   onChange={this.props.onChangeCurrency}
+                  ariaLabel="Currency"
                 />
               </Group>
               <Button

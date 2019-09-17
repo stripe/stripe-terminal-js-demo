@@ -8,13 +8,14 @@ class TextInput extends React.Component {
   };
 
   render() {
-    const { placeholder, value } = this.props;
+    const { placeholder, value, ariaLabel } = this.props;
     return (
       <input
         placeholder={placeholder}
         value={value || ""}
         onChange={this.onChange}
         className="TextInput"
+        aria-label={ariaLabel || ""}
       />
     );
   }
