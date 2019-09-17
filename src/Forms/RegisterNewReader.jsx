@@ -26,9 +26,10 @@ class RegisterNewReader extends React.Component {
     this.setState({ readerLabel: str });
   };
 
-  onClickRegister = () => {
+  onSubmitRegister = (event) => {
+    event.preventDefault();
     const { readerCode, readerLabel } = this.state;
-    this.props.onClickRegister(readerLabel, readerCode);
+    this.props.onSubmitRegister(readerLabel, readerCode);
   };
 
   render() {
@@ -36,56 +37,60 @@ class RegisterNewReader extends React.Component {
     const { onClickCancel } = this.props;
     return (
       <Section>
-        <Group direction="column" spacing={16}>
-          <Group direction="column" spacing={8}>
-            <Text size={16} color="dark">
-              Register new reader
-            </Text>
-            <Text size={12} color="lightGrey">
-              Enter the key sequence 0-7-1-3-9 on the reader to display its
-              unique registration code.
-            </Text>
-          </Group>
-          <Group direction="column" spacing={8}>
-            <Text size={14} color="darkGrey">
-              Registration code
-            </Text>
-            <TextInput
-              placeholder="quick-brown-fox"
-              value={readerCode}
-              onChange={this.onChangeReaderCode}
-            />
-            <Text size={14} color="darkGrey">
-              Reader label
-            </Text>
-            <TextInput
-              placeholder="Front desk"
-              value={readerLabel}
-              onChange={this.onChangeReaderLabel}
-            />
-          </Group>
-          <Group direction="row" alignment={{ justifyContent: "flex-end" }}>
-            <Button color="white" onClick={onClickCancel}>
-              <Text color="darkGrey" size={14}>
-                Cancel
+        <form onSubmit={this.onSubmitRegister}>
+          <Group direction="column" spacing={16}>
+            <Group direction="column" spacing={8}>
+              <Text size={16} color="dark">
+                Register new reader
               </Text>
-            </Button>
-            <Button
-              onClick={this.onClickRegister}
-              disabled={
-                readerCode === null ||
-                readerCode === "" ||
-                readerLabel === null ||
-                readerCode === ""
-              }
-              color="primary"
-            >
-              <Text color="white" size={14}>
-                Register
+              <Text size={12} color="lightGrey">
+                Enter the key sequence 0-7-1-3-9 on the reader to display its
+                unique registration code.
               </Text>
-            </Button>
+            </Group>
+            <Group direction="column" spacing={8}>
+              <Text size={14} color="darkGrey">
+                Registration code
+              </Text>
+              <TextInput
+                placeholder="quick-brown-fox"
+                value={readerCode}
+                onChange={this.onChangeReaderCode}
+                ariaLabel="Registration code"
+              />
+              <Text size={14} color="darkGrey">
+                Reader label
+              </Text>
+              <TextInput
+                placeholder="Front desk"
+                value={readerLabel}
+                onChange={this.onChangeReaderLabel}
+                ariaLabel="Reader label"
+              />
+            </Group>
+            <Group direction="row" alignment={{ justifyContent: "flex-end" }}>
+              <Button color="white" onClick={onClickCancel}>
+                <Text color="darkGrey" size={14}>
+                  Cancel
+                </Text>
+              </Button>
+              <Button
+                type="submit"
+                disabled={
+                  readerCode === null ||
+                  readerCode === "" ||
+                  readerLabel === null ||
+                  readerCode === ""
+                }
+                color="primary"
+              >
+                <Text color="white" size={14}>
+                  Register
+                </Text>
+              </Button>
+            </Group>
           </Group>
-        </Group>
+        </form>
       </Section>
     );
   }

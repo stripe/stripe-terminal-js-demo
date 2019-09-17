@@ -29,7 +29,7 @@ const ICONS = {
 class Icon extends React.Component {
   render() {
     const { icon } = this.props;
-    return <object data={ICONS[icon]}>""</object>;
+    return <object data={ICONS[icon]} tabIndex="-1">""</object>;
   }
 }
 

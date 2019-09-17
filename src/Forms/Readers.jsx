@@ -28,7 +28,7 @@ class Readers extends React.Component {
     const {
       readers,
       onClickDiscover,
-      onClickRegister,
+      onSubmitRegister,
       onConnectToReader,
       handleUseSimulator
     } = this.props;
@@ -47,7 +47,7 @@ class Readers extends React.Component {
         return (
           <RegisterNewReader
             onClickCancel={this.handleSwitchToDiscover}
-            onClickRegister={onClickRegister}
+            onSubmitRegister={onSubmitRegister}
           />
         );
       default:

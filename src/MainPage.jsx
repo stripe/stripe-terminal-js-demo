@@ -328,7 +328,7 @@ class App extends Component {
       return (
         <Readers
           onClickDiscover={() => this.discoverReaders(false)}
-          onClickRegister={this.registerAndConnectNewReader}
+          onSubmitRegister={this.registerAndConnectNewReader}
           readers={discoveredReaders}
           onConnectToReader={this.connectToReader}
           handleUseSimulator={this.connectToSimulator}

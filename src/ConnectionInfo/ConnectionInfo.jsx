@@ -76,7 +76,7 @@ class ConnectionInfo extends React.Component {
             <Group direction="row">
               <Icon icon="keypad" />
               <Text color="lightGrey" size={14}>
-                Connect to a reader
+                No reader connected
               </Text>
             </Group>
           )}
