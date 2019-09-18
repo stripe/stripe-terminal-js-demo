@@ -270,17 +270,23 @@ class App extends Component {
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
-        try {
-          // Capture the PaymentIntent from your backend client and mark the payment as complete
-          let captureResult = await this.client.capturePaymentIntent({
-            paymentIntentId: confirmResult.paymentIntent.id
-          });
+        if (confirmResult.paymentIntent.status !== "succeeded") {
+          try {
+            // Capture the PaymentIntent from your backend client and mark the payment as complete
+            let captureResult = await this.client.capturePaymentIntent({
+              paymentIntentId: confirmResult.paymentIntent.id
+            });
+            this.pendingPaymentIntentSecret = null;
+            console.log("Payment Successful!");
+            return captureResult;
+          } catch (e) {
+            // Suppress backend errors since they will be shown in logs
+            return;
+          }
+        } else {
           this.pendingPaymentIntentSecret = null;
-          console.log("Payment Successful!");
-          return captureResult;
-        } catch (e) {
-          // Suppress backend errors since they will be shown in logs
-          return;
+          console.log("Single-message payment successful!");
+          return confirmResult;
         }
       }
     }
