@@ -5,6 +5,7 @@ import Logger from "./logger";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import CommonWorkflows from "./Forms/CommonWorkflows.jsx";
+import RefundForm from "./Forms/RefundForm.jsx";
 import CartForm from "./Forms/CartForm.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Readers from "./Forms/Readers.jsx";
@@ -30,7 +31,10 @@ class App extends Component {
       taxAmount: 100,
       currency: "usd",
       workFlowInProgress: null,
-      disoveryWasCancelled: false
+      disoveryWasCancelled: false,
+      refundedChargeID: null,
+      refundedAmount: null,
+      cancelableRefund: false
     };
   }
 
@@ -321,6 +325,42 @@ class App extends Component {
     }
   };
 
+  // 3e. collectInteracRefundMethod
+  collectInteracRefundMethod = async () => {
+    this.setState({ cancelableRefund: true });
+    const readResult = await this.terminal.collectInteracRefundMethod({
+      charge_id: this.state.refundedChargeID,
+      amount: this.state.refundedAmount
+    });
+    if (readResult.error) {
+      alert(`collectInteracRefundMethod failed: ${readResult.error.message}`);
+    } else {
+      const refund = await this.terminal.processInteracRefund();
+      if (refund.error) {
+        alert(`processInteracRefund failed: ${refund.error.message}`);
+      } else {
+        console.log("Charge fully refunded!");
+        this.setState({
+          cancelableRefund: false,
+          refundedAmount: null,
+          refundedChargeID: null
+        });
+        return refund;
+      }
+    }
+    this.setState({ cancelableRefund: false });
+  };
+
+  // 3f. cancelCollectInteracRefundMethod
+  cancelPendingRefund = async () => {
+    await this.terminal.cancelCollectInteracRefundMethod();
+    this.setState({
+      cancelableRefund: false,
+      refundedAmount: null,
+      refundedChargeID: null
+    });
+  };
+
   // 4. UI Methods
   onSetBackendURL = url => {
     if (url !== null) {
@@ -338,6 +378,10 @@ class App extends Component {
   updateTaxAmount = amount =>
     this.setState({ taxAmount: parseInt(amount, 10) });
   updateCurrency = currency => this.setState({ currency: currency });
+  updateRefundChargeID = id => this.setState({ refundedChargeID: id });
+  updateRefundAmount = amount => {
+    this.setState({ refundedAmount: parseInt(amount, 10) });
+  };
 
   renderForm() {
     const {
@@ -372,6 +416,19 @@ class App extends Component {
             }
             onClickCancelPayment={this.cancelPendingPayment}
             cancelablePayment={cancelablePayment}
+          />
+          <RefundForm
+            onClickProcessRefund={() =>
+              this.runWorkflow("collectRefund", this.collectInteracRefundMethod)
+            }
+            chargeID={this.state.refundedChargeID}
+            onChangeChargeID={id => this.updateRefundChargeID(id)}
+            refundAmount={this.state.refundedAmount}
+            onChangeRefundAmount={amt => this.updateRefundAmount(amt)}
+            cancelableRefund={this.state.cancelableRefund}
+            onClickCancelRefund={() =>
+              this.runWorkflow("cancelRefund", this.cancelPendingRefund)
+            }
           />
           <CartForm
             workFlowDisabled={this.isWorkflowDisabled()}
