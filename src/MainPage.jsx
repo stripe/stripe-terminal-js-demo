@@ -142,6 +142,15 @@ class App extends Component {
       cancelReadReusableCard: {
         docsUrl:
           "https://stripe.com/docs/terminal/js-api-reference#cancel-read-reusable-card"
+      },
+      collectInteracRefundMethod: {
+        docsUrl: "https://stripe.com/docs/terminal/ca"
+      },
+      processInteracRefund: {
+        docsUrl: "https://stripe.com/docs/terminal/ca"
+      },
+      cancelCollectInteracRefundMethod: {
+        docsUrl: "https://stripe.com/docs/terminal/ca"
       }
     });
   }
