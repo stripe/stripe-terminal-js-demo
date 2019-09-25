@@ -334,19 +334,19 @@ class App extends Component {
     }
   };
 
-  // 3e. collectInteracRefundMethod
-  collectInteracRefundMethod = async () => {
+  // 3e. collectRefundPaymentMethod
+  collectRefundPaymentMethod = async () => {
     this.setState({ cancelableRefund: true });
-    const readResult = await this.terminal.collectInteracRefundMethod({
-      charge_id: this.state.refundedChargeID,
-      amount: this.state.refundedAmount
-    });
+    const readResult = await this.terminal.collectRefundPaymentMethod(
+      this.state.refundedChargeID,
+      this.state.refundedAmount
+    );
     if (readResult.error) {
-      alert(`collectInteracRefundMethod failed: ${readResult.error.message}`);
+      alert(`collectRefundPaymentMethod failed: ${readResult.error.message}`);
     } else {
-      const refund = await this.terminal.processInteracRefund();
+      const refund = await this.terminal.processRefund();
       if (refund.error) {
-        alert(`processInteracRefund failed: ${refund.error.message}`);
+        alert(`processRefund failed: ${refund.error.message}`);
       } else {
         console.log("Charge fully refunded!");
         this.setState({
@@ -360,9 +360,9 @@ class App extends Component {
     this.setState({ cancelableRefund: false });
   };
 
-  // 3f. cancelCollectInteracRefundMethod
+  // 3f. cancelCollectRefundPaymentMethod
   cancelPendingRefund = async () => {
-    await this.terminal.cancelCollectInteracRefundMethod();
+    await this.terminal.cancelCollectRefundPaymentMethod();
     this.setState({
       cancelableRefund: false,
       refundedAmount: null,
