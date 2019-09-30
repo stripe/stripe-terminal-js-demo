@@ -143,13 +143,13 @@ class App extends Component {
         docsUrl:
           "https://stripe.com/docs/terminal/js-api-reference#cancel-read-reusable-card"
       },
-      collectInteracRefundMethod: {
+      collectRefundPaymentMethod: {
         docsUrl: "https://stripe.com/docs/terminal/ca"
       },
-      processInteracRefund: {
+      processRefund: {
         docsUrl: "https://stripe.com/docs/terminal/ca"
       },
-      cancelCollectInteracRefundMethod: {
+      cancelCollectRefundPaymentMethod: {
         docsUrl: "https://stripe.com/docs/terminal/ca"
       }
     });
@@ -428,7 +428,7 @@ class App extends Component {
           />
           <RefundForm
             onClickProcessRefund={() =>
-              this.runWorkflow("collectRefund", this.collectInteracRefundMethod)
+              this.runWorkflow("collectRefund", this.collectRefundPaymentMethod)
             }
             chargeID={this.state.refundedChargeID}
             onChangeChargeID={id => this.updateRefundChargeID(id)}
