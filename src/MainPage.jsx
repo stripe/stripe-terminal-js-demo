@@ -304,6 +304,11 @@ class App extends Component {
 
   // 4. UI Methods
   onSetBackendURL = url => {
+    if (url !== null) {
+      window.localStorage.setItem("terminal.backendUrl", url);
+    } else {
+      window.localStorage.removeItem("terminal.backendUrl");
+    }
     this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
   };

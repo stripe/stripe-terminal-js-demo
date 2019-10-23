@@ -11,12 +11,16 @@ class BackendURLForm extends React.Component {
   constructor(props) {
     super(props);
 
+    let localstorageUrlCache = window.localStorage.getItem(
+      "terminal.backendUrl"
+    );
+
     this.state = {
-      backendURL: null
+      backendURL: localstorageUrlCache ? localstorageUrlCache : ""
     };
   }
 
-  onFormInitialize = (event) => {
+  onFormInitialize = event => {
     event.preventDefault();
     this.props.onSetBackendURL(this.state.backendURL.trim());
   };
