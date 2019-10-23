@@ -144,13 +144,13 @@ class App extends Component {
           "https://stripe.com/docs/terminal/js-api-reference#cancel-read-reusable-card"
       },
       collectRefundPaymentMethod: {
-        docsUrl: "https://stripe.com/docs/terminal/ca"
+        docsUrl: "https://stripe.com/docs/terminal/canada"
       },
       processRefund: {
-        docsUrl: "https://stripe.com/docs/terminal/ca"
+        docsUrl: "https://stripe.com/docs/terminal/canada"
       },
       cancelCollectRefundPaymentMethod: {
-        docsUrl: "https://stripe.com/docs/terminal/ca"
+        docsUrl: "https://stripe.com/docs/terminal/canada"
       }
     });
   }
