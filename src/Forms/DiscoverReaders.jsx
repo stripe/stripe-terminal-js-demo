@@ -12,26 +12,55 @@ class DiscoverReaders extends React.Component {
     super(props);
 
     this.state = {
-      discoveryInProgress: false
+      discoveryInProgress: false,
+      requestInProgress: false,
+      discoveryWasCancelled: false
     };
   }
 
   onTriggerDiscoverReaders = async () => {
-    this.setState({ discoveryInProgress: true });
+    // user clicked discovery button ("cancel") while already discovering
+    if (this.state.discoveryInProgress) {
+      this.setState({
+        discoveryInProgress: false,
+        requestInProgress: false,
+        discoveryWasCancelled: true
+      });
+
+      return;
+    }
+
+    // user clicked discovery button
+    this.setState({
+      discoveryInProgress: true,
+      requestInProgress: true,
+      discoveryWasCancelled: false
+    });
+
     try {
       await this.props.onClickDiscover();
     } finally {
-      this.setState({ discoveryInProgress: false });
+      this.setState({
+        discoveryInProgress: false,
+        requestInProgress: false
+      });
     }
   };
 
-  onConnectToReader = reader => () => {
-    this.props.onConnectToReader(reader);
+  onConnectToReader = reader => async () => {
+    this.setState({ requestInProgress: true });
+    try {
+      await this.props.onConnectToReader(reader);
+    } finally {
+      this.setState({ requestInProgress: false });
+    }
   };
 
   renderReaders() {
     const { readers } = this.props;
-    if (this.state.discoveryInProgress) {
+    const { discoveryWasCancelled, requestInProgress, discoveryInProgress } = this.state;
+
+    if (discoveryInProgress) {
       return (
         <Section position="middle">
           <Text size={14} color="darkGrey">
@@ -39,7 +68,7 @@ class DiscoverReaders extends React.Component {
           </Text>
         </Section>
       );
-    } else if (readers.length >= 1) {
+    } else if (readers.length >= 1 && !discoveryWasCancelled) {
       return readers.map((reader, i) => {
         const isOffline = reader.status === "offline";
         return (
@@ -66,11 +95,11 @@ class DiscoverReaders extends React.Component {
                 </Group>
               </Group>
               <Button
-                disabled={isOffline}
-                color={isOffline ? "white" : "primary"}
+                disabled={isOffline || requestInProgress}
+                color={isOffline || requestInProgress ? "white" : "primary"}
                 onClick={this.onConnectToReader(reader)}
               >
-                <Text size={14} color={isOffline ? "darkGrey" : "white"}>
+                <Text size={14} color={isOffline || requestInProgress ? "darkGrey" : "white"}>
                   {isOffline ? "Offline" : "Connect"}
                 </Text>
               </Button>
@@ -99,12 +128,18 @@ class DiscoverReaders extends React.Component {
     }
   }
 
-  onClickUseSimulator = () => {
-    this.props.handleUseSimulator();
+  onClickUseSimulator = async () => {
+    this.setState({ requestInProgress: true });
+    try {
+      await this.props.handleUseSimulator();
+    } finally {
+      this.setState({ requestInProgress: false });
+    }
   };
 
   render() {
     const { onClickRegister } = this.props;
+    const { requestInProgress, discoveryInProgress } = this.state;
 
     return (
       <Group direction="column" spacing={0}>
@@ -120,7 +155,7 @@ class DiscoverReaders extends React.Component {
               Connect to a reader
             </Text>
             <Button color="text" onClick={this.onTriggerDiscoverReaders}>
-              Discover
+              {discoveryInProgress ? "Cancel" : "Discover"}
             </Button>
           </Group>
         </Section>
@@ -132,12 +167,12 @@ class DiscoverReaders extends React.Component {
             alignment={{ justifyContent: "center" }}
             spacing={8}
           >
-            <Button onClick={onClickRegister}>
+            <Button onClick={onClickRegister} disabled={requestInProgress}>
               <Text size={14} color="dark">
                 Register reader
               </Text>
             </Button>
-            <Button onClick={this.onClickUseSimulator}>
+            <Button onClick={this.onClickUseSimulator} disabled={requestInProgress}>
               <Text size={14} color="dark">
                 Use simulator{" "}
               </Text>
