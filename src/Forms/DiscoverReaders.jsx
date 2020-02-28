@@ -13,28 +13,19 @@ class DiscoverReaders extends React.Component {
 
     this.state = {
       discoveryInProgress: false,
-      requestInProgress: false,
-      discoveryWasCancelled: false
+      requestInProgress: false
     };
   }
 
+  onTriggerCancelDiscoverReaders = () => {
+    this.setState({ discoveryInProgress: false });
+    this.props.onClickCancelDiscover();
+  }
+
   onTriggerDiscoverReaders = async () => {
-    // user clicked discovery button ("cancel") while already discovering
-    if (this.state.discoveryInProgress) {
-      this.setState({
-        discoveryInProgress: false,
-        requestInProgress: false,
-        discoveryWasCancelled: true
-      });
-
-      return;
-    }
-
-    // user clicked discovery button
     this.setState({
       discoveryInProgress: true,
-      requestInProgress: true,
-      discoveryWasCancelled: false
+      requestInProgress: true
     });
 
     try {
@@ -58,7 +49,7 @@ class DiscoverReaders extends React.Component {
 
   renderReaders() {
     const { readers } = this.props;
-    const { discoveryWasCancelled, requestInProgress, discoveryInProgress } = this.state;
+    const { requestInProgress, discoveryInProgress } = this.state;
 
     if (discoveryInProgress) {
       return (
@@ -68,7 +59,7 @@ class DiscoverReaders extends React.Component {
           </Text>
         </Section>
       );
-    } else if (readers.length >= 1 && !discoveryWasCancelled) {
+    } else if (readers.length >= 1) {
       return readers.map((reader, i) => {
         const isOffline = reader.status === "offline";
         return (
@@ -154,9 +145,11 @@ class DiscoverReaders extends React.Component {
             <Text size={16} color="dark">
               Connect to a reader
             </Text>
-            <Button color="text" onClick={this.onTriggerDiscoverReaders}>
-              {discoveryInProgress ? "Cancel" : "Discover"}
-            </Button>
+            {
+               discoveryInProgress
+               ? <Button color="text" onClick={this.onTriggerCancelDiscoverReaders}>Cancel</Button>
+               : <Button color="text" onClick={this.onTriggerDiscoverReaders} disabled={requestInProgress}>Discover</Button>
+            }
           </Group>
         </Section>
 

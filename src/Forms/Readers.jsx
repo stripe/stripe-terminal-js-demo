@@ -28,6 +28,7 @@ class Readers extends React.Component {
     const {
       readers,
       onClickDiscover,
+      onClickCancelDiscover,
       onSubmitRegister,
       onConnectToReader,
       handleUseSimulator
@@ -37,6 +38,7 @@ class Readers extends React.Component {
         return (
           <DiscoverReaders
             onClickDiscover={onClickDiscover}
+            onClickCancelDiscover={onClickCancelDiscover}
             onClickRegister={this.onClickRegister}
             onConnectToReader={onConnectToReader}
             readers={readers}
