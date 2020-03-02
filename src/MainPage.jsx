@@ -29,7 +29,8 @@ class App extends Component {
       itemDescription: "Red t-shirt",
       taxAmount: 100,
       currency: "usd",
-      workFlowInProgress: null
+      workFlowInProgress: null,
+      disoveryWasCancelled: false
     };
   }
 
@@ -143,6 +144,10 @@ class App extends Component {
 
   // 2. Discover and connect to a reader.
   discoverReaders = async () => {
+    this.setState({
+      discoveryWasCancelled: false
+    });
+
     // 2a. Discover registered readers to connect to.
     const discoverResult = await this.terminal.discoverReaders();
 
@@ -150,11 +155,19 @@ class App extends Component {
       console.log("Failed to discover: ", discoverResult.error);
       return discoverResult.error;
     } else {
+      if (this.state.discoveryWasCancelled) return;
+
       this.setState({
         discoveredReaders: discoverResult.discoveredReaders
       });
       return discoverResult.discoveredReaders;
     }
+  };
+
+  cancelDiscoverReaders = () => {
+    this.setState({
+      discoveryWasCancelled: true
+    });
   };
 
   connectToSimulator = async () => {
@@ -332,7 +345,8 @@ class App extends Component {
     } else if (reader === null) {
       return (
         <Readers
-          onClickDiscover={() => this.discoverReaders(false)}
+          onClickDiscover={() => this.discoverReaders()}
+          onClickCancelDiscover={() => this.cancelDiscoverReaders()}
           onSubmitRegister={this.registerAndConnectNewReader}
           readers={discoveredReaders}
           onConnectToReader={this.connectToReader}

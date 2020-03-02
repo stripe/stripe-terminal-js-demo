@@ -12,26 +12,46 @@ class DiscoverReaders extends React.Component {
     super(props);
 
     this.state = {
-      discoveryInProgress: false
+      discoveryInProgress: false,
+      requestInProgress: false
     };
   }
 
+  onTriggerCancelDiscoverReaders = () => {
+    this.setState({ discoveryInProgress: false });
+    this.props.onClickCancelDiscover();
+  }
+
   onTriggerDiscoverReaders = async () => {
-    this.setState({ discoveryInProgress: true });
+    this.setState({
+      discoveryInProgress: true,
+      requestInProgress: true
+    });
+
     try {
       await this.props.onClickDiscover();
     } finally {
-      this.setState({ discoveryInProgress: false });
+      this.setState({
+        discoveryInProgress: false,
+        requestInProgress: false
+      });
     }
   };
 
-  onConnectToReader = reader => () => {
-    this.props.onConnectToReader(reader);
+  onConnectToReader = reader => async () => {
+    this.setState({ requestInProgress: true });
+    try {
+      await this.props.onConnectToReader(reader);
+    } finally {
+      this.setState({ requestInProgress: false });
+    }
   };
 
   renderReaders() {
     const { readers } = this.props;
-    if (this.state.discoveryInProgress) {
+    const { requestInProgress, discoveryInProgress } = this.state;
+
+    if (discoveryInProgress) {
       return (
         <Section position="middle">
           <Text size={14} color="darkGrey">
@@ -66,11 +86,11 @@ class DiscoverReaders extends React.Component {
                 </Group>
               </Group>
               <Button
-                disabled={isOffline}
-                color={isOffline ? "white" : "primary"}
+                disabled={isOffline || requestInProgress}
+                color={isOffline || requestInProgress ? "white" : "primary"}
                 onClick={this.onConnectToReader(reader)}
               >
-                <Text size={14} color={isOffline ? "darkGrey" : "white"}>
+                <Text size={14} color={isOffline || requestInProgress ? "darkGrey" : "white"}>
                   {isOffline ? "Offline" : "Connect"}
                 </Text>
               </Button>
@@ -99,12 +119,18 @@ class DiscoverReaders extends React.Component {
     }
   }
 
-  onClickUseSimulator = () => {
-    this.props.handleUseSimulator();
+  onClickUseSimulator = async () => {
+    this.setState({ requestInProgress: true });
+    try {
+      await this.props.handleUseSimulator();
+    } finally {
+      this.setState({ requestInProgress: false });
+    }
   };
 
   render() {
     const { onClickRegister } = this.props;
+    const { requestInProgress, discoveryInProgress } = this.state;
 
     return (
       <Group direction="column" spacing={0}>
@@ -119,9 +145,11 @@ class DiscoverReaders extends React.Component {
             <Text size={16} color="dark">
               Connect to a reader
             </Text>
-            <Button color="text" onClick={this.onTriggerDiscoverReaders}>
-              Discover
-            </Button>
+            {
+               discoveryInProgress
+               ? <Button color="text" onClick={this.onTriggerCancelDiscoverReaders}>Cancel</Button>
+               : <Button color="text" onClick={this.onTriggerDiscoverReaders} disabled={requestInProgress}>Discover</Button>
+            }
           </Group>
         </Section>
 
@@ -132,12 +160,12 @@ class DiscoverReaders extends React.Component {
             alignment={{ justifyContent: "center" }}
             spacing={8}
           >
-            <Button onClick={onClickRegister}>
+            <Button onClick={onClickRegister} disabled={requestInProgress}>
               <Text size={14} color="dark">
                 Register reader
               </Text>
             </Button>
-            <Button onClick={this.onClickUseSimulator}>
+            <Button onClick={this.onClickUseSimulator} disabled={requestInProgress}>
               <Text size={14} color="dark">
                 Use simulator{" "}
               </Text>
