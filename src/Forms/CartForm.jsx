@@ -94,7 +94,7 @@ class CartForm extends React.Component {
               <Button
                 color="white"
                 onClick={this.props.onClickUpdateLineItems}
-                disabled={this.props.workflowDisabled}
+                disabled={this.props.workFlowDisabled}
                 justifyContent="left"
               >
                 <Group direction="row">
