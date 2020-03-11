@@ -110,10 +110,10 @@ class App extends Component {
           "https://stripe.com/docs/terminal/js-api-reference#discover-readers"
       },
       connectReader: {
-        docsUrl: "docs/terminal/js-api-reference#connect-reader"
+        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#connect-reader"
       },
       disconnectReader: {
-        docsUrl: "docs/terminal/js-api-reference#disconnect"
+        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#disconnect"
       },
       setReaderDisplay: {
         docsUrl:
