@@ -255,11 +255,15 @@ class App extends Component {
     // store the pending PaymentIntent's secret until the payment is complete.
     if (!this.pendingPaymentIntentSecret) {
       try {
+        let paymentMethodTypes = ["card_present"];
+        if (this.state.currency === "cad") {
+          paymentMethodTypes.push("interac_present");
+        }
         let createIntentResponse = await this.client.createPaymentIntent({
           amount: this.state.chargeAmount + this.state.taxAmount,
           currency: this.state.currency,
           description: "Test Charge",
-          paymentMethodTypes: "card_present"
+          paymentMethodTypes
         });
         this.pendingPaymentIntentSecret = createIntentResponse.secret;
       } catch (e) {
