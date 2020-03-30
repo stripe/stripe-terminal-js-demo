@@ -258,7 +258,8 @@ class App extends Component {
         let createIntentResponse = await this.client.createPaymentIntent({
           amount: this.state.chargeAmount + this.state.taxAmount,
           currency: this.state.currency,
-          description: "Test Charge"
+          description: "Test Charge",
+          paymentMethodTypes: "card_present"
         });
         this.pendingPaymentIntentSecret = createIntentResponse.secret;
       } catch (e) {

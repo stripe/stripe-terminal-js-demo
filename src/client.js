@@ -16,11 +16,12 @@ class Client {
     return this.doPost(this.url + "/register_reader", formData);
   }
 
-  createPaymentIntent({ amount, currency, description }) {
+  createPaymentIntent({ amount, currency, description, paymentMethodTypes }) {
     const formData = new URLSearchParams();
     formData.append("amount", amount);
     formData.append("currency", currency);
     formData.append("description", description);
+    formData.append("payment_method_types", paymentMethodTypes);
     return this.doPost(this.url + "/create_payment_intent", formData);
   }
 
