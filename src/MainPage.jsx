@@ -344,7 +344,8 @@ class App extends Component {
     this.setState({ cancelableRefund: true });
     const readResult = await this.terminal.collectRefundPaymentMethod(
       this.state.refundedChargeID,
-      this.state.refundedAmount
+      this.state.refundedAmount,
+      "cad"
     );
     if (readResult.error) {
       alert(`collectRefundPaymentMethod failed: ${readResult.error.message}`);
