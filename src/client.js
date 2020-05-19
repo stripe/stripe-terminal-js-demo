@@ -21,7 +21,7 @@ class Client {
     formData.append("amount", amount);
     formData.append("currency", currency);
     formData.append("description", description);
-    paymentMethodTypes.forEach((type, i) => formData.append(`payment_method_types[${i}]`, type));
+    paymentMethodTypes.forEach((type) => formData.append(`payment_method_types[]`, type));
     return this.doPost(this.url + "/create_payment_intent", formData);
   }
 
