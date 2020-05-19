@@ -5,6 +5,7 @@ import Logger from "./logger";
 
 import BackendURLForm from "./Forms/BackendURLForm.jsx";
 import CommonWorkflows from "./Forms/CommonWorkflows.jsx";
+import RefundForm from "./Forms/RefundForm.jsx";
 import CartForm from "./Forms/CartForm.jsx";
 import ConnectionInfo from "./ConnectionInfo/ConnectionInfo.jsx";
 import Readers from "./Forms/Readers.jsx";
@@ -30,7 +31,10 @@ class App extends Component {
       taxAmount: 100,
       currency: "usd",
       workFlowInProgress: null,
-      disoveryWasCancelled: false
+      disoveryWasCancelled: false,
+      refundedChargeID: null,
+      refundedAmount: null,
+      cancelableRefund: false
     };
   }
 
@@ -138,6 +142,15 @@ class App extends Component {
       cancelReadReusableCard: {
         docsUrl:
           "https://stripe.com/docs/terminal/js-api-reference#cancel-read-reusable-card"
+      },
+      collectRefundPaymentMethod: {
+        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-collectrefundpaymentmethod"
+      },
+      processRefund: {
+        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-processrefund"
+      },
+      cancelCollectRefundPaymentMethod: {
+        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-cancelcollectrefundpaymentmethod"
       }
     });
   }
@@ -242,10 +255,15 @@ class App extends Component {
     // store the pending PaymentIntent's secret until the payment is complete.
     if (!this.pendingPaymentIntentSecret) {
       try {
+        let paymentMethodTypes = ["card_present"];
+        if (this.state.currency === "cad") {
+          paymentMethodTypes.push("interac_present");
+        }
         let createIntentResponse = await this.client.createPaymentIntent({
           amount: this.state.chargeAmount + this.state.taxAmount,
           currency: this.state.currency,
-          description: "Test Charge"
+          description: "Test Charge",
+          paymentMethodTypes
         });
         this.pendingPaymentIntentSecret = createIntentResponse.secret;
       } catch (e) {
@@ -270,17 +288,23 @@ class App extends Component {
       if (confirmResult.error) {
         alert(`Confirm failed: ${confirmResult.error.message}`);
       } else if (confirmResult.paymentIntent) {
-        try {
-          // Capture the PaymentIntent from your backend client and mark the payment as complete
-          let captureResult = await this.client.capturePaymentIntent({
-            paymentIntentId: confirmResult.paymentIntent.id
-          });
+        if (confirmResult.paymentIntent.status !== "succeeded") {
+          try {
+            // Capture the PaymentIntent from your backend client and mark the payment as complete
+            let captureResult = await this.client.capturePaymentIntent({
+              paymentIntentId: confirmResult.paymentIntent.id
+            });
+            this.pendingPaymentIntentSecret = null;
+            console.log("Payment Successful!");
+            return captureResult;
+          } catch (e) {
+            // Suppress backend errors since they will be shown in logs
+            return;
+          }
+        } else {
           this.pendingPaymentIntentSecret = null;
-          console.log("Payment Successful!");
-          return captureResult;
-        } catch (e) {
-          // Suppress backend errors since they will be shown in logs
-          return;
+          console.log("Single-message payment successful!");
+          return confirmResult;
         }
       }
     }
@@ -315,6 +339,43 @@ class App extends Component {
     }
   };
 
+  // 3e. collectRefundPaymentMethod
+  collectRefundPaymentMethod = async () => {
+    this.setState({ cancelableRefund: true });
+    const readResult = await this.terminal.collectRefundPaymentMethod(
+      this.state.refundedChargeID,
+      this.state.refundedAmount,
+      "cad"
+    );
+    if (readResult.error) {
+      alert(`collectRefundPaymentMethod failed: ${readResult.error.message}`);
+    } else {
+      const refund = await this.terminal.processRefund();
+      if (refund.error) {
+        alert(`processRefund failed: ${refund.error.message}`);
+      } else {
+        console.log("Charge fully refunded!");
+        this.setState({
+          cancelableRefund: false,
+          refundedAmount: null,
+          refundedChargeID: null
+        });
+        return refund;
+      }
+    }
+    this.setState({ cancelableRefund: false });
+  };
+
+  // 3f. cancelCollectRefundPaymentMethod
+  cancelPendingRefund = async () => {
+    await this.terminal.cancelCollectRefundPaymentMethod();
+    this.setState({
+      cancelableRefund: false,
+      refundedAmount: null,
+      refundedChargeID: null
+    });
+  };
+
   // 4. UI Methods
   onSetBackendURL = url => {
     if (url !== null) {
@@ -332,6 +393,10 @@ class App extends Component {
   updateTaxAmount = amount =>
     this.setState({ taxAmount: parseInt(amount, 10) });
   updateCurrency = currency => this.setState({ currency: currency });
+  updateRefundChargeID = id => this.setState({ refundedChargeID: id });
+  updateRefundAmount = amount => {
+    this.setState({ refundedAmount: parseInt(amount, 10) });
+  };
 
   renderForm() {
     const {
@@ -366,6 +431,19 @@ class App extends Component {
             }
             onClickCancelPayment={this.cancelPendingPayment}
             cancelablePayment={cancelablePayment}
+          />
+          <RefundForm
+            onClickProcessRefund={() =>
+              this.runWorkflow("collectRefund", this.collectRefundPaymentMethod)
+            }
+            chargeID={this.state.refundedChargeID}
+            onChangeChargeID={id => this.updateRefundChargeID(id)}
+            refundAmount={this.state.refundedAmount}
+            onChangeRefundAmount={amt => this.updateRefundAmount(amt)}
+            cancelableRefund={this.state.cancelableRefund}
+            onClickCancelRefund={() =>
+              this.runWorkflow("cancelRefund", this.cancelPendingRefund)
+            }
           />
           <CartForm
             workFlowDisabled={this.isWorkflowDisabled()}
