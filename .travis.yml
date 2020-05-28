@@ -18,4 +18,5 @@ deploy:
   provider: gae
   keyfile: gcp-client-secret.json
   project: stripe-terminal-demo
+  skip_cleanup: true
 
