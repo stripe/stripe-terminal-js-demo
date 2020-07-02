@@ -3,12 +3,12 @@ import * as React from "react";
 import "./TextInput.css";
 
 class TextInput extends React.Component {
-  onChange = e => {
+  onChange = (e) => {
     this.props.onChange(e.target.value);
   };
 
   render() {
-    const { placeholder, value, ariaLabel } = this.props;
+    const { placeholder, value, ariaLabel, maxlength } = this.props;
     return (
       <input
         placeholder={placeholder}
@@ -16,6 +16,7 @@ class TextInput extends React.Component {
         onChange={this.onChange}
         className="TextInput"
         aria-label={ariaLabel || ""}
+        maxlength={maxlength || ""}
       />
     );
   }

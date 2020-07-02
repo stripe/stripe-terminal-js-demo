@@ -7,13 +7,17 @@ import Group from "../components/Group/Group.jsx";
 import Icon from "../components/Icon/Icon.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
+import TestPaymentMethods from "./TestPaymentMethods.jsx";
 
 class CommonWorkflows extends React.Component {
   render() {
     const {
       onClickCancelPayment,
+      onChangeTestCardNumber,
+      onChangeTestPaymentMethod,
       cancelablePayment,
-      workFlowDisabled
+      workFlowDisabled,
+      usingSimulator,
     } = this.props;
     return (
       <Section>
@@ -22,6 +26,12 @@ class CommonWorkflows extends React.Component {
             Common workflows
           </Text>
           <Group direction="column" spacing={8}>
+            {usingSimulator && (
+              <TestPaymentMethods
+                onChangeTestCardNumber={onChangeTestCardNumber}
+                onChangeTestPaymentMethod={onChangeTestPaymentMethod}
+              />
+            )}
             <Button
               color="white"
               onClick={this.props.onClickCollectCardPayments}
