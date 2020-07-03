@@ -36,6 +36,8 @@ class App extends Component {
       refundedAmount: null,
       cancelableRefund: false,
       usingSimulator: false,
+      testCardNumber: "",
+      testPaymentMethod: "visa",
     };
   }
 
@@ -404,7 +406,7 @@ class App extends Component {
     this.setState({ refundedAmount: parseInt(amount, 10) });
   };
 
-  onChangeSimulatedPaymentMethod = (testPaymentMethod) => {
+  onChangeTestPaymentMethod = (testPaymentMethod) => {
     this.setState({ testPaymentMethod });
   };
 
