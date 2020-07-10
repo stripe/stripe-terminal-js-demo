@@ -34,7 +34,10 @@ class App extends Component {
       disoveryWasCancelled: false,
       refundedChargeID: null,
       refundedAmount: null,
-      cancelableRefund: false
+      cancelableRefund: false,
+      usingSimulator: false,
+      testCardNumber: "",
+      testPaymentMethod: "visa",
     };
   }
 
@@ -179,27 +182,28 @@ class App extends Component {
 
   cancelDiscoverReaders = () => {
     this.setState({
-      discoveryWasCancelled: true
+      discoveryWasCancelled: true,
     });
   };
 
   connectToSimulator = async () => {
     const simulatedResult = await this.terminal.discoverReaders({
-      simulated: true
+      simulated: true,
     });
     await this.connectToReader(simulatedResult.discoveredReaders[0]);
   };
 
-  connectToReader = async selectedReader => {
+  connectToReader = async (selectedReader) => {
     // 2b. Connect to a discovered reader.
     const connectResult = await this.terminal.connectReader(selectedReader);
     if (connectResult.error) {
       console.log("Failed to connect:", connectResult.error);
     } else {
       this.setState({
+        usingSimulator: selectedReader.id === "SIMULATOR",
         status: "workflows",
         discoveredReaders: [],
-        reader: connectResult.reader
+        reader: connectResult.reader,
       });
       return connectResult;
     }
@@ -272,6 +276,10 @@ class App extends Component {
       }
     }
     // Read a card from the customer
+    this.terminal.setSimulatorConfiguration({
+      testPaymentMethod: this.state.testPaymentMethod,
+      testCardNumber: this.state.testCardNumber,
+    });
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret
     );
@@ -398,12 +406,21 @@ class App extends Component {
     this.setState({ refundedAmount: parseInt(amount, 10) });
   };
 
+  onChangeTestPaymentMethod = (testPaymentMethod) => {
+    this.setState({ testPaymentMethod });
+  };
+
+  onChangeTestCardNumber = (testCardNumber) => {
+    this.setState({ testCardNumber });
+  };
+
   renderForm() {
     const {
       backendURL,
       cancelablePayment,
       reader,
-      discoveredReaders
+      discoveredReaders,
+      usingSimulator,
     } = this.state;
     if (backendURL === null && reader === null) {
       return <BackendURLForm onSetBackendURL={this.onSetBackendURL} />;
@@ -430,7 +447,10 @@ class App extends Component {
               this.runWorkflow("saveCard", this.saveCardForFutureUse)
             }
             onClickCancelPayment={this.cancelPendingPayment}
+            onChangeTestPaymentMethod={this.onChangeTestPaymentMethod}
+            onChangeTestCardNumber={this.onChangeTestCardNumber}
             cancelablePayment={cancelablePayment}
+            usingSimulator={usingSimulator}
           />
           <RefundForm
             onClickProcessRefund={() =>
