@@ -21,8 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "npm run build && gcloud app deploy --project=stripe-terminal-demo"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
