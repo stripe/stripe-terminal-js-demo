@@ -63,7 +63,9 @@ class ConnectionInfo extends React.Component {
               }}
             >
               <Group direction="row">
-                <Icon icon="keypad" />
+                <span>
+                  <Icon icon="keypad" />
+                </span>
                 <Text truncate color="dark" size={14}>
                   {reader.label}
                 </Text>
@@ -74,7 +76,9 @@ class ConnectionInfo extends React.Component {
             </Group>
           ) : (
             <Group direction="row">
-              <Icon icon="keypad" />
+              <span>
+                <Icon icon="keypad" />
+              </span>
               <Text color="lightGrey" size={14}>
                 No reader connected
               </Text>
