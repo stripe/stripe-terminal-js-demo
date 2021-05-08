@@ -7,33 +7,50 @@ import Group from "../components/Group/Group.jsx";
 import Section from "../components/Section/Section.jsx";
 import Text from "../components/Text/Text.jsx";
 import TextInput from "../components/TextInput/TextInput.jsx";
+import Select from "../components/Select/Select.jsx";
+import Link from "../components/Link/Link.jsx";
 
 class RegisterNewReader extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      locations: [],
       readerCode: null,
-      readerLabel: null
+      readerLabel: null,
+      readerLocationId: null,
     };
   }
 
-  onChangeReaderCode = str => {
+  componentDidMount() {
+    this.props.listLocations().then((locations) => {
+      this.setState({
+        locations,
+        readerLocationId: locations.length >= 1 ? locations[0].id : null,
+      });
+    });
+  }
+
+  onChangeReaderCode = (str) => {
     this.setState({ readerCode: str });
   };
 
-  onChangeReaderLabel = str => {
+  onChangeReaderLabel = (str) => {
     this.setState({ readerLabel: str });
+  };
+
+  onChangeReaderLocationId = (str) => {
+    this.setState({ readerLocationId: str });
   };
 
   onSubmitRegister = (event) => {
     event.preventDefault();
-    const { readerCode, readerLabel } = this.state;
-    this.props.onSubmitRegister(readerLabel, readerCode);
+    const { readerCode, readerLabel, readerLocationId } = this.state;
+    this.props.onSubmitRegister(readerLabel, readerCode, readerLocationId);
   };
 
   render() {
-    const { readerCode, readerLabel } = this.state;
+    const { readerCode, readerLabel, locations, readerLocationId } = this.state;
     const { onClickCancel } = this.props;
     return (
       <Section>
@@ -44,8 +61,8 @@ class RegisterNewReader extends React.Component {
                 Register new reader
               </Text>
               <Text size={12} color="lightGrey">
-                Enter the key sequence 0-7-1-3-9 on the reader to display its
-                unique registration code.
+                Enter the key sequence 0-7-1-3-9 on the reader to display its unique registration
+                code.
               </Text>
             </Group>
             <Group direction="column" spacing={8}>
@@ -67,6 +84,27 @@ class RegisterNewReader extends React.Component {
                 onChange={this.onChangeReaderLabel}
                 ariaLabel="Reader label"
               />
+              <Text size={14} color="darkGrey">
+                Reader location
+              </Text>
+              <Select
+                items={locations.map((location) => ({
+                  value: location.id,
+                  label: `${location.display_name} (${location.id})`,
+                }))}
+                value={readerLocationId}
+                onChange={this.onChangeReaderLocationId}
+                ariaLabel="Reader location"
+              />
+              <Text size={10} color="lightGrey">
+                You can create Locations in{" "}
+                <Link
+                  size={10}
+                  href="https://dashboard.stripe.com/terminal/locations"
+                  text="the dashboard"
+                />
+                .
+              </Text>
             </Group>
             <Group direction="row" alignment={{ justifyContent: "flex-end" }}>
               <Button color="white" onClick={onClickCancel}>

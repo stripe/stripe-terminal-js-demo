@@ -31,7 +31,8 @@ class Readers extends React.Component {
       onClickCancelDiscover,
       onSubmitRegister,
       onConnectToReader,
-      handleUseSimulator
+      handleUseSimulator,
+      listLocations,
     } = this.props;
     switch (mode) {
       case "list":
@@ -50,6 +51,7 @@ class Readers extends React.Component {
           <RegisterNewReader
             onClickCancel={this.handleSwitchToDiscover}
             onSubmitRegister={onSubmitRegister}
+            listLocations={listLocations}
           />
         );
       default:
