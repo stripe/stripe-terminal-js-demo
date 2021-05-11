@@ -1,0 +1,28 @@
+.Select {
+    background: #F7FAFC;
+    border-radius: 6px 6px 6px 6px;
+    text-decoration: none;
+    cursor: text;
+    padding: 1px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+    outline: 0;
+    border: 0;
+    padding: 8px;
+
+    letter-spacing: -0.15px;
+    font-size: 14px;
+
+    transition: all 0.2s ease;
+}
+
+.Select:focus {
+    box-shadow: 0 0 0 2px rgba(6,122,184, 0.2),
+    0 0 0 2px rgba(6,122,184, 0.25), 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.Select::placeholder {
+    color: #A3ACB9;
+}

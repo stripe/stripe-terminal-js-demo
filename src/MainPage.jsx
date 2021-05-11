@@ -217,11 +217,12 @@ class App extends Component {
     });
   };
 
-  registerAndConnectNewReader = async (label, registrationCode) => {
+  registerAndConnectNewReader = async (label, registrationCode, location) => {
     try {
       let reader = await this.client.registerDevice({
         label,
-        registrationCode
+        registrationCode,
+        location,
       });
       // After registering a new reader, we can connect immediately using the reader object returned from the server.
       await this.connectToReader(reader);
@@ -433,6 +434,7 @@ class App extends Component {
           readers={discoveredReaders}
           onConnectToReader={this.connectToReader}
           handleUseSimulator={this.connectToSimulator}
+          listLocations={this.client.listLocations}
         />
       );
     } else {

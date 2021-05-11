@@ -1,12 +1,14 @@
 import * as React from "react";
 
+import "./Select.css";
+
 class Select extends React.Component {
   constructor(props) {
     super(props);
     this.state = { value: this.props.value };
   }
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ value: e.target.value });
     this.props.onChange(e.target.value);
   };
@@ -18,11 +20,9 @@ class Select extends React.Component {
       </option>
     ));
 
-    return (
-      <select value={this.state.value} onChange={this.onChange}>
+    return <select required={this.props.required} className="Select" value={this.state.value} onChange={this.onChange}>
         {items}
-      </select>
-    );
+      </select>;
   }
 }
 
