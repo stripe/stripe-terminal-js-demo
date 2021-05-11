@@ -20,11 +20,9 @@ class Select extends React.Component {
       </option>
     ));
 
-    return (
-      <select className="Select" value={this.state.value} onChange={this.onChange}>
+    return <select required={this.props.required} className="Select" value={this.state.value} onChange={this.onChange}>
         {items}
-      </select>
-    );
+      </select>;
   }
 }
 

@@ -87,24 +87,39 @@ class RegisterNewReader extends React.Component {
               <Text size={14} color="darkGrey">
                 Reader location
               </Text>
-              <Select
-                items={locations.map((location) => ({
-                  value: location.id,
-                  label: `${location.display_name} (${location.id})`,
-                }))}
-                value={readerLocationId}
-                onChange={this.onChangeReaderLocationId}
-                ariaLabel="Reader location"
-              />
-              <Text size={10} color="lightGrey">
-                You can create Locations in{" "}
-                <Link
-                  size={10}
-                  href="https://dashboard.stripe.com/terminal/locations"
-                  text="the dashboard"
-                />
-                .
-              </Text>
+              {locations.length == 0 ? (
+                <Text size={12} color="lightGrey">
+                  Looks like you don't have any locations yet. Start by creating one in the{" "}
+                  <Link
+                    size={12}
+                    href="https://dashboard.stripe.com/terminal/locations"
+                    text="the dashboard"
+                  />
+                  .
+                </Text>
+              ) : (
+                <Group direction="column" spacing={1}>
+                  <Select
+                    items={locations.map((location) => ({
+                      value: location.id,
+                      label: `${location.display_name} (${location.id})`,
+                    }))}
+                    value={readerLocationId}
+                    onChange={this.onChangeReaderLocationId}
+                    ariaLabel="Reader location"
+                    required
+                  />
+                  <Text size={10} color="lightGrey">
+                    You can create more Locations in{" "}
+                    <Link
+                      size={10}
+                      href="https://dashboard.stripe.com/terminal/locations"
+                      text="the dashboard"
+                    />
+                    .
+                  </Text>
+                </Group>
+              )}
             </Group>
             <Group direction="row" alignment={{ justifyContent: "flex-end" }}>
               <Button color="white" onClick={onClickCancel}>
