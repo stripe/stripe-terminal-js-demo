@@ -400,7 +400,7 @@ class App extends Component {
   updateItemDescription = description =>
     this.setState({ itemDescription: description });
   updateTaxAmount = amount =>
-    this.setState({ taxAmount: parseInt(amount, 10) });
+    this.setState({ taxAmount: parseInt(amount || 0, 10) });
   updateCurrency = currency => this.setState({ currency: currency });
   updateRefundChargeID = id => this.setState({ refundedChargeID: id });
   updateRefundAmount = amount => {
