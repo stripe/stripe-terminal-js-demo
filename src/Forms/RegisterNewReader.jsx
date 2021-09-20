@@ -18,32 +18,32 @@ class RegisterNewReader extends React.Component {
       locations: [],
       readerCode: null,
       readerLabel: null,
-      readerLocationId: null,
+      readerLocationId: null
     };
   }
 
   componentDidMount() {
-    this.props.listLocations().then((locations) => {
+    this.props.listLocations().then(locations => {
       this.setState({
         locations,
-        readerLocationId: locations.length >= 1 ? locations[0].id : null,
+        readerLocationId: locations.length >= 1 ? locations[0].id : null
       });
     });
   }
 
-  onChangeReaderCode = (str) => {
+  onChangeReaderCode = str => {
     this.setState({ readerCode: str });
   };
 
-  onChangeReaderLabel = (str) => {
+  onChangeReaderLabel = str => {
     this.setState({ readerLabel: str });
   };
 
-  onChangeReaderLocationId = (str) => {
+  onChangeReaderLocationId = str => {
     this.setState({ readerLocationId: str });
   };
 
-  onSubmitRegister = (event) => {
+  onSubmitRegister = event => {
     event.preventDefault();
     const { readerCode, readerLabel, readerLocationId } = this.state;
     this.props.onSubmitRegister(readerLabel, readerCode, readerLocationId);
@@ -61,8 +61,8 @@ class RegisterNewReader extends React.Component {
                 Register new reader
               </Text>
               <Text size={12} color="lightGrey">
-                Enter the key sequence 0-7-1-3-9 on the reader to display its unique registration
-                code.
+                Enter the key sequence 0-7-1-3-9 on the reader to display its
+                unique registration code.
               </Text>
             </Group>
             <Group direction="column" spacing={8}>
@@ -87,9 +87,10 @@ class RegisterNewReader extends React.Component {
               <Text size={14} color="darkGrey">
                 Reader location
               </Text>
-              {locations.length == 0 ? (
+              {locations.length === 0 ? (
                 <Text size={12} color="lightGrey">
-                  Looks like you don't have any locations yet. Start by creating one in the{" "}
+                  Looks like you don't have any locations yet. Start by creating
+                  one in the{" "}
                   <Link
                     size={12}
                     href="https://dashboard.stripe.com/terminal/locations"
@@ -100,9 +101,9 @@ class RegisterNewReader extends React.Component {
               ) : (
                 <Group direction="column" spacing={1}>
                   <Select
-                    items={locations.map((location) => ({
+                    items={locations.map(location => ({
                       value: location.id,
-                      label: `${location.display_name} (${location.id})`,
+                      label: `${location.display_name} (${location.id})`
                     }))}
                     value={readerLocationId}
                     onChange={this.onChangeReaderLocationId}
