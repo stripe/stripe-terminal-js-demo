@@ -90,7 +90,7 @@ class RegisterNewReader extends React.Component {
               {locations.length === 0 ? (
                 <Text size={12} color="lightGrey">
                   Looks like you don't have any locations yet. Start by creating
-                  one in the{" "}
+                  one in {" "}
                   <Link
                     size={12}
                     href="https://dashboard.stripe.com/terminal/locations"
