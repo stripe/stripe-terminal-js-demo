@@ -9,7 +9,7 @@ class Link extends React.Component {
   render() {
     const { text, href, size, newWindow = false } = this.props;
     return (
-      <a href={href} target={newWindow ? "_blank" : ""}>
+      <a href={href} target={newWindow ? "_blank" : ""} rel="noreferrer">
         <Text size={size} color="link" className={css``}>
           {text}
         </Text>
