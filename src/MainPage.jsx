@@ -31,7 +31,7 @@ class App extends Component {
       taxAmount: 100,
       currency: "usd",
       workFlowInProgress: null,
-      disoveryWasCancelled: false,
+      discoveryWasCancelled: false,
       refundedChargeID: null,
       refundedAmount: null,
       cancelableRefund: false,
