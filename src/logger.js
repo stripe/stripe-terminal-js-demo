@@ -43,14 +43,14 @@ class Logger {
   }
 
   static watchObject(obj, objName, methodsMetadata) {
-    let objProtoype = Object.getPrototypeOf(obj);
-    Object.getOwnPropertyNames(objProtoype)
+    let objPrototype = Object.getPrototypeOf(obj);
+    Object.getOwnPropertyNames(objPrototype)
       .filter(property => methodsMetadata[property] !== undefined)
       .forEach(instanceMethodName => {
         obj[instanceMethodName] = Logger.tracedFn(
           objName + "." + instanceMethodName,
           methodsMetadata[instanceMethodName].docsUrl,
-          objProtoype[instanceMethodName]
+          objPrototype[instanceMethodName]
         );
       });
   }
