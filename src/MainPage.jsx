@@ -37,7 +37,7 @@ class App extends Component {
       cancelableRefund: false,
       usingSimulator: false,
       testCardNumber: "",
-      testPaymentMethod: "visa",
+      testPaymentMethod: "visa"
     };
   }
 
@@ -117,7 +117,8 @@ class App extends Component {
           "https://stripe.com/docs/terminal/js-api-reference#discover-readers"
       },
       connectReader: {
-        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#connect-reader"
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#connect-reader"
       },
       disconnectReader: {
         docsUrl: "https://stripe.com/docs/terminal/js-api-reference#disconnect"
@@ -147,13 +148,16 @@ class App extends Component {
           "https://stripe.com/docs/terminal/js-api-reference#cancel-read-reusable-card"
       },
       collectRefundPaymentMethod: {
-        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-collectrefundpaymentmethod"
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-collectrefundpaymentmethod"
       },
       processRefund: {
-        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-processrefund"
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-processrefund"
       },
       cancelCollectRefundPaymentMethod: {
-        docsUrl: "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-cancelcollectrefundpaymentmethod"
+        docsUrl:
+          "https://stripe.com/docs/terminal/js-api-reference#stripeterminal-cancelcollectrefundpaymentmethod"
       }
     });
   }
@@ -182,18 +186,18 @@ class App extends Component {
 
   cancelDiscoverReaders = () => {
     this.setState({
-      discoveryWasCancelled: true,
+      discoveryWasCancelled: true
     });
   };
 
   connectToSimulator = async () => {
     const simulatedResult = await this.terminal.discoverReaders({
-      simulated: true,
+      simulated: true
     });
     await this.connectToReader(simulatedResult.discoveredReaders[0]);
   };
 
-  connectToReader = async (selectedReader) => {
+  connectToReader = async selectedReader => {
     // 2b. Connect to a discovered reader.
     const connectResult = await this.terminal.connectReader(selectedReader);
     if (connectResult.error) {
@@ -203,7 +207,7 @@ class App extends Component {
         usingSimulator: selectedReader.id === "SIMULATOR",
         status: "workflows",
         discoveredReaders: [],
-        reader: connectResult.reader,
+        reader: connectResult.reader
       });
       return connectResult;
     }
@@ -222,7 +226,7 @@ class App extends Component {
       let reader = await this.client.registerDevice({
         label,
         registrationCode,
-        location,
+        location
       });
       // After registering a new reader, we can connect immediately using the reader object returned from the server.
       await this.connectToReader(reader);
@@ -279,7 +283,7 @@ class App extends Component {
     // Read a card from the customer
     this.terminal.setSimulatorConfiguration({
       testPaymentMethod: this.state.testPaymentMethod,
-      testCardNumber: this.state.testCardNumber,
+      testCardNumber: this.state.testCardNumber
     });
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret
@@ -351,28 +355,32 @@ class App extends Component {
   // 3e. collectRefundPaymentMethod
   collectRefundPaymentMethod = async () => {
     this.setState({ cancelableRefund: true });
-    const readResult = await this.terminal.collectRefundPaymentMethod(
-      this.state.refundedChargeID,
-      this.state.refundedAmount,
-      "cad"
-    );
-    if (readResult.error) {
-      alert(`collectRefundPaymentMethod failed: ${readResult.error.message}`);
-    } else {
-      const refund = await this.terminal.processRefund();
-      if (refund.error) {
-        alert(`processRefund failed: ${refund.error.message}`);
+    try {
+      const readResult = await this.terminal.collectRefundPaymentMethod(
+        this.state.refundedChargeID,
+        this.state.refundedAmount,
+        "cad"
+      );
+      if (readResult.error) {
+        alert(`collectRefundPaymentMethod failed: ${readResult.error.message}`);
+        this.setState({ cancelableRefund: false });
       } else {
-        console.log("Charge fully refunded!");
-        this.setState({
-          cancelableRefund: false,
-          refundedAmount: null,
-          refundedChargeID: null
-        });
-        return refund;
+        const refund = await this.terminal.processRefund();
+        if (refund.error) {
+          alert(`processRefund failed: ${refund.error.message}`);
+        } else {
+          console.log("Charge fully refunded!");
+          this.setState({
+            cancelableRefund: false,
+            refundedAmount: null,
+            refundedChargeID: null
+          });
+          return refund;
+        }
       }
+    } finally {
+      this.setState({ cancelableRefund: false });
     }
-    this.setState({ cancelableRefund: false });
   };
 
   // 3f. cancelCollectRefundPaymentMethod
@@ -407,11 +415,11 @@ class App extends Component {
     this.setState({ refundedAmount: parseInt(amount, 10) });
   };
 
-  onChangeTestPaymentMethod = (testPaymentMethod) => {
+  onChangeTestPaymentMethod = testPaymentMethod => {
     this.setState({ testPaymentMethod });
   };
 
-  onChangeTestCardNumber = (testCardNumber) => {
+  onChangeTestCardNumber = testCardNumber => {
     this.setState({ testCardNumber });
   };
 
@@ -421,7 +429,7 @@ class App extends Component {
       cancelablePayment,
       reader,
       discoveredReaders,
-      usingSimulator,
+      usingSimulator
     } = this.state;
     if (backendURL === null && reader === null) {
       return <BackendURLForm onSetBackendURL={this.onSetBackendURL} />;
@@ -496,7 +504,6 @@ class App extends Component {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 100vh;
           padding: 24px;
           @media (max-width: 800px) {
             height: auto;

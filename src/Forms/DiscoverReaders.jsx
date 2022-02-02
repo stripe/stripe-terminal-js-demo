@@ -20,7 +20,7 @@ class DiscoverReaders extends React.Component {
   onTriggerCancelDiscoverReaders = () => {
     this.setState({ discoveryInProgress: false });
     this.props.onClickCancelDiscover();
-  }
+  };
 
   onTriggerDiscoverReaders = async () => {
     this.setState({
@@ -79,9 +79,6 @@ class DiscoverReaders extends React.Component {
                     <Text size={11} color="darkGrey">
                       {reader.serial_number}
                     </Text>
-                    <Text size={11} color="darkGrey">
-                      {reader.ip_address}
-                    </Text>
                   </Group>
                 </Group>
               </Group>
@@ -90,7 +87,10 @@ class DiscoverReaders extends React.Component {
                 color={isOffline || requestInProgress ? "white" : "primary"}
                 onClick={this.onConnectToReader(reader)}
               >
-                <Text size={14} color={isOffline || requestInProgress ? "darkGrey" : "white"}>
+                <Text
+                  size={14}
+                  color={isOffline || requestInProgress ? "darkGrey" : "white"}
+                >
                   {isOffline ? "Offline" : "Connect"}
                 </Text>
               </Button>
@@ -145,11 +145,22 @@ class DiscoverReaders extends React.Component {
             <Text size={16} color="dark">
               Connect to a reader
             </Text>
-            {
-               discoveryInProgress
-               ? <Button color="text" onClick={this.onTriggerCancelDiscoverReaders}>Cancel</Button>
-               : <Button color="text" onClick={this.onTriggerDiscoverReaders} disabled={requestInProgress}>Discover</Button>
-            }
+            {discoveryInProgress ? (
+              <Button
+                color="text"
+                onClick={this.onTriggerCancelDiscoverReaders}
+              >
+                Cancel
+              </Button>
+            ) : (
+              <Button
+                color="text"
+                onClick={this.onTriggerDiscoverReaders}
+                disabled={requestInProgress}
+              >
+                Discover
+              </Button>
+            )}
           </Group>
         </Section>
 
@@ -165,7 +176,10 @@ class DiscoverReaders extends React.Component {
                 Register reader
               </Text>
             </Button>
-            <Button onClick={this.onClickUseSimulator} disabled={requestInProgress}>
+            <Button
+              onClick={this.onClickUseSimulator}
+              disabled={requestInProgress}
+            >
               <Text size={14} color="dark">
                 Use simulator{" "}
               </Text>
