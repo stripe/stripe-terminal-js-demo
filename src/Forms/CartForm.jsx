@@ -13,7 +13,8 @@ class CartForm extends React.Component {
   static CURRENCIES = [
     { value: "usd", label: "USD" },
     { value: "gbp", label: "GBP" },
-    { value: "cad", label: "CAD" }
+    { value: "cad", label: "CAD" },
+    { value: "eur", label: "EUR" }
   ];
 
   render() {
