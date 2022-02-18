@@ -17,7 +17,9 @@ class CartForm extends React.Component {
     { value: "gbp", label: "GBP" },
     { value: "nzd", label: "NZD" },
     { value: "sgd", label: "SGD" },
-    { value: "usd", label: "USD" }
+    { value: "usd", label: "USD" }, 
+    { value: "dkk", label: "DKK" },
+    { value: "sek", label: "SEK" },
   ];
 
   render() {
