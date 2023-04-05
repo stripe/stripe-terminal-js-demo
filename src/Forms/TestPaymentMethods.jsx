@@ -53,6 +53,7 @@ class TestPaymentMethods extends React.Component {
     this.state = {
       testCardNumber: "",
       testPaymentMethod: "visa",
+      tipAmount: "0",
     };
   }
 
@@ -61,13 +62,18 @@ class TestPaymentMethods extends React.Component {
     this.props.onChangeTestCardNumber(testCardNumber);
   };
 
+  onChangeTipAmount = (tipAmount) => {
+    this.setState({ tipAmount });
+    this.props.onChangeTipAmount(tipAmount);
+  };
+
   onChangeTestPaymentMethod = (testPaymentMethod) => {
     this.setState({ testPaymentMethod });
     this.props.onChangeTestPaymentMethod(testPaymentMethod);
   };
 
   render() {
-    const { testCardNumber, testPaymentMethod } = this.state;
+    const { testCardNumber, testPaymentMethod, tipAmount } = this.state;
     return (
       <>
         <Group
@@ -93,6 +99,24 @@ class TestPaymentMethods extends React.Component {
           value={testPaymentMethod}
           onChange={this.onChangeTestPaymentMethod}
         />
+        <Group
+          spacing={4}
+          direction="row"
+          alignment={{
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text color="dark">Tip Amount</Text>
+          <TextInput
+            ariaLabel="Test Tip Amount"
+            onChange={this.onChangeTipAmount}
+            value={tipAmount}
+            type="number"
+            min="0"
+            step="1"
+          />
+        </Group>
       </>
     );
   }

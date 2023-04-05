@@ -14,6 +14,7 @@ class CommonWorkflows extends React.Component {
     const {
       onClickCancelPayment,
       onChangeTestCardNumber,
+      onChangeTipAmount,
       onChangeTestPaymentMethod,
       cancelablePayment,
       workFlowDisabled,
@@ -29,6 +30,7 @@ class CommonWorkflows extends React.Component {
             {usingSimulator && (
               <TestPaymentMethods
                 onChangeTestCardNumber={onChangeTestCardNumber}
+                onChangeTipAmount={onChangeTipAmount}
                 onChangeTestPaymentMethod={onChangeTestPaymentMethod}
               />
             )}

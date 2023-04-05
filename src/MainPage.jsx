@@ -37,7 +37,8 @@ class App extends Component {
       cancelableRefund: false,
       usingSimulator: false,
       testCardNumber: "",
-      testPaymentMethod: "visa"
+      testPaymentMethod: "visa",
+      tipAmount: "0",
     };
   }
 
@@ -283,7 +284,8 @@ class App extends Component {
     // Read a card from the customer
     this.terminal.setSimulatorConfiguration({
       testPaymentMethod: this.state.testPaymentMethod,
-      testCardNumber: this.state.testCardNumber
+      testCardNumber: this.state.testCardNumber,
+      tipAmount: Number(this.state.tipAmount),
     });
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret
@@ -423,6 +425,10 @@ class App extends Component {
     this.setState({ testCardNumber });
   };
 
+  onChangeTipAmount = (tipAmount) => {
+    this.setState({ tipAmount });
+  };
+
   renderForm() {
     const {
       backendURL,
@@ -459,6 +465,7 @@ class App extends Component {
             onClickCancelPayment={this.cancelPendingPayment}
             onChangeTestPaymentMethod={this.onChangeTestPaymentMethod}
             onChangeTestCardNumber={this.onChangeTestCardNumber}
+            onChangeTipAmount={this.onChangeTipAmount}
             cancelablePayment={cancelablePayment}
             usingSimulator={usingSimulator}
           />

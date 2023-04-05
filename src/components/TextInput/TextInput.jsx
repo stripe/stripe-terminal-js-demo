@@ -8,7 +8,15 @@ class TextInput extends React.Component {
   };
 
   render() {
-    const { placeholder, value, ariaLabel, maxlength } = this.props;
+    const {
+      placeholder,
+      value,
+      ariaLabel,
+      maxlength,
+      type,
+      min,
+      step,
+    } = this.props;
     return (
       <input
         placeholder={placeholder}
@@ -17,6 +25,9 @@ class TextInput extends React.Component {
         className="TextInput"
         aria-label={ariaLabel || ""}
         maxlength={maxlength || ""}
+        type={type || "text"}
+        min={min || ""}
+        step={step || ""}
       />
     );
   }
