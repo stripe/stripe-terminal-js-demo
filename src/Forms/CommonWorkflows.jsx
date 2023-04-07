@@ -15,6 +15,7 @@ class CommonWorkflows extends React.Component {
       onClickCancelPayment,
       onChangeTestCardNumber,
       onChangeTipAmount,
+      onChangeSimulateOnReaderTip,
       onChangeTestPaymentMethod,
       cancelablePayment,
       workFlowDisabled,
@@ -31,6 +32,7 @@ class CommonWorkflows extends React.Component {
               <TestPaymentMethods
                 onChangeTestCardNumber={onChangeTestCardNumber}
                 onChangeTipAmount={onChangeTipAmount}
+                onChangeSimulateOnReaderTip={onChangeSimulateOnReaderTip}
                 onChangeTestPaymentMethod={onChangeTestPaymentMethod}
               />
             )}

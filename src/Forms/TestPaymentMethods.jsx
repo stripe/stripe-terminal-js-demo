@@ -5,6 +5,7 @@ import * as React from "react";
 import Group from "../components/Group/Group.jsx";
 import Text from "../components/Text/Text.jsx";
 import TextInput from "../components/TextInput/TextInput.jsx";
+import CheckBox from "../components/CheckBox/CheckBox.jsx";
 import Select from "../components/Select/Select.jsx";
 
 const middot = "\u00b7";
@@ -53,7 +54,8 @@ class TestPaymentMethods extends React.Component {
     this.state = {
       testCardNumber: "",
       testPaymentMethod: "visa",
-      tipAmount: "0",
+      tipAmount: null,
+      simulateOnReaderTip: false
     };
   }
 
@@ -67,13 +69,18 @@ class TestPaymentMethods extends React.Component {
     this.props.onChangeTipAmount(tipAmount);
   };
 
+  onChangeSimulateOnReaderTip = (simulateOnReaderTip) => {
+    this.setState({ simulateOnReaderTip });
+    this.props.onChangeSimulateOnReaderTip(simulateOnReaderTip);
+  };
+
   onChangeTestPaymentMethod = (testPaymentMethod) => {
     this.setState({ testPaymentMethod });
     this.props.onChangeTestPaymentMethod(testPaymentMethod);
   };
 
   render() {
-    const { testCardNumber, testPaymentMethod, tipAmount } = this.state;
+    const { testCardNumber, testPaymentMethod, tipAmount, simulateOnReaderTip } = this.state;
     return (
       <>
         <Group
@@ -107,16 +114,31 @@ class TestPaymentMethods extends React.Component {
             alignItems: "center",
           }}
         >
+          <Text color="dark">Simulate on-reader tip?</Text>
+          <CheckBox
+            ariaLabel="Simulate on-reader tip?"
+            onChange={this.onChangeSimulateOnReaderTip}
+            value={simulateOnReaderTip}
+          />
+        </Group>
+        {simulateOnReaderTip && <Group
+          spacing={4}
+          direction="row"
+          alignment={{
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Text color="dark">Tip Amount</Text>
           <TextInput
-            ariaLabel="Test Tip Amount"
+            ariaLabel="Tip Amount"
             onChange={this.onChangeTipAmount}
-            value={tipAmount}
+            value={Number(tipAmount).toString()}
             type="number"
             min="0"
             step="1"
           />
-        </Group>
+        </Group>}
       </>
     );
   }
