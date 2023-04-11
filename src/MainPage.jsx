@@ -37,7 +37,9 @@ class App extends Component {
       cancelableRefund: false,
       usingSimulator: false,
       testCardNumber: "",
-      testPaymentMethod: "visa"
+      testPaymentMethod: "visa",
+      tipAmount: null,
+      simulateOnReaderTip: false
     };
   }
 
@@ -280,11 +282,20 @@ class App extends Component {
         return;
       }
     }
-    // Read a card from the customer
-    this.terminal.setSimulatorConfiguration({
+
+    
+
+    const simulatorConfiguration = {
       testPaymentMethod: this.state.testPaymentMethod,
       testCardNumber: this.state.testCardNumber
-    });
+    };
+
+    if (this.state.simulateOnReaderTip) {
+      simulatorConfiguration.tipAmount = Number(this.state.tipAmount);
+    }
+
+    // Read a card from the customer
+    this.terminal.setSimulatorConfiguration(simulatorConfiguration);
     const paymentMethodPromise = this.terminal.collectPaymentMethod(
       this.pendingPaymentIntentSecret
     );
@@ -423,6 +434,14 @@ class App extends Component {
     this.setState({ testCardNumber });
   };
 
+  onChangeTipAmount = (tipAmount) => {
+    this.setState({ tipAmount });
+  };
+
+  onChangeSimulateOnReaderTip = (simulateOnReaderTip) => {
+    this.setState({ simulateOnReaderTip });
+  };
+
   renderForm() {
     const {
       backendURL,
@@ -459,6 +478,8 @@ class App extends Component {
             onClickCancelPayment={this.cancelPendingPayment}
             onChangeTestPaymentMethod={this.onChangeTestPaymentMethod}
             onChangeTestCardNumber={this.onChangeTestCardNumber}
+            onChangeTipAmount={this.onChangeTipAmount}
+            onChangeSimulateOnReaderTip={this.onChangeSimulateOnReaderTip}
             cancelablePayment={cancelablePayment}
             usingSimulator={usingSimulator}
           />
