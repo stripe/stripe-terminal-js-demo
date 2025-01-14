@@ -11,16 +11,21 @@ import Select from "../components/Select/Select.jsx";
 
 class CartForm extends React.Component {
   static CURRENCIES = [
+    { value: "usd", label: "USD" },
     { value: "aud", label: "AUD" },
     { value: "cad", label: "CAD" },
+    { value: "chf", label: "CHF" },
     { value: "czk", label: "CZK" },
+    { value: "dkk", label: "DKK" },
     { value: "eur", label: "EUR" },
     { value: "gbp", label: "GBP" },
+    { value: "hkd", label: "HKD" },
+    { value: "myr", label: "MYR" },
+    { value: "nok", label: "NOK" },
     { value: "nzd", label: "NZD" },
-    { value: "sgd", label: "SGD" },
-    { value: "usd", label: "USD" }, 
-    { value: "dkk", label: "DKK" },
+    { value: "pln", label: "PLN" },
     { value: "sek", label: "SEK" },
+    { value: "sgd", label: "SGD" },
   ];
 
   render() {
@@ -38,7 +43,7 @@ class CartForm extends React.Component {
                 direction="row"
                 alignment={{
                   justifyContent: "space-between",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <Text size={12} color="dark">
@@ -54,7 +59,7 @@ class CartForm extends React.Component {
                 direction="row"
                 alignment={{
                   justifyContent: "space-between",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <Text size={12} color="dark">
@@ -70,7 +75,7 @@ class CartForm extends React.Component {
                 direction="row"
                 alignment={{
                   justifyContent: "space-between",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <Text size={12} color="dark">
@@ -86,7 +91,7 @@ class CartForm extends React.Component {
                 direction="row"
                 alignment={{
                   justifyContent: "space-between",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <Text size={12} color="dark">
