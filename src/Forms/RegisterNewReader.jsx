@@ -93,7 +93,7 @@ class RegisterNewReader extends React.Component {
                   one in {" "}
                   <Link
                     size={12}
-                    href="https://dashboard.stripe.com/terminal/locations"
+                    href="https://dashboard.stripe.com/terminal/locations/manage"
                     text="the dashboard"
                   />
                   .
@@ -114,7 +114,7 @@ class RegisterNewReader extends React.Component {
                     You can create more Locations in{" "}
                     <Link
                       size={10}
-                      href="https://dashboard.stripe.com/terminal/locations"
+                      href="https://dashboard.stripe.com/terminal/locations/manage"
                       text="the dashboard"
                     />
                     .
