@@ -283,7 +283,7 @@ class App extends Component {
       }
     }
 
-    
+
 
     const simulatorConfiguration = {
       testPaymentMethod: this.state.testPaymentMethod,
@@ -414,8 +414,12 @@ class App extends Component {
     this.initializeBackendClientAndTerminal(url);
     this.setState({ backendURL: url });
   };
-  updateChargeAmount = amount =>
+  updateChargeAmount = amount => {
     this.setState({ chargeAmount: parseInt(amount, 10) });
+    // we changed the charge amount, so we need to reset the pending payment intent secret
+    // or else we'll try to use the old payment intent instead of creating a new one
+    this.pendingPaymentIntentSecret = null;
+  };
   updateItemDescription = description =>
     this.setState({ itemDescription: description });
   updateTaxAmount = amount =>
