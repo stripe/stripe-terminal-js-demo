@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Subscribe to a cool new product</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/clover/stripe.js"></script>
+  </head>
+  <body>
+    <section>
+      <div class="product">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="16px" viewBox="0 0 14 16" version="1.1">
+            <defs/>
+            <g id="Flow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="0-Default" transform="translate(-121.000000, -40.000000)" fill="#E184DF">
+                    <path d="M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z" id="Pilcrow"/>
+                </g>
+            </g>
+        </svg>
+        <div class="description">
+          <h3>123 Main Street, CityName – Premium Rental | VIVIA Rentals</h3>
+          <h5>$1,200.00 / month</h5>
+        </div>
+      </div>
+      <form action="/create-checkout-session" method="POST">
+        <!-- Add a hidden field with the lookup_key of your Price -->
+        <input type="hidden" name="lookup_key" value="123_Main_Street,_CityName_–_Premium_Rental_|_VIVIA_Rentals-0003424" />
+        <button id="checkout-and-portal-button" type="submit">Checkout</button>
+      </form>
+    </section>
+  </body>
+</html>
